@@ -1188,6 +1188,7 @@ SECTIONS {
         sound/songs/bgm_radio_tower_occupied.o(.rodata);
         sound/songs/song465.o(.rodata);
 		sound/songs/midi/MIDIlovania.o(.rodata);
+		sound/songs/midi/MMZ4_nothing_beats.o(.rodata);
     } =0
 
     lib_rodata :

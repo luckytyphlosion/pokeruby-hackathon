@@ -470,6 +470,7 @@ gSongTable:: @ 845548C
 	song bgm_radio_tower_occupied, 0, 0  @ GSC - Radio Tower Takeover!
 	song song465, 0, 0
 	song MIDIlovania, 0, 0
+	song MMZ4_nothing_beats, 0, 0
 
 	.align 2
 dummy_song_header:      @ 845632C

@@ -162,6 +162,9 @@ $(BUILD_DIR)/data/%.o: data/%.s $$(ASM_DEP)
 $(MID_SUBDIR)/MIDIlovania.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G000 -V078
 
+$(MID_SUBDIR)/MMZ4_nothing_beats.s: %.s: %.mid
+	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G076
+
 $(BUILD_DIR)/%.o: %.s $$(ASM_DEP)
 	$(AS) $(ASFLAGS) $< -o $@
 
