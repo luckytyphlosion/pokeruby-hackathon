@@ -1143,7 +1143,7 @@ u16 GetMUS_ForBattle(void)
             return MUS_BATTLE20;
         }
     }
-    return MUS_ELITE_17;
+    return MIDILOVANIA;
 }
 
 void sub_80408BC(void)

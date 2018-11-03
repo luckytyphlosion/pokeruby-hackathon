@@ -369,6 +369,7 @@
 #define MUS_BATTLE30 466        // Battle! Archie/Maxie
 
 #define MUS_ELITE_17 468
+#define MIDILOVANIA 469
 
 #define MUS_ROUTE_118 0x7FFF  // What is this for?
 

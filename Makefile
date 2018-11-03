@@ -30,6 +30,7 @@ ASFLAGS  := -mcpu=arm7tdmi -I include --defsym $(GAME_VERSION)=1 --defsym REVISI
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -Wunused -Werror -O2 -fhex-asm
 CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef -Werror -Wno-trigraphs -D $(GAME_VERSION) -D REVISION=$(GAME_REVISION) -D $(GAME_LANGUAGE) -D DEBUG=$(DEBUG)
 
+STD_REVERB := 50
 
 #### Files ####
 
@@ -37,13 +38,18 @@ ROM := poke$(BUILD_NAME).gba
 MAP := $(ROM:%.gba=%.map)
 
 BUILD_DIR := build/$(BUILD_NAME)
+MID_SUBDIR = sound/songs/midi
+
+MID_BUILDDIR := $(BUILD_DIR)/$(MID_SUBDIR)
 
 C_SOURCES    := $(wildcard src/*.c src/*/*.c src/*/*/*.c)
 ASM_SOURCES  := $(wildcard src/*.s src/*/*.s asm/*.s data/*.s sound/*.s sound/*/*.s)
+MID_SOURCES := $(wildcard $(MID_SUBDIR)/*.mid)
 
 C_OBJECTS    := $(addprefix $(BUILD_DIR)/, $(C_SOURCES:%.c=%.o))
 ASM_OBJECTS  := $(addprefix $(BUILD_DIR)/, $(ASM_SOURCES:%.s=%.o))
-ALL_OBJECTS  := $(C_OBJECTS) $(ASM_OBJECTS)
+MID_OBJECTS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SOURCES))
+ALL_OBJECTS  := $(C_OBJECTS) $(ASM_OBJECTS) $(MID_OBJECTS)
 
 SUBDIRS      := $(sort $(dir $(ALL_OBJECTS)))
 
@@ -153,8 +159,12 @@ $(C_OBJECTS): $(BUILD_DIR)/%.o: %.c $$(C_DEP)
 $(BUILD_DIR)/data/%.o: data/%.s $$(ASM_DEP)
 	$(PREPROC) $< charmap.txt | $(CPP) -I include | $(AS) $(ASFLAGS) -o $@
 
+$(MID_SUBDIR)/MIDIlovania.s: %.s: %.mid
+	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G000 -V078
+
 $(BUILD_DIR)/%.o: %.s $$(ASM_DEP)
 	$(AS) $(ASFLAGS) $< -o $@
+
 
 # "friendly" target names for convenience sake
 ruby:          ; @$(MAKE) GAME_VERSION=RUBY
