@@ -368,6 +368,8 @@
 #define MUS_BATTLE38 465        // Battle! Elite Four
 #define MUS_BATTLE30 466        // Battle! Archie/Maxie
 
+#define MUS_ELITE_17 468
+
 #define MUS_ROUTE_118 0x7FFF  // What is this for?
 
 #endif  // GUARD_CONSTANTS_SONGS_H

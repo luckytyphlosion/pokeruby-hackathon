@@ -170,6 +170,30 @@ const struct WildPokemon EverGrandeCity_FishingMons [] =
 };
 const struct WildPokemonInfo EverGrandeCity_FishingMonsInfo = {10, EverGrandeCity_FishingMons};
 
+const struct WildPokemon LittlerootTown_LandMons [] = 
+{
+    {16, 16, SPECIES_ZUBAT},
+    {17, 17, SPECIES_ZUBAT},
+    {18, 18, SPECIES_ZUBAT},
+    {15, 15, SPECIES_ZUBAT},
+    {14, 14, SPECIES_ZUBAT},
+#ifdef SAPPHIRE
+    {16, 16, SPECIES_LUNATONE},
+    {18, 18, SPECIES_LUNATONE},
+    {14, 14, SPECIES_LUNATONE},
+#else
+    {16, 16, SPECIES_SOLROCK},
+    {18, 18, SPECIES_SOLROCK},
+    {14, 14, SPECIES_SOLROCK},
+#endif
+    {19, 19, SPECIES_ZUBAT},
+    {20, 20, SPECIES_ZUBAT},
+    {19, 19, SPECIES_ZUBAT},
+    {20, 20, SPECIES_ZUBAT},
+};
+
+const struct WildPokemonInfo LittlerootTown_LandMonsInfo = {10, LittlerootTown_LandMons};
+
 const struct WildPokemon MeteorFalls_1F_1R_LandMons [] =
 {
     {16, 16, SPECIES_ZUBAT},
@@ -2947,6 +2971,14 @@ const struct WildPokemonHeader gWildMonHeaders[] =
         .waterMonsInfo = &EverGrandeCity_WaterMonsInfo,
         .rockSmashMonsInfo = NULL,
         .fishingMonsInfo = &EverGrandeCity_FishingMonsInfo,
+    },
+    {
+        .mapGroup = MAP_GROUP(LITTLEROOT_TOWN),
+        .mapNum = MAP_NUM(LITTLEROOT_TOWN),
+        .landMonsInfo = &LittlerootTown_LandMonsInfo,
+        .waterMonsInfo = NULL,
+        .rockSmashMonsInfo = NULL,
+        .fishingMonsInfo = NULL,
     },
     {
         .mapGroup = MAP_GROUP(METEOR_FALLS_1F_1R),

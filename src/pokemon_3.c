@@ -1143,7 +1143,7 @@ u16 GetMUS_ForBattle(void)
             return MUS_BATTLE20;
         }
     }
-    return MUS_BATTLE27;
+    return MUS_ELITE_17;
 }
 
 void sub_80408BC(void)
