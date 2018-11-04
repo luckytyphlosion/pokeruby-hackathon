@@ -745,7 +745,11 @@ static void Shop_AfterNicknameBoughtMon(void)
 {
     SetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_NICKNAME, gStringVar2);
     ResetTasks();
-    SetMainCallback2(BuyMenuDrawGraphics_KeepCursor);
+    CloseMoneyWindow(0, 0);
+    BuyMenuFreeMemory();
+    SetMainCallback2(CB2_ReturnToField);
+    gFieldCallback = BuyMenuDrawGraphics_KeepCursor;
+    // SetMainCallback2(BuyMenuDrawGraphics_KeepCursor);
 }
 
 static void Shop_DoItemTransaction(u8 taskId)
