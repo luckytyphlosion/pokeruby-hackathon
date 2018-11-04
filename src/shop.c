@@ -696,10 +696,10 @@ static void Shop_PrintItemDescText(void)
             sub_8072AB0(ItemId_GetDescription(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]),
                 0x4, 0x68, 0x68, 0x30, 0);
         }
-        else if (gMartInfo.martType == MART_TYPE_POKEMON)
+        /*else if (gMartInfo.martType == MART_TYPE_POKEMON)
         {
             sub_8072AB0(sDummyShopDescription, 0x4, 0x68, 0x68, 0x30, 0);
-        }
+        }*/
         else
         {
             sub_8072AB0(gDecorations[gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]].description,
