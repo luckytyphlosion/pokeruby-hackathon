@@ -1778,6 +1778,15 @@ bool8 ScrCmd_pokemartdecoration2(struct ScriptContext *ctx)
     return TRUE;
 }
 
+bool8 ScrCmd_pokemartpokemon(struct ScriptContext *ctx)
+{
+    void *ptr = (void *)ScriptReadWord(ctx);
+
+    Shop_CreatePokemonShopMenu(ptr);
+    ScriptContext1_Stop();
+    return TRUE;
+}
+
 bool8 ScrCmd_playslotmachine(struct ScriptContext *ctx)
 {
     u8 v2 = VarGet(ScriptReadHalfword(ctx));

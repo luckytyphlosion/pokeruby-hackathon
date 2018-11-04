@@ -291,6 +291,9 @@ const u8 gOtherText_HowManyYouWant[] = _("{STR_VAR_1}? Certainly.\nHow many woul
 const u8 gOtherText_ThatWillBe[] = _("{STR_VAR_1}? And you wanted {STR_VAR_2}?\nThat will be ¥{STR_VAR_3}.");
 const u8 gOtherText_ThatWillBe2[] = _("{STR_VAR_1}, is it?\nThat’ll be ¥{STR_VAR_2}. Do you want it?");
 const u8 gOtherText_ThatWillBe3[] = _("You wanted {STR_VAR_1}?\nThat’ll be ¥{STR_VAR_2}. Will that be okay?");
+
+const u8 gOtherText_PokemonThatWillBe[] = _("You wanted {STR_VAR_2}?\nThat’ll be ¥{STR_VAR_1}. Will that be okay?");
+
 const u8 gOtherText_HereYouGo[] = _("Here you go!\nThank you very much.");
 const u8 gOtherText_HereYouGo2[] = _("Thank you!\nI’ll send it to your home PC.");
 const u8 gOtherText_HereYouGo3[] = _("Thanks!\nI’ll send it to your PC at home.");

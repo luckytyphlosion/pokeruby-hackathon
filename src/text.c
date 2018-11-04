@@ -2078,35 +2078,42 @@ static u8 sub_8002FA0(struct Window *win, const u8 *text)
 
 static u8 PrintNextChar(struct Window *win)
 {
-    u8 c = win->text[win->textIndex++];
 
     // Handle special control characters
-    switch (c)
-    {
-    case EOS:
-        ClipRight(win);
-        win->state = WIN_STATE_END;
-        return 0;
-    case PLACEHOLDER_BEGIN:
-        win->state = WIN_STATE_PLACEHOLDER;
-        return 2;
-    case CHAR_NEWLINE:
-        ClipRight(win);
-        win->state = WIN_STATE_NEWLINE;
-        return 2;
-    case CHAR_PROMPT_CLEAR:
-        DrawInitialDownArrow(win);
-        win->state = WIN_STATE_WAIT_CLEAR;
-        return 2;
-    case CHAR_PROMPT_SCROLL:
-        DrawInitialDownArrow(win);
-        win->state = WIN_STATE_WAIT_SCROLL;
-        return 2;
-    case EXT_CTRL_CODE_BEGIN:
-        return HandleExtCtrlCode(win);
+    while (1) {
+        u8 c = win->text[win->textIndex++];
+        switch (c) {
+            case EOS:
+                ClipRight(win);
+                win->state = WIN_STATE_END;
+                return 0;
+            case PLACEHOLDER_BEGIN:
+                win->state = WIN_STATE_PLACEHOLDER;
+                return 2;
+            case CHAR_NEWLINE:
+                ClipRight(win);
+                win->state = WIN_STATE_NEWLINE;
+                return 2;
+            case CHAR_PROMPT_CLEAR:
+                DrawInitialDownArrow(win);
+                win->state = WIN_STATE_WAIT_CLEAR;
+                return 2;
+            case CHAR_PROMPT_SCROLL:
+                DrawInitialDownArrow(win);
+                win->state = WIN_STATE_WAIT_SCROLL;
+                return 2;
+            case EXT_CTRL_CODE_BEGIN:
+                return HandleExtCtrlCode(win);
+            default:
+                sPrintGlyphFuncs[win->textMode](win, c);
+                if (1) {
+                    break;
+                } else {
+                    return 1;
+                }
+        }
     }
 
-    sPrintGlyphFuncs[win->textMode](win, c);
     return 1;
 }
 
@@ -2484,27 +2491,42 @@ static u8 UpdateWindowText(struct Window *win)
         return TRUE;
     }
 
-    PrintNextChar(win);
-
-    switch (win->state)
-    {
-    case WIN_STATE_END:
-        return TRUE;  // done printing text
-    case WIN_STATE_WAIT_BUTTON:
-    case WIN_STATE_WAIT_CLEAR:
-    case WIN_STATE_WAIT_SCROLL:
-        if (PlayerCanInterruptDelay(win))
+    while (1) {
+        PrintNextChar(win);
+    
+        switch (win->state)
+        {
+        u8 oldWinCursorY;
+        
+        case WIN_STATE_END:
+            return TRUE;  // done printing text
+        case WIN_STATE_WAIT_BUTTON:
+        case WIN_STATE_WAIT_CLEAR:
+        case WIN_STATE_WAIT_SCROLL:
+            if (PlayerCanInterruptDelay(win))
+                return 0;
+            win->delayCounter = 60;
             return 0;
-        win->delayCounter = 60;
-        break;
-    case WIN_STATE_PAUSE:
-    case WIN_STATE_NEWLINE:
-    case WIN_STATE_WAIT_SOUND:
-        break;
-    default:
-        win->state = WIN_STATE_CHAR_DELAY;
-        win->delayCounter = GetTextDelay(win);
-        break;
+        // 0x8003746
+        asm("UpdateWindowText_1:\n.global UpdateWindowText_1");
+        case WIN_STATE_NEWLINE:
+            oldWinCursorY = win->cursorY;
+            
+            ScrollWindowTextLines(win);
+            win->state = WIN_STATE_NORMAL;
+            if (oldWinCursorY == 0) {
+                break;
+            } else {
+                return 0;
+            }
+        case WIN_STATE_PAUSE:
+        case WIN_STATE_WAIT_SOUND:
+            return 0;
+        default:
+            win->state = WIN_STATE_CHAR_DELAY;
+            win->delayCounter = GetTextDelay(win);
+            return 0;
+        }
     }
 
     return 0;

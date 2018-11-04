@@ -27,12 +27,17 @@
 #include "decoration_inventory.h"
 #include "field_camera.h"
 #include "ewram.h"
+#include "data2.h"
+#include "script_pokemon_80C4.h"
 
 extern bool8 SellMenu_QuantityRoller(u8, u8);
+extern void ChangePokemonNickname(void);
 
 extern u8 gBuyMenuFrame_Gfx[];
 extern u16 gBuyMenuFrame_Tilemap[];
 extern u16 gMenuMoneyPal[16];
+extern u8 * gAskGiveNicknameText;
+extern u16 gSpecialVar_0x8004;
 
 static void Shop_DisplayPriceInList(int firstItemId, int lastItemId, bool32 hasControlCode);
 static void Shop_PrintItemDescText(void);
@@ -46,6 +51,8 @@ static void Task_HandleShopMenuQuit(u8 taskId);
 static void Task_DoItemPurchase(u8 taskId);
 static void Task_CancelItemPurchase(u8 taskId);
 static void Task_DoBuySellMenu(u8);
+static void Task_BuyMonPromptNickname(u8 taskId);
+static void Task_NicknameBoughtMon(u8 taskId);
 static void Shop_FadeAndRunBuySellCallback(u8);
 static void BuyMenuDrawGraphics(void);
 static void sub_80B3240(void);
@@ -81,10 +88,19 @@ static const u8 gMartBuyNoSellOptionList[] = {SHOP_BUY, SHOP_EXIT};
 
 static const u16 gUnusedMartArray[] = {0x2, 0x3, 0x4, 0xD, 0x121, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0x0, 0x0};
 
+static const u8 sDummyShopDescription[] = _("");
+
 static const struct YesNoFuncTable sShopPurchaseYesNoFuncs[] =
 {
     Task_DoItemPurchase,
     Task_CancelItemPurchase
+};
+
+static const struct YesNoFuncTable sBuyMonPromptNicknameYesNoFuncs[] = 
+{
+    Task_NicknameBoughtMon,
+    Task_ReturnToBuyMenu
+    
 };
 
 static u8 CreateShopMenu(u8 martType)
@@ -276,6 +292,8 @@ static void BuyMenuDrawGraphics(void)
         while(1) but was changed to 0 for release due to a define somewhere. A
         while(0) also matches, but it is more correct to use do {} while(0) as it
         was a fix to prevent compiler warnings on older compilers.
+        
+        But that's just a theory! A Revo Theory.
     */
     do {} while(0);
 
@@ -599,6 +617,30 @@ static void Shop_DisplayDecorationPriceInList(u16 itemId, u8 var2, bool32 hasCon
     }
 }
 
+static void Shop_DisplayPokemonPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)
+{
+    u8 *stringPtr = gStringVar1;
+
+    if (hasControlCode)
+    {
+        stringPtr[0] = EXT_CTRL_CODE_BEGIN;
+        stringPtr[1] = 0x1;
+        stringPtr[2] = 0x2;
+        stringPtr += 3;
+    }
+
+    StringCopy(stringPtr, gSpeciesNames[itemId]);
+    sub_8072A18(&gStringVar1[0], 0x70, var2 << 3, 0x58, 0x1);
+    stringPtr = gStringVar1;
+
+    if (hasControlCode)
+        stringPtr = &gStringVar1[3];
+
+    GetMoneyAmountText(stringPtr, POKEMON_SHOP_PRICE, 0x5);
+    Menu_PrintTextPixelCoords(&gStringVar1[0], 24 * 8 + 2, var2 << 3, 0x1);
+}
+
+
 static void Shop_DisplayPriceInList(int firstItemId, int lastItemId, bool32 hasControlCode)
 {
     u8 i;
@@ -607,6 +649,8 @@ static void Shop_DisplayPriceInList(int firstItemId, int lastItemId, bool32 hasC
     {
         if (gMartInfo.martType == MART_TYPE_0)
             Shop_DisplayNormalPriceInList(gMartInfo.itemList[gMartInfo.choicesAbove + i], (i << 1) + 2, hasControlCode);
+        else if (gMartInfo.martType == MART_TYPE_POKEMON)
+            Shop_DisplayPokemonPriceInList(gMartInfo.itemList[gMartInfo.choicesAbove + i], (i << 1) + 2, hasControlCode);
         else
             Shop_DisplayDecorationPriceInList(gMartInfo.itemList[gMartInfo.choicesAbove + i], (i << 1) + 2, hasControlCode);
     }
@@ -627,6 +671,10 @@ static void Shop_PrintItemDescText(void)
             sub_8072AB0(ItemId_GetDescription(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]),
                 0x4, 0x68, 0x68, 0x30, 0);
         }
+        else if (gMartInfo.martType == MART_TYPE_POKEMON)
+        {
+            sub_8072AB0(sDummyShopDescription, 0x4, 0x68, 0x68, 0x30, 0);
+        }
         else
         {
             sub_8072AB0(gDecorations[gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]].description,
@@ -646,11 +694,28 @@ static void Shop_DoPremierBallCheck(u8 taskId)
         Shop_DisplayPriceInList(gMartInfo.cursor, gMartInfo.cursor, 0);
         PlaySE(SE_SELECT);
 
-        if (gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor] == ITEM_POKE_BALL && gTasks[taskId].tItemCount >= 10 && AddBagItem(ITEM_PREMIER_BALL, 1) == TRUE)
+        if (gMartInfo.martType == MART_TYPE_0 && gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor] == ITEM_POKE_BALL && gTasks[taskId].tItemCount >= 10 && AddBagItem(ITEM_PREMIER_BALL, 1) == TRUE)
             DisplayItemMessageOnField(taskId, gOtherText_FreePremierBall, Task_ReturnToBuyMenu, 0xC3E1);
-        else
+        else if (gMartInfo.martType == MART_TYPE_POKEMON) {
+            DisplayItemMessageOnField(taskId, gAskGiveNicknameText, Task_BuyMonPromptNickname, 0xC3E1);
+        } else {
             Task_ReturnToBuyMenu(taskId);
+        }
     }
+}
+
+static void Task_BuyMonPromptNickname(u8 taskId)
+{
+    DisplayYesNoMenu(7, 8, 1);
+    sub_80A3FA0(gBGTilemapBuffers[1], 8, 9, 4, 4, 0xC3E1);
+    DoYesNoFuncWithChoice(taskId, sBuyMonPromptNicknameYesNoFuncs);
+}
+
+static void Task_NicknameBoughtMon(u8 taskId)
+{
+    gSpecialVar_0x8004 = CalculatePlayerPartyCount();
+    ChangePokemonNickname();
+    Task_ReturnToBuyMenu(taskId);
 }
 
 static void Shop_DoItemTransaction(u8 taskId)
@@ -687,6 +752,15 @@ static void Task_DoItemPurchase(u8 taskId)
             else
             {
                 DisplayItemMessageOnField(taskId, gOtherText_NoRoomFor, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1);
+            }
+        }
+        else if (gMartInfo.martType == MART_TYPE_POKEMON) {
+            if (ScriptGiveMon(
+                    gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor],
+                    20,
+                    ITEM_NONE,
+                    0, 0, 0)) {
+                DisplayItemMessageOnField(taskId, gOtherText_HereYouGo, Shop_DoItemTransaction, 0xC3E1);
             }
         }
         else // a normal mart is only type 0, so types 1 and 2 are decoration marts.
@@ -1096,6 +1170,7 @@ static void Shop_DoCursorAction(u8 taskId)
 
             if (gMartInfo.choicesAbove + gMartInfo.cursor != gMartInfo.itemCount) // did you not hit CANCEL?
             {
+                u8 itemId = gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor];
                 PauseVerticalScrollIndicator(TOP_ARROW);
                 PauseVerticalScrollIndicator(BOTTOM_ARROW);
                 SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);
@@ -1105,7 +1180,7 @@ static void Shop_DoCursorAction(u8 taskId)
 
                 if (gMartInfo.martType == MART_TYPE_0)
                 {
-                    gMartTotalCost = (ItemId_GetPrice(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]) >> GetPriceReduction(1)); // set 1x price
+                    gMartTotalCost = (ItemId_GetPrice(itemId) >> GetPriceReduction(1)); // set 1x price
                     if (!IsEnoughMoney(gSaveBlock1.money, gMartTotalCost))
                     {
                         DisplayItemMessageOnField(taskId, gOtherText_NotEnoughMoney, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1); // tail merge
@@ -1117,9 +1192,23 @@ static void Shop_DoCursorAction(u8 taskId)
                         DisplayItemMessageOnField(taskId, gStringVar4, Shop_UpdateCurItemCountToMax, 0xC3E1);                    
                     }
                 }
+                else if (gMartInfo.martType == MART_TYPE_POKEMON) {
+                    gMartTotalCost = POKEMON_SHOP_PRICE;
+                    if (!IsEnoughMoney(gSaveBlock1.money, gMartTotalCost))
+                    {
+                        DisplayItemMessageOnField(taskId, gOtherText_NotEnoughMoney, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1); // tail merge
+                    }
+                    else
+                    {
+                        StringCopy(gStringVar2, gSpeciesNames[itemId]);
+                        ConvertIntToDecimalStringN(gStringVar1, gMartTotalCost, 0, 0x8);
+                        StringExpandPlaceholders(gStringVar4, gOtherText_ThatWillBe2);
+                        DisplayItemMessageOnField(taskId, gStringVar4, Shop_DoYesNoPurchase, 0xC3E1);
+                    }
+                }  
                 else // _080B428C
                 {
-                    gMartTotalCost = gDecorations[gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]].price;
+                    gMartTotalCost = gDecorations[itemId].price;
 
                     if (!IsEnoughMoney(gSaveBlock1.money, gMartTotalCost))
                     {
@@ -1239,13 +1328,9 @@ void Shop_CreateDecorationShop2Menu(u16 *itemList)
     SetShopMenuCallback(EnableBothScriptContexts);
 }
 
-#if DEBUG
-
-void debug_sub_80C2818(void)
+void Shop_CreatePokemonShopMenu(u16 *itemList)
 {
-    CreateShopMenu(MART_TYPE_0);
-    SetShopItemsForSale(gUnusedMartArray);
-    SetShopMenuCallback(NULL);
+    CreateShopMenu(MART_TYPE_POKEMON);
+    SetShopItemsForSale(itemList);
+    SetShopMenuCallback(EnableBothScriptContexts);
 }
-
-#endif

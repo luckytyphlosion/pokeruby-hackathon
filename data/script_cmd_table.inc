@@ -198,6 +198,15 @@ gScriptCmdTable:: @ 814AE30
 	.4byte ScrCmd_incrementgamestat       @ 0xC3
 	.4byte ScrCmd_setescapewarp           @ 0xC4
 	.4byte ScrCmd_waitmoncry              @ 0xC5
+	.4byte ScrCmd_nop                     @ 0xC6
+	.4byte ScrCmd_nop                     @ 0xC7
+	.4byte ScrCmd_nop                     @ 0xC8
+	.4byte ScrCmd_nop                     @ 0xC9
+	.4byte ScrCmd_nop                     @ 0xCA
+	.4byte ScrCmd_nop                     @ 0xCB
+	.4byte ScrCmd_nop                     @ 0xCC
+	.4byte ScrCmd_pokemartpokemon         @ 0xCD
+	
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop

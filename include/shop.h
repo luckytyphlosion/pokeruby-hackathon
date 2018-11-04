@@ -6,6 +6,7 @@ enum
     MART_TYPE_0, // normal mart
     MART_TYPE_1,
     MART_TYPE_2,
+	MART_TYPE_POKEMON,
 };
 
 // shop view window NPC info enum
@@ -37,9 +38,12 @@ struct MartInfo
     /* 0xD */ u8 curItemCount; // if you are selling an item, this is the count of the current item stack you have.
 };
 
+#define POKEMON_SHOP_PRICE 50000
+
 void Shop_CreatePokemartMenu(u16 *);
 void Shop_CreateDecorationShop1Menu(u16 *);
 void Shop_CreateDecorationShop2Menu(u16 *);
+void Shop_CreatePokemonShopMenu(u16 *);
 void Shop_RunExitSellMenuTask(u8 taskId);
 
 #endif // GUARD_SHOP_H

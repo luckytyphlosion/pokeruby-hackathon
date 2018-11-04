@@ -1357,6 +1357,11 @@
 	.byte \a
 	.4byte \value
 	.endm
+	
+	.macro pokemartpokemon products
+	.byte 0xcd
+	.4byte \products
+	.endm
 
 @ Supplementary
 

@@ -3021,6 +3021,7 @@ SlateportCity_Mart_Text_1A0BE4:: @ 81A0BE4
 SlateportCity_Text_1A0BE4:: @ 81A0BE4
 SootopolisCity_Mart_Text_1A0BE4:: @ 81A0BE4
 VerdanturfTown_Mart_Text_1A0BE4:: @ 81A0BE4
+WelcomeMartText::
 	.string "Welcome!\p"
 	.string "How may I serve you?$"
 
@@ -3180,6 +3181,7 @@ FallarborTown_ContestLobby_Text_1A10EB:: @ 81A10EB
 
 MossdeepCity_StevensHouse_Text_1A1102:: @ 81A1102
 RustboroCity_DevonCorp_2F_Text_1A1102:: @ 81A1102
+gAskGiveNicknameText::
 	.string "Want to give a nickname to the\n"
 	.string "{STR_VAR_2} you received?$"
 
