@@ -213,7 +213,40 @@ SYMBOL(gBattleAnimArgs, 16)
 SYMBOL(gAnimSpriteIndexArray, 16)
 
 // task.c
-SYMBOL(gTasks, 640)
+. = ALIGN(16);
+gTasks = .;
+gTask0 = .;
+. += 40;
+gTask1 = .;
+. += 40;
+gTask2 = .;
+. += 40;
+gTask3 = .;
+. += 40;
+gTask4 = .;
+. += 40;
+gTask5 = .;
+. += 40;
+gTask6 = .;
+. += 40;
+gTask7 = .;
+. += 40;
+gTask8 = .;
+. += 40;
+gTask9 = .;
+. += 40;
+gTask10 = .;
+. += 40;
+gTask11 = .;
+. += 40;
+gTask12 = .;
+. += 40;
+gTask13 = .;
+. += 40;
+gTask14 = .;
+. += 40;
+gTask15 = .;
+. += 40;
 
 #if DEBUG
 unk_debug_common_1 = .;

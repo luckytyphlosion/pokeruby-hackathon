@@ -7,9 +7,17 @@ LittlerootTown_MapScript1_14D514:: @ 814D514
 	end
 
 LittlerootTown_Sign_StartHacking:: @ 814C087
+	getpartysize
+	compare RESULT, 6
+	goto_if_eq LittlerootTown_Sign_PartyFull
 	message WelcomeMartText
 	waitmessage
 	pokemartpokemon LittlerootTown_PokemonList
+	release
+	end
+
+LittlerootTown_Sign_PartyFull::
+	message LittlerootTown_Sign_PartyFullText
 	release
 	end
 

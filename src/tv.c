@@ -43,6 +43,8 @@
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
 
+void ChangePokemonNicknameWithReturnCallback(MainCallback returnCallback);
+
 struct UnkTvStruct
 {
     s8 var0;
@@ -2058,6 +2060,11 @@ void ChangePokemonNickname_CB(void);
 
 void ChangePokemonNickname(void)
 {
+    ChangePokemonNicknameWithReturnCallback(ChangePokemonNickname_CB);
+}
+
+void ChangePokemonNicknameWithReturnCallback(MainCallback returnCallback)
+{
     u16 spec;
     u16 gender;
     u32 pval;
@@ -2067,7 +2074,7 @@ void ChangePokemonNickname(void)
     spec = GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_SPECIES, 0);
     gender = GetMonGender(&(gPlayerParty[gSpecialVar_0x8004]));
     pval = GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_PERSONALITY, 0);
-    DoNamingScreen(3, gStringVar2, spec, gender, pval, ChangePokemonNickname_CB);
+    DoNamingScreen(3, gStringVar2, spec, gender, pval, returnCallback);
 }
 
 void ChangePokemonNickname_CB(void)

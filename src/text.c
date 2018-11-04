@@ -7,6 +7,8 @@
 #include "sound.h"
 #include "string_util.h"
 
+#define INSTANT_TEXT_FLAG 0
+
 enum
 {
     WIN_STATE_END,
@@ -2106,7 +2108,7 @@ static u8 PrintNextChar(struct Window *win)
                 return HandleExtCtrlCode(win);
             default:
                 sPrintGlyphFuncs[win->textMode](win, c);
-                if (1) {
+                if (INSTANT_TEXT_FLAG) {
                     break;
                 } else {
                     return 1;
@@ -2514,7 +2516,7 @@ static u8 UpdateWindowText(struct Window *win)
             
             ScrollWindowTextLines(win);
             win->state = WIN_STATE_NORMAL;
-            if (oldWinCursorY == 0) {
+            if (oldWinCursorY == 0 && INSTANT_TEXT_FLAG) {
                 break;
             } else {
                 return 0;
