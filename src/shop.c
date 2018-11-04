@@ -552,14 +552,15 @@ static void Shop_InitMenus(int firstItemId, int lastItemId)
     InitMenu(0, 0xE, 0x2, 0x8, gMartInfo.cursor, 0xF);
 }
 
-// after printing the item quantity and price, restore the textbox tiles before the Yes/No prompt.
+// after printing the item quantity and price, restore the description box tiles before the Yes/No prompt.
+// ewram18300 is part of ewram18000 which is the buffer used to store the mart tilemap
 static void BuyMenuDrawTextboxBG_Restore(void)
 {
-    u16 i, j;
+    u16 y, x;
 
-    for (i = 0; i < 8; i++)
-        for (j = 0; j < 14; j++)
-            gBGTilemapBuffers[1][32 * (i + 12) + j] = ewram18300[32 * i + j] + 0xC3E0;
+    for (y = 0; y < 8; y++)
+        for (x = 0; x < 13; x++)
+            gBGTilemapBuffers[1][32 * (y + 12) + x] = ewram18300[32 * y + x] + 0xC3E0;
 }
 
 static void Shop_PrintItemDesc(void)
@@ -749,7 +750,6 @@ static void Shop_AfterNicknameBoughtMon(void)
     BuyMenuFreeMemory();
     SetMainCallback2(CB2_ReturnToField);
     gFieldCallback = BuyMenuDrawGraphics_KeepCursor;
-    // SetMainCallback2(BuyMenuDrawGraphics_KeepCursor);
 }
 
 static void Shop_DoItemTransaction(u8 taskId)
