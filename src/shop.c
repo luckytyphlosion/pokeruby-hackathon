@@ -34,6 +34,7 @@
 extern bool8 SellMenu_QuantityRoller(u8, u8);
 extern void ChangePokemonNickname(void);
 extern void ChangePokemonNicknameWithReturnCallback(MainCallback returnCallback);
+extern void not_unref_sub_8070F90(void);
 
 extern u8 gBuyMenuFrame_Gfx[];
 extern u16 gBuyMenuFrame_Tilemap[];
@@ -809,6 +810,9 @@ static void Task_DoItemPurchase(u8 taskId)
                     gMartInfo.pokemonLevel,
                     ITEM_NONE,
                     0, 0, 0) == 0) {
+                if (gSpecialVar_0x8004 == 0) {
+                    not_unref_sub_8070F90();
+                }
                 DisplayItemMessageOnField(taskId, gOtherText_HereYouGo, Shop_DoItemTransaction, 0xC3E1);
             } else {
                 DisplayItemMessageOnField(taskId, gOtherText_PartyFull, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1);

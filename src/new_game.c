@@ -210,7 +210,7 @@ void NewGameInitData(void)
 extern void debug_sub_80A3904(void);
 extern void debug_sub_80A3714(void);
 extern void debug_sub_8120F98(void);
-extern void unref_sub_8070F90(void);
+extern void not_unref_sub_8070F90(void);
 
 void debug_sub_8057508(bool32 arg0)
 {
@@ -231,7 +231,7 @@ void debug_sub_8057508(bool32 arg0)
     debug_sub_8120F98();
     FlagSet(FLAG_SYS_HIPSTER_MEET);
     sub_80EB8EC();
-    unref_sub_8070F90();
+    not_unref_sub_8070F90();
     InitTimeBasedEvents();
 }
 #endif

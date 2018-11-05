@@ -5266,7 +5266,7 @@ _08070F8A:\n\
 
 // Maybe this goes in start_menu.c
 #if !DEBUG
-void unref_sub_8070F90(void)
+void not_unref_sub_8070F90(void)
 {
     FlagSet(FLAG_SYS_POKEDEX_GET);
     FlagSet(FLAG_SYS_POKEMON_GET);

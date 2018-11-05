@@ -7,7 +7,7 @@
 #include "sound.h"
 #include "string_util.h"
 
-#define INSTANT_TEXT_FLAG 0
+#define INSTANT_TEXT_FLAG 1
 
 enum
 {
