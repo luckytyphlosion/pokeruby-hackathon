@@ -17,7 +17,7 @@ LittlerootTown_Sign_StartHacking:: @ 814C087
 	end
 
 LittlerootTown_Sign_PartyFull::
-	message LittlerootTown_Sign_PartyFullText
+	msgbox LittlerootTown_Sign_PartyFullText, 4
 	release
 	end
 
@@ -27,6 +27,16 @@ LittlerootTown_MartTest::
 	message WelcomeMartText
 	waitmessage
 	pokemart MossdeepCity_Mart_Items
+	release
+	end
+
+LittlerootTown_Boy_InstantTextTest::
+	lock
+	faceplayer
+LittlerootTown_Boy_InstantTextTest_PrintAgain:
+	msgbox InstantTextTestText, MSGBOX_YESNO
+	compare RESULT, YES
+	goto_if_eq LittlerootTown_Boy_InstantTextTest_PrintAgain
 	release
 	end
 

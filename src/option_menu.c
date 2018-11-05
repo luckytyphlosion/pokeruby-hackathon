@@ -299,46 +299,27 @@ static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style)
 
 static u8 TextSpeed_ProcessInput(u8 selection)
 {
-    if (gMain.newKeys & DPAD_RIGHT)
-    {
-        if (selection < 2)
-            selection++;
-        else
-            selection = 0;
-    }
-    if (gMain.newKeys & DPAD_LEFT)
-    {
-        if (selection > 0)
-            selection--;
-        else
-            selection = 2;
-    }
+    if (gMain.newKeys & (DPAD_LEFT | DPAD_RIGHT))
+        selection ^= 1;
     return selection;
 }
 
 #if ENGLISH
-#define TEXTSPEED_SLOW_LEFT (120)
-#define TEXTSPEED_MIX_LEFT (155)
-#define TEXTSPEED_FAST_LEFT (184)
-#endif
-#if GERMAN
-#define TEXTSPEED_SLOW_LEFT (120)
-#define TEXTSPEED_MIX_LEFT (161)
-#define TEXTSPEED_FAST_LEFT (202)
+#define TEXTSPEED_FAST_LEFT (120)
+#define TEXTSPEED_INSTANT_LEFT (166)
 #endif
 
 static void TextSpeed_DrawChoices(u8 selection)
 {
-    u8 styles[3];
+    u8 styles[2];
 
     styles[0] = 0xF;
     styles[1] = 0xF;
-    styles[2] = 0xF;
     styles[selection] = 0x8;
 
-    DrawOptionMenuChoice(gSystemText_Slow, TEXTSPEED_SLOW_LEFT, 40, styles[0]);
-    DrawOptionMenuChoice(gSystemText_Mid,  TEXTSPEED_MIX_LEFT,  40, styles[1]);
-    DrawOptionMenuChoice(gSystemText_Fast, TEXTSPEED_FAST_LEFT, 40, styles[2]);
+    DrawOptionMenuChoice(gSystemText_Fast,    TEXTSPEED_FAST_LEFT,     40, styles[0]);
+    DrawOptionMenuChoice(gSystemText_Instant, TEXTSPEED_INSTANT_LEFT,  40, styles[1]);
+
 }
 
 static u8 BattleScene_ProcessInput(u8 selection)

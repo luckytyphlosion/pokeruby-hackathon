@@ -1,5 +1,6 @@
 LittlerootTown_EventObjects::
 	object_event 1, EVENT_OBJ_GFX_MART_EMPLOYEE, 0, 10, 5, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, LittlerootTown_MartTest, 0
+	object_event 2, EVENT_OBJ_GFX_BOY_1, 0, 12, 9, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, LittlerootTown_Boy_InstantTextTest, 0
 
 LittlerootTown_MapWarps::
 	warp_def 11, 5, 3, 0, MAP_LILYCOVE_CITY_DEPARTMENT_STORE_5F

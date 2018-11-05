@@ -43,14 +43,11 @@ gSystemText_Cancel:: @ 842C3F0
 gSystemText_ButtonMode:: @ 842C3FA
 	.string "{PALETTE 9}BUTTON MODE$"
 
-gSystemText_Slow:: @ 842C409
-	.string "{PALETTE 15}SLOW$"
-
-gSystemText_Mid:: @ 842C411
-	.string "{PALETTE 15}MID$"
-
 gSystemText_Fast:: @ 842C418
 	.string "{PALETTE 15}FAST$"
+
+gSystemText_Instant:: @ 842C411
+	.string "{PALETTE 15}INSTANT$"
 
 gSystemText_On:: @ 842C420
 	.string "{PALETTE 15}ON$"

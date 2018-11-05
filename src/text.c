@@ -7,8 +7,6 @@
 #include "sound.h"
 #include "string_util.h"
 
-#define INSTANT_TEXT_FLAG 1
-
 enum
 {
     WIN_STATE_END,
@@ -75,6 +73,8 @@ struct ShiftAmount
     u32 left;
     u32 right;
 };
+
+#define INSTANT_TEXT_TEXTBOX_DELAY 5
 
 static u16 InitVariableWidthFontTileData(struct Window *, u16);
 static u16 LoadFixedWidthFont(struct Window *, u16);
@@ -435,7 +435,7 @@ static const struct Font sFonts[] =
     { 3, (u8 *)sBrailleGlyphs,  8,   0 },
 };
 
-static const u8 sTextSpeedDelays[] = { 6, 3, 1 }; // slow, mid, fast
+static const u8 sTextSpeedDelays[] = { 1, 0 }; // fast, instant
 
 static const u8 sExtCtrlCodeLengths[] =
 {
@@ -2108,7 +2108,7 @@ static u8 PrintNextChar(struct Window *win)
                 return HandleExtCtrlCode(win);
             default:
                 sPrintGlyphFuncs[win->textMode](win, c);
-                if (INSTANT_TEXT_FLAG) {
+                if (GetTextDelay(win) == 0) {
                     break;
                 } else {
                     return 1;
@@ -2411,6 +2411,12 @@ static u8 UpdateWindowText(struct Window *win)
     case WIN_STATE_WAIT_BUTTON:
         if (PlayerCanInterruptDelay(win))
         {
+            if (GetTextDelay(win) == 0) {
+                if (win->delayCounter) {
+                    win->delayCounter--;
+                    return FALSE;
+                }
+            }
             if (gMain.newKeys & (A_BUTTON | B_BUTTON))
             {
                 PlaySE(SE_SELECT);
@@ -2485,6 +2491,12 @@ static u8 UpdateWindowText(struct Window *win)
         win->state = WIN_STATE_NORMAL;
         break;
     case WIN_STATE_END:
+        if (GetTextDelay(win) == 0) {
+            if (win->delayCounter) {
+                win->delayCounter--;
+                return FALSE;
+            }
+        }
         return TRUE;  // done printing text
     case WIN_STATE_NORMAL:
         break;
@@ -2501,12 +2513,21 @@ static u8 UpdateWindowText(struct Window *win)
         u8 oldWinCursorY;
         
         case WIN_STATE_END:
+            if (GetTextDelay(win) == 0) {
+                win->delayCounter = INSTANT_TEXT_TEXTBOX_DELAY;
+                return FALSE;
+            }
             return TRUE;  // done printing text
         case WIN_STATE_WAIT_BUTTON:
         case WIN_STATE_WAIT_CLEAR:
         case WIN_STATE_WAIT_SCROLL:
-            if (PlayerCanInterruptDelay(win))
+            if (PlayerCanInterruptDelay(win)) {
+                if (GetTextDelay(win) == 0) {
+                    win->delayCounter = INSTANT_TEXT_TEXTBOX_DELAY;
+                    return FALSE;
+                }
                 return 0;
+            }
             win->delayCounter = 60;
             return 0;
         // 0x8003746
@@ -2516,7 +2537,7 @@ static u8 UpdateWindowText(struct Window *win)
             
             ScrollWindowTextLines(win);
             win->state = WIN_STATE_NORMAL;
-            if (oldWinCursorY == 0 && INSTANT_TEXT_FLAG) {
+            if (oldWinCursorY == 0 && GetTextDelay(win) == 0) {
                 break;
             } else {
                 return 0;
@@ -3264,6 +3285,13 @@ static u8 WaitWithDownArrow(struct Window *win)
     }
     else
     {
+        if (GetTextDelay(win) == 0) {
+            if (win->delayCounter) {
+                win->delayCounter--;
+                UpdateDownArrowAnimation(win);
+                return FALSE;
+            }
+        }
         if (gMain.newKeys & (A_BUTTON | B_BUTTON))
         {
             PlaySE(SE_SELECT);

@@ -81,7 +81,7 @@ void InitPlayerTrainerId(void)
 // L=A isnt set here for some reason.
 void SetDefaultOptions(void)
 {
-    gSaveBlock2.optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
+    gSaveBlock2.optionsTextSpeed = OPTIONS_TEXT_SPEED_FAST;
     gSaveBlock2.optionsWindowFrameType = 0;
     gSaveBlock2.optionsSound = OPTIONS_SOUND_MONO;
     gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
