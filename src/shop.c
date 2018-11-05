@@ -29,6 +29,7 @@
 #include "ewram.h"
 #include "data2.h"
 #include "script_pokemon_80C4.h"
+#include "pokemon.h"
 
 extern bool8 SellMenu_QuantityRoller(u8, u8);
 extern void ChangePokemonNickname(void);
@@ -95,7 +96,11 @@ static const u8 gMartBuyNoSellOptionList[] = {SHOP_BUY, SHOP_EXIT};
 
 static const u16 gUnusedMartArray[] = {0x2, 0x3, 0x4, 0xD, 0x121, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0x0, 0x0};
 
-static const u8 sDummyShopDescription[] = _("");
+static const u8 sPokemonShopLevelDescription[] = _(
+    "{LEFT_ARROW}" // 00
+    " Change Level " // 01
+    "{RIGHT_ARROW}\n" // 15
+    "Level: {STR_VAR_1}");
 
 static const struct YesNoFuncTable sShopPurchaseYesNoFuncs[] =
 {
@@ -333,6 +338,7 @@ static void BuyMenuDrawGraphics_Entry(bool8 keepCursor)
     if (!keepCursor) {
         gMartInfo.cursor = 0;
         gMartInfo.choicesAbove = 0;
+        gMartInfo.pokemonLevel = 5;
     }
     Menu_EraseWindowRect(0, 0, 0x20, 0x20);
     OpenMoneyWindow(gSaveBlock1.money, 0, 0);
@@ -645,7 +651,7 @@ static void Shop_DisplayDecorationPriceInList(u16 itemId, u8 var2, bool32 hasCon
 static void Shop_DisplayPokemonPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)
 {
     u8 *stringPtr = gStringVar1;
-
+    u32 pokemonPrice = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[itemId].growthRate][gMartInfo.pokemonLevel];
     if (hasControlCode)
     {
         stringPtr[0] = EXT_CTRL_CODE_BEGIN;
@@ -661,8 +667,8 @@ static void Shop_DisplayPokemonPriceInList(u16 itemId, u8 var2, bool32 hasContro
     if (hasControlCode)
         stringPtr = &gStringVar1[3];
 
-    GetMoneyAmountText(stringPtr, POKEMON_SHOP_PRICE, 0x5);
-    Menu_PrintTextPixelCoords(&gStringVar1[0], 24 * 8 + 2, var2 << 3, 0x1);
+    GetMoneyAmountText(stringPtr, pokemonPrice, 7);
+    Menu_PrintTextPixelCoords(&gStringVar1[0], 23 * 8, var2 << 3, 0x1);
 }
 
 
@@ -696,10 +702,17 @@ static void Shop_PrintItemDescText(void)
             sub_8072AB0(ItemId_GetDescription(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]),
                 0x4, 0x68, 0x68, 0x30, 0);
         }
-        /*else if (gMartInfo.martType == MART_TYPE_POKEMON)
+        else if (gMartInfo.martType == MART_TYPE_POKEMON)
         {
-            sub_8072AB0(sDummyShopDescription, 0x4, 0x68, 0x68, 0x30, 0);
-        }*/
+            ConvertIntToDecimalStringN(gStringVar1, gMartInfo.pokemonLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+            StringExpandPlaceholders(gStringVar3, sPokemonShopLevelDescription);
+            if (gMartInfo.pokemonLevel <= 5) {
+                gStringVar3[0] = CHAR_SPACE;
+            } else if (gMartInfo.pokemonLevel >= 100) {
+                gStringVar3[15] = CHAR_SPACE;
+            }
+            sub_8072AB0(gStringVar3, 0x4, 0x68, 0x68, 0x30, 0);
+        }
         else
         {
             sub_8072AB0(gDecorations[gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]].description,
@@ -793,7 +806,7 @@ static void Task_DoItemPurchase(u8 taskId)
             if ((gSpecialVar_0x8004 = CalculatePlayerPartyCount()) < 6 &&
                 ScriptGiveMon(
                     gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor],
-                    20,
+                    gMartInfo.pokemonLevel,
                     ITEM_NONE,
                     0, 0, 0) == 0) {
                 DisplayItemMessageOnField(taskId, gOtherText_HereYouGo, Shop_DoItemTransaction, 0xC3E1);
@@ -1202,13 +1215,32 @@ static void Shop_DoCursorAction(u8 taskId)
                 Shop_PrintItemDescText();
             }
         }
+        else if (((gMain.newAndRepeatedKeys & DPAD_ANY) == DPAD_LEFT) && gMartInfo.martType == MART_TYPE_POKEMON) {
+            if (gMartInfo.pokemonLevel > 5) {
+                PlaySE(SE_SELECT);
+                gMartInfo.pokemonLevel--;
+                SetVBlankCallback(NULL);
+                Shop_DisplayPriceInList(0, 7, 0);
+                Shop_PrintItemDescText();
+                SetVBlankCallback(VBlankCB);
+            }
+        } else if (((gMain.newAndRepeatedKeys & DPAD_ANY) == DPAD_RIGHT) && gMartInfo.martType == MART_TYPE_POKEMON) {
+            if (gMartInfo.pokemonLevel < 100) {
+                PlaySE(SE_SELECT);
+                gMartInfo.pokemonLevel++;
+                SetVBlankCallback(NULL);
+                Shop_DisplayPriceInList(0, 7, 0);
+                Shop_PrintItemDescText();
+                SetVBlankCallback(VBlankCB);
+            }
+        }
         else if (gMain.newKeys & A_BUTTON)
         {
             PlaySE(SE_SELECT);
 
             if (gMartInfo.choicesAbove + gMartInfo.cursor != gMartInfo.itemCount) // did you not hit CANCEL?
             {
-                u8 itemId = gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor];
+                u16 itemId = gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor];
                 PauseVerticalScrollIndicator(TOP_ARROW);
                 PauseVerticalScrollIndicator(BOTTOM_ARROW);
                 SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);
@@ -1231,7 +1263,7 @@ static void Shop_DoCursorAction(u8 taskId)
                     }
                 }
                 else if (gMartInfo.martType == MART_TYPE_POKEMON) {
-                    gMartTotalCost = POKEMON_SHOP_PRICE;
+                    gMartTotalCost = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[itemId].growthRate][gMartInfo.pokemonLevel];
                     if (!IsEnoughMoney(gSaveBlock1.money, gMartTotalCost))
                     {
                         DisplayItemMessageOnField(taskId, gOtherText_NotEnoughMoney, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1); // tail merge

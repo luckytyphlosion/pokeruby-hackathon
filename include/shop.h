@@ -36,9 +36,10 @@ struct MartInfo
     /* 0xB */ u8 choicesAbove; // when your cursor is far down, there are choices that have scrolled up past the top. this is the count of that.
     /* 0xC */ u8 martType; // 0-2. 0 is normal mart while 1-2 seem to be decor shops or non-stackable purchases in general.
     /* 0xD */ u8 curItemCount; // if you are selling an item, this is the count of the current item stack you have.
+	/* 0xE */ u8 pokemonLevel; // only in MART_TYPE_POKEMON. global level of the pokemon.
 };
 
-#define POKEMON_SHOP_PRICE 50000
+#define POKEMON_SHOP_PRICE 10000
 
 void Shop_CreatePokemartMenu(u16 *);
 void Shop_CreateDecorationShop1Menu(u16 *);
