@@ -136,7 +136,7 @@ void debug_sub_8052E04()
 
 void WarpToInitialMap(void)
 {
-    Overworld_SetWarpDestination(MAP_GROUP(LITTLEROOT_TOWN), MAP_NUM(LITTLEROOT_TOWN), -1, -1, -1);
+    Overworld_SetWarpDestination(MAP_GROUP(EVER_GRANDE_CITY), MAP_NUM(EVER_GRANDE_CITY), -1, 27, 49);
     WarpIntoMap();
 }
 

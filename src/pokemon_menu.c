@@ -33,6 +33,7 @@
 #include "constants/field_effects.h"
 #include "constants/moves.h"
 #include "constants/songs.h"
+#include "constants/items.h"
 
 /*
 Pokemon menu:
@@ -960,7 +961,9 @@ static void sub_808AF20(void)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
         {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) || !GetEvolutionTargetSpecies(&gPlayerParty[i], 3, gSpecialVar_ItemId))
+            if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
+                || (!GetEvolutionTargetSpecies(&gPlayerParty[i], 3, gSpecialVar_ItemId)
+                && (gSpecialVar_ItemId == ITEM_TRADE_STONE && !GetEvolutionTargetSpecies_Entry(&gPlayerParty[i], 1, gSpecialVar_ItemId, 1))))
             {
                 sub_806D668(i);
                 DrawMonDescriptorStatus(i, 0);

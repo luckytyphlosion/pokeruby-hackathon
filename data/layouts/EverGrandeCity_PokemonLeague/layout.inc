@@ -6,8 +6,8 @@ EverGrandeCity_PokemonLeague_MapBlockdata::
 
 	.align 2
 EverGrandeCity_PokemonLeague_Layout::
-	.4byte 0x13
-	.4byte 0xc
+	.4byte 19
+	.4byte 12
 	.4byte EverGrandeCity_PokemonLeague_MapBorder
 	.4byte EverGrandeCity_PokemonLeague_MapBlockdata
 	.4byte gTileset_Building

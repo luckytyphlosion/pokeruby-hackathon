@@ -13,3 +13,7 @@ EverGrandeCity_PokemonLeague_Text_19179C:: @ 819179C
 EverGrandeCity_PokemonLeague_Text_191804:: @ 8191804
 	.string "TRAINER! Believe in yourself and your\n"
 	.string "POKéMON, and go forth!$"
+
+EverGrandeCity_PokemonLeague_PokemonShop_PartyFullText::
+	.string "Sorry, your party is\n"
+	.string "full.$"

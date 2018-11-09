@@ -1,4 +1,4 @@
-EverGrandeCity_PokemonLeague:: @ 8306BB0
+EverGrandeCity_PokemonLeague::
 	.4byte EverGrandeCity_PokemonLeague_Layout
 	.4byte EverGrandeCity_PokemonLeague_MapEvents
 	.4byte EverGrandeCity_PokemonLeague_MapScripts

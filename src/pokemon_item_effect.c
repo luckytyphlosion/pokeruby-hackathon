@@ -169,12 +169,20 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     gBattleMons[gActiveBattler].statStages[STAT_STAGE_ACC] = 12;
                 retVal = FALSE;
             }
-            if ((itemEffect[cmdIndex] & 0xF)
+            if ((itemEffect[cmdIndex] & 0x1)
              && gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] < 12)
             {
-                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] += itemEffect[cmdIndex] & 0xF;
+                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK]++;
                 if (gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] > 12)
                     gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] = 12;
+                retVal = FALSE;
+            }
+            if ((itemEffect[cmdIndex] & 0x2)
+             && gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] < 12)
+            {
+                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF]++;
+                if (gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] > 12)
+                    gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] = 12;
                 retVal = FALSE;
             }
             break;
@@ -215,7 +223,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                 retVal = FALSE;
             }
             break;
-        // EV, HP, and PP raising effects
+        // EV, HP, PP raising, and evolution stone effects
         case 4:
             r10 = itemEffect[cmdIndex];
             if (r10 & 0x20)
@@ -398,9 +406,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                             }
                         }
                         break;
+                    case 6:
                     case 7:
                         {
-                            u16 targetSpecies = GetEvolutionTargetSpecies(pkmn, 2, item);
+                            u8 evoType = (sp28 == 6) ? 1 : 2; // 1 is trade stone, 2 is item evolution
+                            u16 targetSpecies = GetEvolutionTargetSpecies(pkmn, evoType, item);
 
                             if (targetSpecies != SPECIES_NONE)
                             {

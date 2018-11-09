@@ -193,7 +193,7 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
     return offset;
 }
 
-const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6};
+const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6, 5};
 
 void sub_803F324(int stat)
 {
@@ -226,7 +226,7 @@ u8 *sub_803F378(u16 itemId)
 
     gStringBank = gBankInMenu;
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 2; i++)
     {
         if (itemEffect[i] & 0xF)
             sub_803F324(i * 2);
@@ -242,6 +242,18 @@ u8 *sub_803F378(u16 itemId)
                 StrCpyDecodeToDisplayedStringBattle(BattleText_GetPumped);
             }
         }
+    }
+    
+    if (itemEffect[2] & 0xF0) {
+        sub_803F324(2 * 2 + 1);
+    }
+    
+    if (itemEffect[2] & 0x1) {
+        sub_803F324(2 * 2);
+    }
+    
+    if (itemEffect[2] & 0x2) {
+        sub_803F324(2 * 2 + 2);
     }
 
     if (itemEffect[3] & 0x80)
@@ -264,6 +276,11 @@ u8 GetNatureFromPersonality(u32 personality)
 }
 
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
+{
+    return GetEvolutionTargetSpecies_Entry(mon, type, evolutionItem, 0);
+}
+
+u16 GetEvolutionTargetSpecies_Entry(struct Pokemon *mon, u8 type, u16 evolutionItem, bool8 preserveItem)
 {
     int i;
     u16 targetSpecies = 0;
@@ -357,8 +374,10 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
             case EVO_TRADE_ITEM:
                 if (gEvolutionTable[species][i].param == heldItem)
                 {
-                    heldItem = 0;
-                    SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
+                    if (!preserveItem) {
+                        heldItem = 0;
+                        SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
+                    }
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 }
                 break;
@@ -1143,7 +1162,7 @@ u16 GetMUS_ForBattle(void)
             return MUS_BATTLE20;
         }
     }
-    return MMZ4_NOTHING_BEATS;
+    return MUS_ELITE_17;
 }
 
 void sub_80408BC(void)

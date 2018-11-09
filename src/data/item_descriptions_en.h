@@ -334,6 +334,11 @@ static const u8 gItemDescription_FluffyTail[] = _(
     "any battle with\n"
     "a wild POKéMON.");
 
+static const u8 gItemDescription_XSpDef[] = _(
+	"Raises the stat\n"
+	"SP. DEF during one\n"
+	"battle.");
+
 static const u8 gItemDescription_SuperRepel[] = _(
     "Repels weak wild\n"
     "POKéMON for 200\n"

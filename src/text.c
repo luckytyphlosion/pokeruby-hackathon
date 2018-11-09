@@ -74,7 +74,7 @@ struct ShiftAmount
     u32 right;
 };
 
-#define INSTANT_TEXT_TEXTBOX_DELAY 5
+#define INSTANT_TEXT_TEXTBOX_DELAY 1
 
 static u16 InitVariableWidthFontTileData(struct Window *, u16);
 static u16 LoadFixedWidthFont(struct Window *, u16);
