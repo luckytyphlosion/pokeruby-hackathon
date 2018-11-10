@@ -300,18 +300,18 @@ static const u8 gItemDescription_DireHit[] = _(
     "during one battle.");
 
 static const u8 gItemDescription_XAttack[] = _(
-    "Raises the stat\n"
-    "ATTACK during one\n"
+    "Raises the ATTACK\n"
+    "stat during one\n"
     "battle.");
 
 static const u8 gItemDescription_XDefend[] = _(
-    "Raises the stat\n"
-    "DEFENSE during one\n"
+    "Raises the DEFENSE\n"
+    "stat during one\n"
     "battle.");
 
 static const u8 gItemDescription_XSpeed[] = _(
-    "Raises the stat\n"
-    "SPEED during one\n"
+    "Raises the SPEED\n"
+    "stat during one\n"
     "battle.");
 
 static const u8 gItemDescription_XAccuracy[] = _(
@@ -320,8 +320,8 @@ static const u8 gItemDescription_XAccuracy[] = _(
     "during one battle.");
 
 static const u8 gItemDescription_XSpecial[] = _(
-    "Raises the stat\n"
-    "SP. ATK during one\n"
+    "Raises the SP. ATK\n"
+    "stat during one\n"
     "battle.");
 
 static const u8 gItemDescription_PokeDoll[] = _(
@@ -335,8 +335,8 @@ static const u8 gItemDescription_FluffyTail[] = _(
     "a wild POKéMON.");
 
 static const u8 gItemDescription_XSpDef[] = _(
-	"Raises the stat\n"
-	"SP. DEF during one\n"
+	"Raises the SP. DEF\n"
+	"stat during one\n"
 	"battle.");
 
 static const u8 gItemDescription_SuperRepel[] = _(
@@ -358,6 +358,36 @@ static const u8 gItemDescription_Repel[] = _(
     "Repels weak wild\n"
     "POKéMON for 100\n"
     "steps.");
+
+static const u8 gItemDescription_XAttack2[] = _(
+    "Sharply raises the\n"
+    "ATTACK stat during\n"
+    "one battle.");
+
+static const u8 gItemDescription_XDefend2[] = _(
+    "Sharply raises the\n"
+    "DEFENSE stat\n"
+    "during one battle.");
+
+static const u8 gItemDescription_XSpeed2[] = _(
+    "Sharply raises the\n"
+    "SPEED stat during\n"
+    "one battle.");
+
+static const u8 gItemDescription_XAccuracy2[] = _(
+    "Sharply raises acc-\n"
+    "uracy of attacks\n"
+    "during one battle.");
+
+static const u8 gItemDescription_XSpecial2[] = _(
+    "Sharply raises the\n"
+    "SP. ATK stat during\n"
+    "one battle.");
+
+static const u8 gItemDescription_XSpDef2[] = _(
+	"Sharply raises the\n"
+	"SP. DEF stat during\n"
+	"one battle.");
 
 static const u8 gItemDescription_SunStone[] = _(
     "Makes certain\n"

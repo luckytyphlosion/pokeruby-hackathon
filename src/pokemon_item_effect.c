@@ -61,6 +61,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
     u16 heldItem;
     u8 r10;
     u32 r4;
+    bool8 triedEvoStoneBits = FALSE;
 
     heldItem = GetMonData(pkmn, MON_DATA_HELD_ITEM, NULL);
     if (heldItem == ITEM_ENIGMA_BERRY)
@@ -169,18 +170,18 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     gBattleMons[gActiveBattler].statStages[STAT_STAGE_ACC] = 12;
                 retVal = FALSE;
             }
-            if ((itemEffect[cmdIndex] & 0x1)
+            if ((itemEffect[cmdIndex] & (0x3 << 2))
              && gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] < 12)
             {
-                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK]++;
+                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] += (itemEffect[cmdIndex] >> 2) & 0x3;
                 if (gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] > 12)
                     gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPATK] = 12;
                 retVal = FALSE;
             }
-            if ((itemEffect[cmdIndex] & 0x2)
+            if ((itemEffect[cmdIndex] & 0x3)
              && gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] < 12)
             {
-                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF]++;
+                gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] += itemEffect[cmdIndex] & 0x3;
                 if (gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] > 12)
                     gBattleMons[gActiveBattler].statStages[STAT_STAGE_SPDEF] = 12;
                 retVal = FALSE;
@@ -409,13 +410,30 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 6:
                     case 7:
                         {
-                            u8 evoType = (sp28 == 6) ? 1 : 2; // 1 is trade stone, 2 is item evolution
-                            u16 targetSpecies = GetEvolutionTargetSpecies(pkmn, evoType, item);
+                            u8 evoType;
+                            u16 targetSpecies;
+                            
+                            if (!triedEvoStoneBits) {
+                                triedEvoStoneBits = TRUE;
+                                
+                                if (sp28 == 6) {
+                                    // bits for level stone, see src/data/pokemon/item_effects.h
+                                    if ((r10 & 0x3) == 3) {
+                                        evoType = 0; // level evolve
+                                    } else {
+                                        evoType = 1; // trade evolution
+                                    }
+                                } else {
+                                    evoType = 2; // item evolution
+                                }
 
-                            if (targetSpecies != SPECIES_NONE)
-                            {
-                                BeginEvolutionScene(pkmn, targetSpecies, 0, partyIndex);
-                                return FALSE;
+                                targetSpecies = GetEvolutionTargetSpecies(pkmn, evoType, item);
+
+                                if (targetSpecies != SPECIES_NONE)
+                                {
+                                    BeginEvolutionScene(pkmn, targetSpecies, 0, partyIndex);
+                                    return FALSE;
+                                }
                             }
                         }
                         break;

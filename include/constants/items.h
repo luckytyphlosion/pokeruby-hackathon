@@ -92,12 +92,12 @@
 #define ITEM_MAX_REPEL 84
 #define ITEM_ESCAPE_ROPE 85
 #define ITEM_REPEL 86
-#define ITEM_057 87
-#define ITEM_058 88
-#define ITEM_059 89
-#define ITEM_05A 90
-#define ITEM_05B 91
-#define ITEM_05C 92
+#define ITEM_X_ATTACK_2 87
+#define ITEM_X_DEFEND_2 88
+#define ITEM_X_SPEED_2 89
+#define ITEM_X_ACCURACY_2 90
+#define ITEM_X_SPECIAL_2 91
+#define ITEM_X_SP_DEF_2 92
 #define ITEM_SUN_STONE 93
 #define ITEM_MOON_STONE 94
 #define ITEM_FIRE_STONE 95
@@ -105,7 +105,7 @@
 #define ITEM_WATER_STONE 97
 #define ITEM_LEAF_STONE 98
 #define ITEM_TRADE_STONE 99
-#define ITEM_064 100
+#define ITEM_LEVEL_STONE 100
 #define ITEM_065 101
 #define ITEM_066 102
 #define ITEM_TINY_MUSHROOM 103

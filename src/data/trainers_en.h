@@ -9724,7 +9724,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("LOUIS"),
         .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
         .doubleBattle = FALSE,
-        .aiFlags = 0x7,
+        .aiFlags = 0x1,
         .partySize = 1,
         .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_LouisFire }
     }

@@ -9826,12 +9826,12 @@ struct TrainerMonItemCustomMovesAbilityHiddenPower
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_LouisFire[] = {
     {
-        .iv = TYPE_GRASS,
-        .level = 85,
+        .iv = TYPE_NORMAL,
+        .level = 30,
         .whichAbility = 0,
-        .species = SPECIES_ARCANINE,
+        .species = SPECIES_MEW,
         .heldItem = ITEM_CHARCOAL,
-        .moves = MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER
+        .moves = MOVE_STRENGTH, MOVE_CRUNCH, MOVE_NONE, MOVE_NONE
     }
 };
 

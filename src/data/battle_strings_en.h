@@ -601,6 +601,7 @@ const u8 BattleText_PreventedOther2[] = _("{ATTACKING_MON}’s {STRING 21}\nprev
 const u8 BattleText_CuredOfProblem[] = _("{STRING 16}’s {STRING 23}\ncured its {STRING 0} problem!");
 const u8 BattleText_NoEffectOn[] = _("{STRING 16}’s {STRING 23}\nhad no effect on {STRING 14}!");
 const u8 BattleText_Sharply[] = _("sharply ");
+const u8 BattleText_SharplyRose[] = _("sharply rose!");
 const u8 BattleText_Rose[] = _("rose!");
 const u8 BattleText_Harshly[] = _("harshly ");
 const u8 BattleText_Fell[] = _("fell!");

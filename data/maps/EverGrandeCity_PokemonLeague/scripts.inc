@@ -52,6 +52,14 @@ EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
 	.2byte ITEM_SUPER_ROD
 	.2byte ITEM_METAL_COAT
 	.2byte ITEM_RARE_CANDY
+	.2byte ITEM_LEVEL_STONE
+	.2byte ITEM_X_ATTACK_2
+	.2byte ITEM_X_DEFEND_2
+	.2byte ITEM_X_SPECIAL_2
+	.2byte ITEM_X_SP_DEF_2
+	.2byte ITEM_X_SPEED_2
+	.2byte ITEM_X_ACCURACY_2
+	.2byte ITEM_LEAF_STONE
 	.2byte ITEM_NONE
 
 EverGrandeCity_PokemonLeague_PokemonShopEventScript::

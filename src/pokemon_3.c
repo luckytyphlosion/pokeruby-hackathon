@@ -57,6 +57,7 @@ extern const u8 BattleText_PreventedSwitch[];
 extern u16 gBattlerPartyIndexes[];
 
 extern u8 BattleText_Rose[];
+extern u8 BattleText_SharplyRose[];
 extern u8 BattleText_UnknownString3[];
 extern u8 BattleText_MistShroud[];
 extern u8 BattleText_GetPumped[];
@@ -193,13 +194,28 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
     return offset;
 }
 
-const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6, 5};
+const u8 gUnknown_082082F8[] = {
+    STAT_STAGE_ATK, // 0
+    STAT_STAGE_ATK, // 1
+    STAT_STAGE_SPEED, // 2
+    STAT_STAGE_DEF, // 3
+    STAT_STAGE_SPATK, // 4
+    STAT_STAGE_ACC, // 5
+    STAT_STAGE_SPDEF}; // 6
 
-void sub_803F324(int stat)
+void sub_803F324(int stat, u8 stageIncrease)
 {
+    u8 * roseText;
+    
+    if (stageIncrease > 1) {
+        roseText = BattleText_SharplyRose;
+    } else {
+        roseText = BattleText_Rose;
+    }
+
     gBankTarget = gBankInMenu;
     StringCopy(gBattleTextBuff1, gUnknown_08400F58[gUnknown_082082F8[stat]]);
-    StringCopy(gBattleTextBuff2, BattleText_Rose);
+    StringCopy(gBattleTextBuff2, roseText);
     StrCpyDecodeToDisplayedStringBattle(BattleText_UnknownString3);
 }
 
@@ -229,12 +245,12 @@ u8 *sub_803F378(u16 itemId)
     for (i = 0; i < 2; i++)
     {
         if (itemEffect[i] & 0xF)
-            sub_803F324(i * 2);
+            sub_803F324(i * 2, itemEffect[i] & 0xF);
         if (itemEffect[i] & 0xF0)
         {
             if (i)
             {
-                sub_803F324(i * 2 + 1);
+                sub_803F324(i * 2 + 1, (itemEffect[i] >> 4) & 0xF);
             }
             else
             {
@@ -245,15 +261,15 @@ u8 *sub_803F378(u16 itemId)
     }
     
     if (itemEffect[2] & 0xF0) {
-        sub_803F324(2 * 2 + 1);
+        sub_803F324(5, (itemEffect[2] >> 4) & 0xF);
     }
     
-    if (itemEffect[2] & 0x1) {
-        sub_803F324(2 * 2);
+    if (itemEffect[2] & (0x3 << 2)) {
+        sub_803F324(4, (itemEffect[2] >> 2) & 0x3);
     }
     
-    if (itemEffect[2] & 0x2) {
-        sub_803F324(2 * 2 + 2);
+    if (itemEffect[2] & 0x3) {
+        sub_803F324(6, itemEffect[2] & 0x3);
     }
 
     if (itemEffect[3] & 0x80)

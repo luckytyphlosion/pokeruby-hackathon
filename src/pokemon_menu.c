@@ -957,14 +957,28 @@ static void sub_808AE8C(void)
 static void sub_808AF20(void)
 {
     u8 i;
+    u8 cantEvolve;
+
     for (i = 0; i < 6; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
         {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
-                || (!GetEvolutionTargetSpecies(&gPlayerParty[i], 3, gSpecialVar_ItemId)
-                && (gSpecialVar_ItemId == ITEM_TRADE_STONE && !GetEvolutionTargetSpecies_Entry(&gPlayerParty[i], 1, gSpecialVar_ItemId, 1))))
-            {
+            if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)) {
+                cantEvolve = TRUE;
+            } else {
+                switch (gSpecialVar_ItemId) {
+                    case ITEM_TRADE_STONE:
+                        cantEvolve = !GetEvolutionTargetSpecies_Entry(&gPlayerParty[i], 1, gSpecialVar_ItemId, 1);
+                        break;
+                    case ITEM_LEVEL_STONE:
+                        cantEvolve = !GetEvolutionTargetSpecies(&gPlayerParty[i], 0, gSpecialVar_ItemId);
+                        break;
+                    default:
+                        cantEvolve = !GetEvolutionTargetSpecies(&gPlayerParty[i], 3, gSpecialVar_ItemId);
+                        break;
+                }
+            }
+            if (cantEvolve) {
                 sub_806D668(i);
                 DrawMonDescriptorStatus(i, 0);
             }
