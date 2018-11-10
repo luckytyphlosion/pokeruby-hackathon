@@ -3255,7 +3255,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     {
         .mapGroup = MAP_GROUP(VICTORY_ROAD_1F),
         .mapNum = MAP_NUM(VICTORY_ROAD_1F),
-        .landMonsInfo = &VictoryRoad_1F_LandMonsInfo,
+        .landMonsInfo = NULL,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = NULL,
         .fishingMonsInfo = NULL,
@@ -3263,7 +3263,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     {
         .mapGroup = MAP_GROUP(VICTORY_ROAD_B1F),
         .mapNum = MAP_NUM(VICTORY_ROAD_B1F),
-        .landMonsInfo = &VictoryRoad_B1F_LandMonsInfo,
+        .landMonsInfo = NULL,
         .waterMonsInfo = NULL,
         .rockSmashMonsInfo = &VictoryRoad_B1F_RockSmashMonsInfo,
         .fishingMonsInfo = NULL,
@@ -3271,7 +3271,7 @@ const struct WildPokemonHeader gWildMonHeaders[] =
     {
         .mapGroup = MAP_GROUP(VICTORY_ROAD_B2F),
         .mapNum = MAP_NUM(VICTORY_ROAD_B2F),
-        .landMonsInfo = &VictoryRoad_B2F_LandMonsInfo,
+        .landMonsInfo = NULL,
         .waterMonsInfo = &VictoryRoad_B2F_WaterMonsInfo,
         .rockSmashMonsInfo = NULL,
         .fishingMonsInfo = &VictoryRoad_B2F_FishingMonsInfo,

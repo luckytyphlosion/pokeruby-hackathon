@@ -11,8 +11,8 @@ EverGrandeCity_PokemonLeague_EventObjects::
 EverGrandeCity_PokemonLeague_MapWarps::
 	warp_def 9, 11, 3, 0, MAP_EVER_GRANDE_CITY
 	warp_def 10, 11, 3, 0, MAP_EVER_GRANDE_CITY
-	warp_def 9, 1, 3, 0, MAP_EVER_GRANDE_CITY_CORRIDOR5
-	warp_def 10, 1, 3, 0, MAP_EVER_GRANDE_CITY_CORRIDOR5
+	warp_def 9, 1, 3, 0, MAP_VICTORY_ROAD_1F
+	warp_def 10, 1, 3, 0, MAP_VICTORY_ROAD_1F
 
 EverGrandeCity_PokemonLeague_MapEvents::
 	map_events EverGrandeCity_PokemonLeague_EventObjects, EverGrandeCity_PokemonLeague_MapWarps, 0x0, 0x0

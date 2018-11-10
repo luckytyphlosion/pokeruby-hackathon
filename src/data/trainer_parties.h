@@ -9812,4 +9812,27 @@ const struct TrainerMonNoItemDefaultMoves gTrainerParty_Eugene[] = {
 	.species = SPECIES_CARVANHA
     }
 };
+/*
+struct TrainerMonItemCustomMovesAbilityHiddenPower
+{
+    u16 iv;
+    u8 level;
+    u8 whichAbility;
+    u16 species;
+    u16 heldItem;
+    u16 moves[4];
+};
+*/
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_LouisFire[] = {
+    {
+        .iv = TYPE_GRASS,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_ARCANINE,
+        .heldItem = ITEM_CHARCOAL,
+        .moves = MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER, MOVE_HIDDEN_POWER
+    }
+};
+
 

@@ -1,4 +1,4 @@
-VictoryRoad_1F:: @ 8307224
+VictoryRoad_1F::
 	.4byte VictoryRoad_1F_Layout
 	.4byte VictoryRoad_1F_MapEvents
 	.4byte VictoryRoad_1F_MapScripts
@@ -10,5 +10,5 @@ VictoryRoad_1F:: @ 8307224
 	.byte WEATHER_NONE
 	.byte MAP_TYPE_UNDERGROUND
 	.2byte 0
-	.byte 1
+	.byte FALSE
 	.byte MAP_BATTLE_SCENE_NORMAL

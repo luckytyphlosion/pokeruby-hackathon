@@ -9714,4 +9714,18 @@ const struct Trainer gTrainers[] = {
         .partySize = 4,
         .party = {.NoItemDefaultMoves = gTrainerParty_Eugene }
     },
+    
+    [TRAINER_LOUIS_FIRE] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("LOUIS"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 1,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_LouisFire }
+    }
 };

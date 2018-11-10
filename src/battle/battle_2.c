@@ -1112,6 +1112,28 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
+            case TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER:
+            {
+                const struct TrainerMonItemCustomMovesAbilityHiddenPower *partyData = gTrainers[trainerNum].party.ItemCustomMovesAbilityHiddenPower;
+                u8 whichAbility;
+                
+                for (j = 0; gSpeciesNames[partyData[i].species][j] != 0xFF; j++)
+                    nameHash += gSpeciesNames[partyData[i].species][j];
+                personalityValue += nameHash << 8;
+                
+                fixedIV = partyData[i].iv;
+                whichAbility = partyData[i].whichAbility;
+                CreateMonWithPerfectHiddenPowerAndAbility(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, whichAbility);
+                
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+                
+                for (j = 0; j < 4; j++)
+                {
+                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                    SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                }
+                break;
+            }
             }
         }
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;

@@ -10,6 +10,20 @@ VictoryRoad_1F_EventScript_15DE93:: @ 815DE93
 	setflag FLAG_HIDE_WALLY_BATTLE_VICTORY_ROAD
 	return
 
+VictoryRoad_1F_EventScript_GuardianFire::
+	lock
+	faceplayer
+	trainerbattle 3, TRAINER_LOUIS_FIRE, 0, VictoryRoad_1F_YouHaveFoughtWellText
+	release
+	end
+
+VictoryRoad_1F_EventScript_GuardianElectric::
+	lock
+	faceplayer
+	trainerbattle 3, TRAINER_SIDNEY, 0, VictoryRoad_1F_YouHaveFoughtWellText
+	release
+	end
+
 VictoryRoad_1F_EventScript_15DE97:: @ 815DE97
 	lockall
 	addobject 4

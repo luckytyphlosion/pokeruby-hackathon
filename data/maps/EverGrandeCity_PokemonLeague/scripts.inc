@@ -86,10 +86,9 @@ EverGrandeCity_PokemonLeague_EventScript_15BAD2:: @ 815BAD2
 	call_if_ge EverGrandeCity_PokemonLeague_EventScript_15BB34
 	compare VAR_TEMP_0, 8
 	call_if_le EverGrandeCity_PokemonLeague_EventScript_15BB3F
-	message EverGrandeCity_PokemonLeague_Text_1916FD
-	waitmessage
-	delay 75
-	goto_if_unset FLAG_BADGE06_GET, EverGrandeCity_PokemonLeague_EventScript_15BB4A
+	msgbox EverGrandeCity_PokemonLeague_Text_1916FD, MSGBOX_YESNO
+	compare RESULT, NO
+	goto_if_eq EverGrandeCity_PokemonLeague_EventScript_15BB4A
 	closemessage
 	applymovement 3, EverGrandeCity_PokemonLeague_Movement_15BB7E
 	applymovement 4, EverGrandeCity_PokemonLeague_Movement_15BB81
@@ -117,7 +116,6 @@ EverGrandeCity_PokemonLeague_EventScript_15BB3F:: @ 815BB3F
 	return
 
 EverGrandeCity_PokemonLeague_EventScript_15BB4A:: @ 815BB4A
-	playse SE_HAZURE
 	msgbox EverGrandeCity_PokemonLeague_Text_19179C, 4
 	releaseall
 	end

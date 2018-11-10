@@ -1,3 +1,6 @@
+VictoryRoad_1F_YouHaveFoughtWellText::
+	.string "You have fought well.$"
+
 VictoryRoad_1F_Text_19782B:: @ 819782B
 	.string "WALLY: Hi! {PLAYER}!\p"
 	.string "I bet you’re surprised to see me here!\p"

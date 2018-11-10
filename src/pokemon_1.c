@@ -1312,6 +1312,30 @@ const s8 gNatureStatTable[][5] =
     {    0,  0,  0,     0,     0} // Quirky
 };
 
+#define U32_IV(hp, atk, def, spatk, spdef, speed) hp | atk << 5 | def << 10 | speed << 15 | spatk << 20 | spdef << 25 | 1 << 31
+ 
+static const u32 sPerfectHiddenPowerIVs[] = 
+{
+    U32_IV(31, 31, 31, 31, 31, 31), // normal
+    U32_IV(31, 31, 30, 30, 30, 30), // fighting
+    U32_IV(31, 31, 31, 30, 30, 30), // flying
+    U32_IV(31, 31, 31, 30, 30, 30), // poison
+    U32_IV(31, 31, 31, 30, 30, 31), // ground
+    U32_IV(31, 31, 30, 31, 30, 30), // rock
+    U32_IV(31, 31, 31, 31, 30, 30), // bug
+    U32_IV(31, 31, 30, 31, 30, 31), // ghost
+    U32_IV(31, 31, 31, 31, 30, 31), // steel
+    U32_IV(31, 31, 31, 31, 31, 31), // mystery
+    U32_IV(31, 30, 31, 30, 31, 30), // fire
+    U32_IV(31, 31, 31, 30, 31, 30), // water
+    U32_IV(31, 30, 31, 30, 31, 31), // grass
+    U32_IV(31, 31, 31, 30, 31, 31), // electric
+    U32_IV(31, 30, 31, 31, 31, 30), // psychic
+    U32_IV(31, 30, 30, 31, 31, 31), // ice
+    U32_IV(31, 30, 31, 31, 31, 31), // dragon
+    U32_IV(31, 31, 31, 31, 31, 31), // dark
+};
+
 #include "data/pokemon/tmhm_learnsets.h"
 #include "data/pokemon/trainer_class_lookups.h"
 #include "data/pokemon/cry_ids.h"
@@ -1374,6 +1398,11 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
 }
 
 void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
+{
+    CreateBoxMon_Entry(boxMon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId, 0);
+}
+
+void CreateBoxMon_Entry(struct BoxPokemon *boxMon, u16 species, u8 level, u32 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId, u8 forceAbility)
 {
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
     u32 personality;
@@ -1440,8 +1469,10 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &fixedIV);
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &fixedIV);
     }
-    else
-    {
+    else if (fixedIV >> 31) {
+        fixedIV &= 0x7FFFFFFF;
+        SetBoxMonData(boxMon, MON_DATA_IVS, &fixedIV);
+    } else {
         u32 iv;
         value = Random();
 
@@ -1464,7 +1495,11 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 
     if (gBaseStats[species].ability2)
     {
-        value = personality & 1;
+        if (forceAbility) {
+            value = (forceAbility - 1) & 1;
+        } else {
+            value = personality & 1;
+        }
         SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
     }
 
@@ -1545,6 +1580,18 @@ void CreateMonWithIVsOTID(struct Pokemon *mon, u16 species, u8 level, u8 *ivs, u
     SetMonData(mon, MON_DATA_SPEED_IV, &ivs[3]);
     SetMonData(mon, MON_DATA_SPATK_IV, &ivs[4]);
     SetMonData(mon, MON_DATA_SPDEF_IV, &ivs[5]);
+    CalculateMonStats(mon);
+}
+
+void CreateMonWithPerfectHiddenPowerAndAbility(struct Pokemon *mon, u16 species, u8 level, u8 hiddenPowerType, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId, u8 whichAbility)
+{
+    u32 arg;
+    u32 ivs = sPerfectHiddenPowerIVs[hiddenPowerType];
+    ZeroMonData(mon);
+    CreateBoxMon_Entry(&mon->box, species, level, ivs, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId, whichAbility + 1);
+    SetMonData(mon, MON_DATA_LEVEL, &level);
+    arg = 255;
+    SetMonData(mon, MON_DATA_MAIL, &arg);
     CalculateMonStats(mon);
 }
 

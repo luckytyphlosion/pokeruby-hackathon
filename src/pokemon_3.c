@@ -1157,12 +1157,12 @@ u16 GetMUS_ForBattle(void)
                 return MUS_BATTLE20;
             return MUS_BATTLE35;
         case 0x18:
-            return MUS_BATTLE38;
+            return MUS_ELITE_17;
         default:
             return MUS_BATTLE20;
         }
     }
-    return MUS_ELITE_17;
+    return MUS_BATTLE27;
 }
 
 void sub_80408BC(void)

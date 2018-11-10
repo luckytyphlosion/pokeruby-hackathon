@@ -788,6 +788,13 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
                 sum += party[i].level;
         }
         break;
+    case TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER:
+        {
+            const struct TrainerMonItemCustomMovesAbilityHiddenPower *party;
+            party = gTrainers[opponentId].party.ItemCustomMovesAbilityHiddenPower;
+            for (i = 0; i < count; i++)
+                sum += party[i].level;
+        }
     }
 
     return sum;

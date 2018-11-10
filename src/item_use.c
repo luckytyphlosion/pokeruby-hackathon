@@ -996,10 +996,12 @@ static void ItemUseOnFieldCB_EscapeRope(u8 taskId)
 
 bool8 CanUseEscapeRopeOnCurrMap(void)
 {
+    return FALSE;
+    /*
     if (gMapHeader.mapType == MAP_TYPE_UNDERGROUND)
         return TRUE;
     else
-        return FALSE;
+        return FALSE;*/
 }
 
 void ItemUseOutOfBattle_EscapeRope(u8 taskId)

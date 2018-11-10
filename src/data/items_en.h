@@ -1601,7 +1601,7 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
     {
-        .name = _("????????"),
+        .name = _("LEVEL STONE"),
         .itemId = ITEM_NONE,
         .price = 0,
         .holdEffect = HOLD_EFFECT_NONE,
