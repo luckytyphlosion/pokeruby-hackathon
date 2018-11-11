@@ -1,8 +1,8 @@
 	.include "MPlayDef.s"
 
-	.equ	song461_grp, voicegroup000
-	.equ	song461_pri, 0
-	.equ	song461_rev, 0
+	.equ	song461_grp, voicegroup104
+	.equ	song461_pri, 1
+	.equ	song461_rev, 178
 	.equ	song461_mvl, 127
 	.equ	song461_key, 0
 	.equ	song461_tbs, 1
