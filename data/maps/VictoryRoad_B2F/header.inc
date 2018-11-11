@@ -1,4 +1,4 @@
-VictoryRoad_B2F:: @ 830725C
+VictoryRoad_B2F::
 	.4byte VictoryRoad_B2F_Layout
 	.4byte VictoryRoad_B2F_MapEvents
 	.4byte VictoryRoad_B2F_MapScripts

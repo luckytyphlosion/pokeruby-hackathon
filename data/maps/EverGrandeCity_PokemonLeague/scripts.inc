@@ -6,7 +6,7 @@ EverGrandeCity_PokemonLeague_MapScript1_15BA7B:: @ 815BA7B
 	setrespawn HEAL_LOCATION_EVER_GRANDE_CITY_2
 	setflag FLAG_SYS_POKEMON_LEAGUE_FLY
 	call_if_unset FLAG_ENTERED_ELITE_FOUR, EverGrandeCity_PokemonLeague_EventScript_15BA8B
-	end
+	goto EverGrandeCity_HallOfFame_EventScript_19FD09 // reset events
 
 EverGrandeCity_PokemonLeague_EventScript_15BA8B:: @ 815BA8B
 	setobjectxyperm 3, 9, 2
@@ -33,6 +33,7 @@ EverGrandeCity_PokemonLeague_EventScript_15BAA8:: @ 815BAA8
 
 	.align 2
 EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
+	.2byte ITEM_MAX_ETHER
 	.2byte ITEM_ULTRA_BALL
 	.2byte ITEM_HYPER_POTION
 	.2byte ITEM_MAX_POTION
@@ -49,7 +50,6 @@ EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
 	.2byte ITEM_DIRE_HIT
 	.2byte ITEM_GUARD_SPEC
 	.2byte ITEM_X_ACCURACY
-	.2byte ITEM_SUPER_ROD
 	.2byte ITEM_METAL_COAT
 	.2byte ITEM_RARE_CANDY
 	.2byte ITEM_LEVEL_STONE
@@ -69,6 +69,7 @@ EverGrandeCity_PokemonLeague_PokemonShopEventScript::
 	message WelcomeMartText
 	waitmessage
 	pokemartpokemon EverGrandeCity_PokemonLeague_PokemonShop_PokemonList
+	msgbox EverGrandeCity_PokemonLeague_Text_1A0C02, 4
 	release
 	end
 
@@ -78,7 +79,75 @@ EverGrandeCity_PokemonLeague_PokemonShop_PartyFull::
 	end
 
 EverGrandeCity_PokemonLeague_TMShopEventScript::
+	lock
+	faceplayer
+	message EverGrandeCity_PokemonLeague_Text_1A0BE4
+	waitmessage
+	pokemart EverGrandeCity_PokemonLeague_TMs
+	msgbox EverGrandeCity_PokemonLeague_Text_1A0C02, 4
+	release
 	end
+
+EverGrandeCity_PokemonLeague_TMs::
+	.2byte ITEM_TM01_FOCUS_PUNCH
+	.2byte ITEM_TM02_DRAGON_CLAW
+	.2byte ITEM_TM03_WATER_PULSE
+	.2byte ITEM_TM04_CALM_MIND
+	.2byte ITEM_TM05_ROAR
+	.2byte ITEM_TM06_TOXIC
+	.2byte ITEM_TM07_HAIL
+	.2byte ITEM_TM08_BULK_UP
+	.2byte ITEM_TM09_BULLET_SEED
+	.2byte ITEM_TM10_HIDDEN_POWER
+	.2byte ITEM_TM11_SUNNY_DAY
+	.2byte ITEM_TM12_TAUNT
+	.2byte ITEM_TM13_ICE_BEAM
+	.2byte ITEM_TM14_BLIZZARD
+	.2byte ITEM_TM15_HYPER_BEAM
+	.2byte ITEM_TM16_LIGHT_SCREEN
+	.2byte ITEM_TM17_PROTECT
+	.2byte ITEM_TM18_RAIN_DANCE
+	.2byte ITEM_TM19_GIGA_DRAIN
+	.2byte ITEM_TM20_SAFEGUARD
+	.2byte ITEM_TM21_FRUSTRATION
+	.2byte ITEM_TM22_SOLARBEAM
+	.2byte ITEM_TM23_IRON_TAIL
+	.2byte ITEM_TM24_THUNDERBOLT
+	.2byte ITEM_TM25_THUNDER
+	.2byte ITEM_TM26_EARTHQUAKE
+	.2byte ITEM_TM27_RETURN
+	.2byte ITEM_TM28_DIG
+	.2byte ITEM_TM29_PSYCHIC
+	.2byte ITEM_TM30_SHADOW_BALL
+	.2byte ITEM_TM31_BRICK_BREAK
+	.2byte ITEM_TM32_DOUBLE_TEAM
+	.2byte ITEM_TM33_REFLECT
+	.2byte ITEM_TM34_SHOCK_WAVE
+	.2byte ITEM_TM35_FLAMETHROWER
+	.2byte ITEM_TM36_SLUDGE_BOMB
+	.2byte ITEM_TM37_SANDSTORM
+	.2byte ITEM_TM38_FIRE_BLAST
+	.2byte ITEM_TM39_ROCK_TOMB
+	.2byte ITEM_TM40_AERIAL_ACE
+	.2byte ITEM_TM41_TORMENT
+	.2byte ITEM_TM42_FACADE
+	.2byte ITEM_TM43_SECRET_POWER
+	.2byte ITEM_TM44_REST
+	.2byte ITEM_TM45_ATTRACT
+	.2byte ITEM_TM46_THIEF
+	.2byte ITEM_TM47_STEEL_WING
+	.2byte ITEM_TM48_SKILL_SWAP
+	.2byte ITEM_TM49_SNATCH
+	.2byte ITEM_TM50_OVERHEAT
+	.2byte ITEM_HM01_CUT
+	.2byte ITEM_HM02_FLY
+	.2byte ITEM_HM03_SURF
+	.2byte ITEM_HM04_STRENGTH
+	.2byte ITEM_HM05_FLASH
+	.2byte ITEM_HM06_ROCK_SMASH
+	.2byte ITEM_HM07_WATERFALL
+	.2byte ITEM_HM08_DIVE
+	.2byte ITEM_NONE
 
 EverGrandeCity_PokemonLeague_MoveDeleterEventScript::
 	end

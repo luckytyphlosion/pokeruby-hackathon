@@ -14,6 +14,7 @@
 #include "random.h"
 #include "rom3.h"
 #include "constants/species.h"
+#include "constants/opponents.h"
 #include "pokemon.h"
 #include "text.h"
 #include "palette.h"
@@ -27,6 +28,8 @@
 #include "ewram.h"
 #include "util.h"
 #include "trainer.h"
+#include "constants/vars.h"
+#include "event_data.h"
 
 // TODO: put this into battle_controllers.h
 
@@ -5399,6 +5402,7 @@ static void atk23_getexp(void)
         {
             u16 calculatedExp;
             s32 viaSentIn;
+            u16 rematchCountDivisor = 1;
 
             for (viaSentIn = 0, i = 0; i < 6; i++)
             {
@@ -5418,7 +5422,11 @@ static void atk23_getexp(void)
                     viaExpShare++;
             }
 
-            calculatedExp = gBaseStats[gBattleMons[gBank1].species].expYield * gBattleMons[gBank1].level / 7;
+            if (gTrainerBattleOpponent >= TRAINER_ELITE_17_BASE && gTrainerBattleOpponent < TRAINER_CHAMPION_BOBBY) {
+                rematchCountDivisor = VarGet(VAR_ELITE_17_REMATCH_COUNT_BASE + gTrainerBattleOpponent - TRAINER_ELITE_17_BASE);
+            }
+
+            calculatedExp = gBaseStats[gBattleMons[gBank1].species].expYield * gBattleMons[gBank1].level / (7 * rematchCountDivisor);
 
             if (viaExpShare) // at least one mon is getting exp via exp share
             {

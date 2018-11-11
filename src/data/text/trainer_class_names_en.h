@@ -26,7 +26,7 @@ const u8 gTrainerClassNames[][13] = {
     _("BUG MANIAC"),
     _("PSYCHIC"),
     _("GENTLEMAN"),
-    _("ELITE FOUR"),
+    _("ELITE 17"),
     _("LEADER"),
     _("SCHOOL KID"),
     _("SR. AND JR."),

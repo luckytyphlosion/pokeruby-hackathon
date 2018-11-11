@@ -1,9 +1,13 @@
 EverGrandeCity_PokemonLeague_Text_1916FD:: @ 81916FD
 	.string "In this challenge, you will have to face\n"
-	.string "a TRAINER mastered in each type, 17\l"
-	.string "in total.\p"
+	.string "17 ELITE TRAINERs mastered in each\l"
+	.string "type.\p"
 	.string "You will be allowed three free heals in\n"
 	.string "this challenge.\p"
+	.string "You are allowed to leave at any time, but\n"
+	.string "subsequent matches against trainers\l"
+	.string "you have fought will have their\l"
+	.string "experience points reduced.\p"
 	.string "Are you ready?$"
 
 EverGrandeCity_PokemonLeague_Text_191804:: @ 8191804

@@ -371,6 +371,7 @@
 #define MUS_ELITE_17 468
 #define MIDILOVANIA 469
 #define MMZ4_NOTHING_BEATS 470
+#define MUS_CHAMPION 471
 
 #define MUS_ROUTE_118 0x7FFF  // What is this for?
 

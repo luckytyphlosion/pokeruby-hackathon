@@ -56,7 +56,7 @@ const u8 gBirchText_NewName[] = _("NEW NAME");
 #ifdef SAPPHIRE
 const u8 gDefaultBoyName1[] = _("SEAN");
 #else
-const u8 gDefaultBoyName1[] = _("LANDON");
+const u8 gDefaultBoyName1[] = _("I");
 #endif
 const u8 gDefaultBoyName2[] = _("TERRY");
 const u8 gDefaultBoyName3[] = _("SETH");

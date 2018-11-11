@@ -9715,7 +9715,203 @@ const struct Trainer gTrainers[] = {
         .party = {.NoItemDefaultMoves = gTrainerParty_Eugene }
     },
     
-    [TRAINER_LOUIS_FIRE] =
+    [TRAINER_MICHAEL_FIRE] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("MICHAEL"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_MichaelFire }
+    },
+
+    [TRAINER_JUDE_STEEL] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("JUDE"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_JudeSteel }
+    },
+
+    [TRAINER_ELLAINE_DARKNESS] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("ELLAINE"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_EllaineDarkness }
+    },
+
+    [TRAINER_MATTHEW_NORMAL] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("MATTHEW"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_MatthewNormal }
+    },
+
+    [TRAINER_ALEXIS_FIGHTING] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("ALEXIS"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_AlexisFighting }
+    },
+
+    [TRAINER_ADALENE_FLYING] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("ADALENE"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_AdaleneFlying }
+    },
+
+    [TRAINER_STEVEN_POISON] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("STEVEN"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_StevenPoison }
+    },
+
+    [TRAINER_JENNY_GHOST] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("JENNY"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_JennyGhost }
+    },
+
+    [TRAINER_DAVID_BUG] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("DAVID"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_DavidBug }
+    },
+
+    [TRAINER_BRANDON_ROCK] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("BRANDON"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_BrandonRock }
+    },
+
+    [TRAINER_GRACE_GROUND] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("GRACE"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_GraceGround }
+    },
+
+    [TRAINER_AURORA_ICE] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("AURORA"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_AuroraIce }
+    },
+
+    [TRAINER_ALLEN_PSYCHIC] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("ALLEN"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_AllenPsychic }
+    },
+
+    [TRAINER_MARY_JOY_GRASS] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("MARY JOY"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_MaryJoyGrass }
+    },
+
+    [TRAINER_LOUIS_ELECTRIC] =
     {
         .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
         .trainerClass = TRAINER_CLASS_ELITE_FOUR,
@@ -9724,8 +9920,50 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("LOUIS"),
         .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
         .doubleBattle = FALSE,
-        .aiFlags = 0x1,
-        .partySize = 1,
-        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_LouisFire }
-    }
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_LouisElectric }
+    },
+
+    [TRAINER_ELLIONORE_WATER] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_F,
+        .trainerName = _("ELLIONORE"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_EllionoreWater }
+    },
+
+    [TRAINER_WALTER_DRAGON] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_ELITE_FOUR,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("WALTER"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_WalterDragon }
+    },
+    [TRAINER_CHAMPION_BOBBY] =
+    {
+        .partyFlags = TRAINER_PARTY_HELD_ITEM_CUSTOM_MOVESET_ABILITY_HIDDEN_POWER,
+        .trainerClass = TRAINER_CLASS_CHAMPION,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+        .trainerPic = TRAINER_PIC_COOL_TRAINER_M,
+        .trainerName = _("BOBBY"),
+        .items = {ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE},
+        .doubleBattle = FALSE,
+        .aiFlags = 0x7,
+        .partySize = 6,
+        .party = {.ItemCustomMovesAbilityHiddenPower = gTrainerParty_BobbyChampion }
+    },
+
 };

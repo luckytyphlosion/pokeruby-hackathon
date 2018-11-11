@@ -1184,6 +1184,7 @@ SECTIONS {
         sound/songs/bgm_battle30.o(.rodata);
         sound/songs/bgm_radio_tower_occupied.o(.rodata);
         sound/songs/song465.o(.rodata);
+		sound/songs/song461.o(.rodata);
 		sound/songs/midi/MIDIlovania.o(.rodata);
 		sound/songs/midi/MMZ4_nothing_beats.o(.rodata);
     } >rom_region =0

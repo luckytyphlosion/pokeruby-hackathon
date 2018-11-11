@@ -772,7 +772,7 @@ static void Task_NewGameSpeech1(u8 taskId)
     gTasks[taskId].func = Task_NewGameSpeech2;
     gTasks[taskId].tTrainerSpriteId = 0xFF;
     gTasks[taskId].data[3] = 0xFF;
-    gTasks[taskId].tFrameCounter = 216;  //Wait 3.6 seconds (216 frames) before starting speech
+    gTasks[taskId].tFrameCounter = 1;  //Wait 3.6 seconds (216 frames) before starting speech
 
     PlayBGM(MUS_DOORO_X4);
 }
@@ -794,7 +794,7 @@ static void Task_NewGameSpeech2(u8 taskId)
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         StartSpriteFadeIn(taskId, 10);
         StartBackgroundFadeIn(taskId, 20);
-        gTasks[taskId].tFrameCounter = 80;
+        gTasks[taskId].tFrameCounter = 1;
         gTasks[taskId].func = Task_NewGameSpeech3;
     }
 }

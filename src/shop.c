@@ -595,7 +595,8 @@ static void Shop_DisplayPriceInCheckoutWindow(u8 taskId)
 static void Shop_DisplayNormalPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)
 {
     u8 *stringPtr = gStringVar1;
-
+    u8 priceX;
+    
     if (hasControlCode)
     {
         stringPtr[0] = EXT_CTRL_CODE_BEGIN;
@@ -612,8 +613,14 @@ static void Shop_DisplayNormalPriceInList(u16 itemId, u8 var2, bool32 hasControl
     if (hasControlCode)
         stringPtr = &gStringVar1[3];
 
+    if (ItemId_GetPrice(itemId) >= 10000) {
+        priceX = 194;
+    } else {
+        priceX = 202;
+    }
+
     GetMoneyAmountText(stringPtr, (ItemId_GetPrice(itemId) >> GetPriceReduction(1)), 0x4);
-    Menu_PrintTextPixelCoords(&gStringVar1[0], 0xCA, var2 << 3, 1);
+    Menu_PrintTextPixelCoords(&gStringVar1[0], priceX, var2 << 3, 1);
 }
 
 static void Shop_DisplayDecorationPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)

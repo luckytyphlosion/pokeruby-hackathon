@@ -9824,15 +9824,920 @@ struct TrainerMonItemCustomMovesAbilityHiddenPower
 };
 */
 
-const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_LouisFire[] = {
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MichaelFire[] = {
     {
         .iv = TYPE_NORMAL,
         .level = 30,
         .whichAbility = 0,
-        .species = SPECIES_MEW,
-        .heldItem = ITEM_CHARCOAL,
-        .moves = MOVE_STRENGTH, MOVE_CRUNCH, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
     }
 };
 
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JudeSteel[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
 
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_EllaineDarkness[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MatthewNormal[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AlexisFighting[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AdaleneFlying[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_StevenPoison[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JennyGhost[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_BrandonRock[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_GraceGround[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AuroraIce[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AllenPsychic[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MaryJoyGrass[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_LouisElectric[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_EllionoreWater[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_WalterDragon[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};
+
+const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_BobbyChampion[] = {
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    },
+    {
+        .iv = TYPE_NORMAL,
+        .level = 30,
+        .whichAbility = 0,
+        .species = SPECIES_SHEDINJA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+    }
+};

@@ -3,7 +3,7 @@ EverGrandeCity::
 	.4byte EverGrandeCity_MapEvents
 	.4byte EverGrandeCity_MapScripts
 	.4byte EverGrandeCity_MapConnections
-	.2byte MUS_RAINBOW
+	.2byte MUS_CHAMPION
 	.2byte 9
 	.byte MAPSEC_EVER_GRANDE_CITY
 	.byte 0
