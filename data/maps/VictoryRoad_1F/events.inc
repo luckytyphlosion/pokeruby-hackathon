@@ -15,7 +15,7 @@ VictoryRoad_1F_EventObjects::
 	object_event 14, EVENT_OBJ_GFX_MAN_4, 0, 23, 31, 3, MOVEMENT_TYPE_FACE_LEFT, 0, 0, FALSE, 0, VictoryRoad_1F_EventScript_GuardianPsychic, 0
 	object_event 15, EVENT_OBJ_GFX_MAN_4, 0, 19, 35, 3, MOVEMENT_TYPE_FACE_UP, 0, 0, FALSE, 0, VictoryRoad_1F_EventScript_GuardianElectric, 0
 	object_event 16, EVENT_OBJ_GFX_WOMAN_7, 0, 17, 37, 3, MOVEMENT_TYPE_FACE_UP, 0, 0, FALSE, 0, VictoryRoad_1F_EventScript_GuardianWater, 0
-	object_event 17, EVENT_OBJ_GFX_NURSE, 0, 15, 30, 3, MOVEMENT_TYPE_LOOK_AROUND, 0, 0, FALSE, 0, NULL, 0
+	object_event 17, EVENT_OBJ_GFX_NURSE, 0, 15, 30, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, VictoryRoad_1F_EventScript_NurseJoy, 0
 	object_event 18, EVENT_OBJ_GFX_MAN_4, 0, 15, 21, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, VictoryRoad_1F_EventScript_GuardianDragon, 0
 
 VictoryRoad_1F_MapWarps::

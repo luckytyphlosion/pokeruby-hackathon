@@ -77,3 +77,30 @@ VictoryRoad_1F_AndNowFaceChallengeThatAwaitsYouText::
 
 VictoryRoad_1F_TheChampionAwaitsText::
 	.string "The champion awaits...!$"
+
+VictoryRoad_1F_HealThreeTimesText::
+	.string "I am only allowed to heal your\n"
+	.string "POKéMON for three times.\p"
+	.string "Do you want me to heal them?$"
+
+VictoryRoad_1F_HealTwoTimesText::
+	.string "I am only allowed to heal your\n"
+	.string "POKéMON for two more times.\p"
+	.string "Do you want me to heal them?$"
+
+VictoryRoad_1F_HealOneTimeText::
+	.string "I am only allowed to heal your\n"
+	.string "POKéMON once more.\p"
+	.string "Do you want me to heal them?$"
+
+VictoryRoad_1F_NurseJoy_ISeeWishGoodLuckText::
+	.string "I see.\n"
+	.string "Then I wish you good luck!$"
+
+VictoryRoad_1F_PokemonFullyHealedGoodLuckText::
+	.string "Your POKéMON have been fully healed.\n"
+	.string "Good luck with your battles!$"
+
+VictoryRoad_1F_IApologizeNoLongerAllowedToHealText::
+	.string "I apologize, but I am no longer\n"
+	.string "allowed to heal your POKéMON.$"

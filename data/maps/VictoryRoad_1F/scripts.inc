@@ -212,13 +212,15 @@ VictoryRoad_1F_EventScript_GuardianWater::
 VictoryRoad_1F_EventScript_GuardianDragon::
 	lock
 	faceplayer
+	goto .L_temp
 	goto_if_set FLAG_DEFEATED_ELITE_17_WALTER_DRAGON, VictoryRoad_1F_YouHaveFoughtWell
 	msgbox VictoryRoad_1F_GuardianDragonText, 4
-	compare VAR_ELITE_4_STATE, 0
+	compare VAR_ELITE_4_STATE, 16
 	goto_if_ne VictoryRoad_1F_GuardianDragon_BeatOtherMembersFirst
 	call VictoryRoad_1F_DoYouWishToChallenge // quits script if chose no
 	addvar VAR_ELITE_17_REMATCH_COUNT_WALTER_DRAGON, 1
 	trainerbattle 3, TRAINER_WALTER_DRAGON, 0, VictoryRoad_1F_YouHaveFoughtWellText
+.L_temp:
 	msgbox VictoryRoad_1F_BattleWasSuperbReadyToFaceChampionText, 4
 	closemessage
 	special ScrSpecial_HealPlayerParty
@@ -273,5 +275,41 @@ VictoryRoad_1F_DoYouWishToChallenge_Return::
 
 VictoryRoad_1F_YouHaveFoughtWell::
 	msgbox VictoryRoad_1F_YouHaveFoughtWellText
+	release
+	end
+
+VictoryRoad_1F_EventScript_NurseJoy::
+	switch VAR_TEMP_1
+	case 0, VictoryRoad_1F_EventScript_HealThreeTimes
+	case 1, VictoryRoad_1F_EventScript_HealTwoTimes
+	case 2, VictoryRoad_1F_EventScript_HealOneTime
+	msgbox VictoryRoad_1F_IApologizeNoLongerAllowedToHealText, 4
+	release
+	end
+
+VictoryRoad_1F_EventScript_HealThreeTimes::
+	msgbox VictoryRoad_1F_HealThreeTimesText, MSGBOX_YESNO
+	goto VictoryRoad_1F_EventScript_HealCommon
+
+VictoryRoad_1F_EventScript_HealTwoTimes::
+	msgbox VictoryRoad_1F_HealTwoTimesText, MSGBOX_YESNO
+	goto VictoryRoad_1F_EventScript_HealCommon
+
+VictoryRoad_1F_EventScript_HealOneTime::
+	msgbox VictoryRoad_1F_HealOneTimeText, MSGBOX_YESNO
+
+VictoryRoad_1F_EventScript_HealCommon::
+	compare RESULT, YES
+	goto_if_eq VictoryRoad_1F_EventScript_HealPokemon
+	msgbox VictoryRoad_1F_NurseJoy_ISeeWishGoodLuckText, 4
+	release
+	end
+
+VictoryRoad_1F_EventScript_HealPokemon::
+	fadescreen 1
+	special ScrSpecial_HealPlayerParty
+	fadescreen 0
+	msgbox VictoryRoad_1F_PokemonFullyHealedGoodLuckText, 4
+	addvar VAR_TEMP_1, 1
 	release
 	end
