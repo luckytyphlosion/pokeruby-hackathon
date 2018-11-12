@@ -575,22 +575,22 @@ static const u8 gItemDescription_FigyBerry[] = _(
 
 static const u8 gItemDescription_WikiBerry[] = _(
     "A hold item that\n"
-    "restores HP but\n"
-    "may confuse.");
+    "restores 1/4 HP\n"
+    "but may confuse.");
 
 static const u8 gItemDescription_MagoBerry[] = _(
     "A hold item that\n"
-    "restores HP but\n"
-    "may confuse.");
+    "restores 1/4 HP\n"
+    "but may confuse.");
 
 static const u8 gItemDescription_AguavBerry[] = _(
     "A hold item that\n"
-    "restores HP but\n"
-    "may confuse.");
+    "restores 1/4 HP\n"
+    "but may confuse.");
 
 static const u8 gItemDescription_IapapaBerry[] = _(
     "A hold item that\n"
-    "restores HP but\n"
+    "restores 1/4 HP but\n"
     "may confuse.");
 
 static const u8 gItemDescription_RazzBerry[] = _(

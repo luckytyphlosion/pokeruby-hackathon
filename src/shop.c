@@ -614,7 +614,7 @@ static void Shop_DisplayNormalPriceInList(u16 itemId, u8 var2, bool32 hasControl
         stringPtr = &gStringVar1[3];
 
     if (ItemId_GetPrice(itemId) >= 10000) {
-        priceX = 194;
+        priceX = 196;
     } else {
         priceX = 202;
     }
