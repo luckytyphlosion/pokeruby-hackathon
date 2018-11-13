@@ -9827,917 +9827,917 @@ struct TrainerMonItemCustomMovesAbilityHiddenPower
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MichaelFire[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // intimidate
+        .species = SPECIES_ARCANINE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EXTREME_SPEED, MOVE_CRUNCH, MOVE_FLAMETHROWER, MOVE_SUNNY_DAY
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_BLAZIKEN,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SKY_UPPERCUT, MOVE_FLAMETHROWER, MOVE_THUNDER_PUNCH, MOVE_ROCK_SLIDE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_CAMERUPT,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EARTHQUAKE, MOVE_FLAMETHROWER, MOVE_ROCK_SLIDE, MOVE_EXPLOSION
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 1, // FLASH FIRE
+        .species = SPECIES_HOUNDOOM,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_FIRE_BLAST, MOVE_WILL_O_WISP, MOVE_CRUNCH, MOVE_IRON_TAIL
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_CHARIZARD,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_BELLY_DRUM, MOVE_DOUBLE_EDGE, MOVE_OVERHEAT, MOVE_EARTHQUAKE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_ENTEI,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_FIRE_BLAST, MOVE_SUNNY_DAY, MOVE_CALM_MIND, MOVE_SOLAR_BEAM
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JudeSteel[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // STURDY
+        .species = SPECIES_AGGRON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ROCK_SLIDE, MOVE_IRON_TAIL, MOVE_IRON_DEFENSE, MOVE_THUNDER_WAVE
+    },
+    {
+        .iv = TYPE_ROCK,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_SCIZOR,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_SWORDS_DANCE, MOVE_SILVER_WIND, MOVE_HIDDEN_POWER, MOVE_COUNTER
+    },
+    {
+        .iv = TYPE_STEEL,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_REGISTEEL,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_THUNDER_WAVE, MOVE_EARTHQUAKE, MOVE_SEISMIC_TOSS, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // keen eye
+        .species = SPECIES_SKARMORY,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_TOXIC, MOVE_PROTECT, MOVE_SANDSTORM, MOVE_DRILL_PECK
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
+        .iv = TYPE_BUG,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_FORRETRESS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE, MOVE_TOXIC, MOVE_EXPLOSION
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
+        .iv = TYPE_FIRE,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_METAGROSS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_PSYCHIC, MOVE_HIDDEN_POWER, MOVE_METEOR_MASH, MOVE_ROCK_SLIDE
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_EllaineDarkness[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_CACTURNE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_DESTINY_BOND, MOVE_SUBSTITUTE, MOVE_FOCUS_PUNCH, MOVE_LEECH_SEED
+    },
+    {
+        .iv = TYPE_GRASS,
+        .level = 85,
+        .whichAbility = 1, // FLASH FIRE
+        .species = SPECIES_HOUNDOOM,
+        .heldItem = ITEM_BLACK_GLASSES,
+        .moves = MOVE_HIDDEN_POWER, MOVE_CRUNCH, MOVE_PURSUIT, MOVE_WILL_O_WISP
+    },
+    {
+        .iv = TYPE_FIGHTING,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_ABSOL,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_SWORDS_DANCE, MOVE_SUBSTITUTE, MOVE_HIDDEN_POWER, MOVE_RETURN
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_UMBREON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_TOXIC, MOVE_PROTECT, MOVE_MEAN_LOOK, MOVE_CONFUSE_RAY
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_SHARPEDO,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_ENDURE, MOVE_HYDRO_PUMP, MOVE_ICE_BEAM, MOVE_CRUNCH
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_TYRANITAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_DRAGON_DANCE, MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_TAUNT
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MatthewNormal[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 85,
+        .whichAbility = 1, // EARLY BIRD
+        .species = SPECIES_DODRIO,
+        .heldItem = ITEM_LIECHI_BERRY,
+        .moves = MOVE_DRILL_PECK, MOVE_RETURN, MOVE_AGILITY, MOVE_SUBSTITUTE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // NATURAL CURE
+        .species = SPECIES_BLISSEY,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SEISMIC_TOSS, MOVE_PROTECT, MOVE_SOFT_BOILED, MOVE_THUNDER_WAVE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 1, // THICK FAT
+        .species = SPECIES_SNORLAX,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_CURSE, MOVE_BODY_SLAM, MOVE_EARTHQUAKE, MOVE_SELF_DESTRUCT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 85,
+        .whichAbility = 0, // GUTS
+        .species = SPECIES_URSARING,
+        .heldItem = ITEM_SILK_SCARF,
+        .moves = MOVE_BULK_UP, MOVE_RETURN, MOVE_FOCUS_PUNCH, MOVE_ROCK_SLIDE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 90,
+        .whichAbility = 0, // IMMUNITY
+        .species = SPECIES_ZANGOOSE,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_SHADOW_BALL, MOVE_ENDURE, MOVE_FLAIL, MOVE_SWORDS_DANCE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_SLAKING,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_RETURN, MOVE_EARTHQUAKE, MOVE_SHADOW_BALL, MOVE_FOCUS_PUNCH
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AlexisFighting[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // BLAZE
+        .species = SPECIES_BLAZIKEN,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SWORDS_DANCE, MOVE_SKY_UPPERCUT, MOVE_ROCK_SLIDE, MOVE_THUNDER_PUNCH
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // WATER ABSORB
+        .species = SPECIES_POLIWRATH,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_BELLY_DRUM, MOVE_ROCK_TOMB, MOVE_BRICK_BREAK, MOVE_SUBSTITUTE
+    },
+    {
+        .iv = TYPE_GHOST,
+        .level = 85,
+        .whichAbility = 0, // GUTS
+        .species = SPECIES_MACHAMP,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_BULK_UP, MOVE_CROSS_CHOP, MOVE_ROCK_SLIDE, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 85,
+        .whichAbility = 0, // PURE POWER
+        .species = SPECIES_MEDICHAM,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_HI_JUMP_KICK, MOVE_SHADOW_BALL, MOVE_ROCK_SLIDE, MOVE_RETURN
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 90,
+        .whichAbility = 0, // SWARM
+        .species = SPECIES_HERACROSS,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_MEGAHORN, MOVE_REVERSAL, MOVE_ENDURE, MOVE_SWORDS_DANCE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 92,
+        .whichAbility = 0, // EFFECT SPORE
+        .species = SPECIES_BRELOOM,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SPORE, MOVE_SUBSTITUTE, MOVE_FOCUS_PUNCH, MOVE_LEECH_SEED
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AdaleneFlying[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_LUGIA,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_WHIRLWIND, MOVE_AEROBLAST, MOVE_CALM_MIND, MOVE_ICE_BEAM
+    },
+    {
+        .iv = TYPE_FLYING,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_ALTARIA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_DRAGON_DANCE, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE, MOVE_SING
+    },
+    {
+        .iv = TYPE_GROUND,
+        .level = 85,
+        .whichAbility = 0, // KEEN EYE
+        .species = SPECIES_SKARMORY,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_DRILL_PECK, MOVE_TOXIC, MOVE_HIDDEN_POWER, MOVE_PROTECT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // SWIFT SWIM
+        .species = SPECIES_MANTINE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_RAIN_DANCE, MOVE_ICE_BEAM, MOVE_SURF, MOVE_CONFUSE_RAY
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .iv = TYPE_FLYING,
+        .level = 90,
+        .whichAbility = 0, // ROCK HEAD
+        .species = SPECIES_AERODACTYL,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_ROCK_SLIDE, MOVE_DOUBLE_EDGE, MOVE_EARTHQUAKE, MOVE_HIDDEN_POWER
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
+        .iv = TYPE_FLYING,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_GYARADOS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HIDDEN_POWER, MOVE_DOUBLE_EDGE, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_StevenPoison[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // LEVITATE
+        .species = SPECIES_WEEZING,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HAZE, MOVE_SLUDGE_BOMB, MOVE_PAIN_SPLIT, MOVE_FLAMETHROWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 85,
+        .whichAbility = 0, // POISON POINT
+        .species = SPECIES_NIDOKING,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_EARTHQUAKE, MOVE_MEGAHORN, MOVE_SLUDGE_BOMB, MOVE_ROCK_SLIDE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // LEVITATE
+        .species = SPECIES_GENGAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_THUNDERBOLT, MOVE_DESTINY_BOND, MOVE_CURSE, MOVE_PROTECT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // CLEAR BODY
+        .species = SPECIES_TENTACRUEL,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HYDRO_PUMP, MOVE_SLUDGE_BOMB, MOVE_SWORDS_DANCE, MOVE_MIRROR_COAT
+    },
+    {
+        .iv = TYPE_FIGHTING,
+        .level = 90,
+        .whichAbility = 0, // INNER FOCUS
+        .species = SPECIES_CROBAT,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_SLUDGE_BOMB, MOVE_AERIAL_ACE, MOVE_HIDDEN_POWER, MOVE_WHIRLWIND
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 92,
+        .whichAbility = 0, // CHLOROPHYLL
+        .species = SPECIES_VICTREEBEL,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SWORDS_DANCE, MOVE_SLUDGE_BOMB, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JennyGhost[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_GENGAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_MEAN_LOOK, MOVE_PERISH_SONG, MOVE_SUBSTITUTE, MOVE_NIGHT_SHADE
+    },
+    {
+        .iv = TYPE_FIGHTING,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_BANETTE,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_KNOCK_OFF, MOVE_HIDDEN_POWER, MOVE_SHADOW_BALL, MOVE_WILL_O_WISP
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_GENGAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SLUDGE_BOMB, MOVE_WILL_O_WISP, MOVE_EXPLOSION, MOVE_PSYCHIC
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_DUSCLOPS,
+        .heldItem = ITEM_FIGY_BERRY,
+        .moves = MOVE_PAIN_SPLIT, MOVE_WILL_O_WISP, MOVE_SEISMIC_TOSS, MOVE_COUNTER
+    },
+    {
+        .iv = TYPE_BUG,
+        .level = 90,
         .whichAbility = 0,
         .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .heldItem = ITEM_SPELL_TAG,
+        .moves = MOVE_PROTECT, MOVE_SWORDS_DANCE, MOVE_SHADOW_BALL, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_GENGAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_THUNDERBOLT, MOVE_ICE_BEAM, MOVE_GIGA_DRAIN, MOVE_TAUNT
     },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_HERACROSS,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_MEGAHORN, MOVE_ROCK_SLIDE, MOVE_FOCUS_PUNCH, MOVE_BRICK_BREAK
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_FORRETRESS,
+        .heldItem = ITEM_HARD_STONE,
+        .moves = MOVE_COUNTER, MOVE_DEFENSE_CURL, MOVE_ROLLOUT, MOVE_EXPLOSION
+    },
+    {
+        .iv = TYPE_STEEL,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_SCIZOR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_BATON_PASS, MOVE_SUBSTITUTE, MOVE_SWORDS_DANCE, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_NINJASK,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_BATON_PASS, MOVE_PROTECT, MOVE_AERIAL_ACE, MOVE_SUBSTITUTE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_PINSIR,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_SWORDS_DANCE, MOVE_FLAIL, MOVE_ENDURE, MOVE_EARTHQUAKE
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
+        .iv = TYPE_BUG,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_ARMALDO,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ROCK_SLIDE, MOVE_KNOCK_OFF, MOVE_HIDDEN_POWER, MOVE_SWORDS_DANCE
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_BrandonRock[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 1, // PRESSURE
+        .species = SPECIES_AERODACTYL,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_PROTECT, MOVE_TOXIC, MOVE_ROCK_SLIDE, MOVE_ROAR
+    },
+    {
+        .iv = TYPE_BUG,
+        .level = 85,
+        .whichAbility = 0, // SAND STREAM
+        .species = SPECIES_TYRANITAR,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_ROCK_SLIDE, MOVE_SUBSTITUTE, MOVE_FOCUS_PUNCH, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 1, // ROCK HEAD
+        .species = SPECIES_AGGRON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_DOUBLE_EDGE, MOVE_ROCK_SLIDE, MOVE_IRON_TAIL, MOVE_EARTHQUAKE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_CRADILY,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ROCK_SLIDE, MOVE_GIGA_DRAIN, MOVE_EARTHQUAKE, MOVE_MIRROR_COAT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_REGIROCK,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SWAGGER, MOVE_PSYCH_UP, MOVE_SUPERPOWER, MOVE_ROCK_SLIDE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_KABUTOPS,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_ENDURE, MOVE_FLAIL, MOVE_SWORDS_DANCE, MOVE_ROCK_SLIDE
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_GraceGround[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // LEVITATE
+        .species = SPECIES_CLAYDOL,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EARTHQUAKE, MOVE_PSYCHIC, MOVE_REFLECT, MOVE_LIGHT_SCREEN
+    },
+    {
+        .iv = TYPE_BUG,
+        .level = 85,
+        .whichAbility = 0, // LEVITATE
+        .species = SPECIES_FLYGON,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_FIRE_BLAST, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // STURDY
+        .species = SPECIES_STEELIX,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EARTHQUAKE, MOVE_IRON_TAIL, MOVE_ROAR, MOVE_EXPLOSION
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // POISON POINT
+        .species = SPECIES_NIDOKING,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EARTHQUAKE, MOVE_MEGAHORN, MOVE_THUNDERBOLT, MOVE_ICE_BEAM
+    },
+    {
+        .iv = TYPE_BUG,
+        .level = 90,
+        .whichAbility = 1, // STURDY
+        .species = SPECIES_GOLEM,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_HIDDEN_POWER, MOVE_EXPLOSION
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 92,
+        .whichAbility = 0, // TORRENT
+        .species = SPECIES_SWAMPERT,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SURF, MOVE_CURSE, MOVE_ICE_BEAM, MOVE_EARTHQUAKE
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AuroraIce[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // PRESSURE
+        .species = SPECIES_ARTICUNO,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SUBSTITUTE, MOVE_PROTECT, MOVE_ICE_BEAM, MOVE_REFLECT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // THICK FAT
+        .species = SPECIES_WALREIN,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HAIL, MOVE_BLIZZARD, MOVE_CURSE, MOVE_EARTHQUAKE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // CLEAR BODY
+        .species = SPECIES_REGICE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ICE_BEAM, MOVE_PSYCH_UP, MOVE_THUNDER_WAVE, MOVE_THUNDERBOLT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // WATER ABSORB
+        .species = SPECIES_LAPRAS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_PERISH_SONG, MOVE_ICE_BEAM, MOVE_SUBSTITUTE, MOVE_PROTECT
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 90,
+        .whichAbility = 0, // SHELL ARMOR
+        .species = SPECIES_CLOYSTER,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_TORMENT, MOVE_SURF, MOVE_EXPLOSION, MOVE_ICE_BEAM
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .iv = TYPE_GRASS,
+        .level = 92,
+        .whichAbility = 0, // THICK FAT
+        .species = SPECIES_DEWGONG,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ICE_BEAM, MOVE_SURF, MOVE_HIDDEN_POWER, MOVE_TOXIC
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AllenPsychic[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_ALAKAZAM,
+        .heldItem = ITEM_MACHO_BRACE,
+        .moves = MOVE_TRICK, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_FIRE_PUNCH
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_ESPEON,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_SUBSTITUTE, MOVE_CALM_MIND
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 1, // NATURAL CURE
+        .species = SPECIES_STARMIE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HYDRO_PUMP, MOVE_THUNDERBOLT, MOVE_ICE_BEAM, MOVE_PSYCHIC
+    },
+    {
+        .iv = TYPE_ICE,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_EXEGGUTOR,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_PSYCHIC, MOVE_HIDDEN_POWER, MOVE_SLEEP_POWDER, MOVE_GIGA_DRAIN
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_JIRACHI,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_SUBSTITUTE, MOVE_CALM_MIND
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_GARDEVOIR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_CALM_MIND, MOVE_PSYCHIC, MOVE_MEAN_LOOK, MOVE_THUNDERBOLT
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MaryJoyGrass[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_SCEPTILE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_LEAF_BLADE, MOVE_SUNNY_DAY, MOVE_BRICK_BREAK, MOVE_THUNDER_PUNCH
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // CHLOROPHYLL
+        .species = SPECIES_TROPIUS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SUNNY_DAY, MOVE_SOLAR_BEAM, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE
+    },
+    {
+        .iv = TYPE_GRASS,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_MEGANIUM,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_REFLECT, MOVE_LIGHT_SCREEN, MOVE_LEECH_SEED, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // SUCTION CUPS
+        .species = SPECIES_CRADILY,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ROCK_SLIDE, MOVE_GIGA_DRAIN, MOVE_AMNESIA, MOVE_BARRIER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_VENUSAUR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SWORDS_DANCE, MOVE_SLUDGE_BOMB, MOVE_EARTHQUAKE, MOVE_GIGA_DRAIN
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_EXEGGUTOR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SUNNY_DAY, MOVE_SOLAR_BEAM, MOVE_SLEEP_POWDER, MOVE_EXPLOSION
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_LouisElectric[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // PRESSURE
+        .species = SPECIES_ZAPDOS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_DRILL_PECK, MOVE_THUNDERBOLT, MOVE_SUBSTITUTE, MOVE_THUNDER_WAVE
+    },
+    {
+        .iv = TYPE_ICE,
+        .level = 85,
+        .whichAbility = 0, // MAGNET PULL
+        .species = SPECIES_MAGNETON,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_THUNDERBOLT, MOVE_HIDDEN_POWER, MOVE_METAL_SOUND, MOVE_SUBSTITUTE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // VOLT ABSORB
+        .species = SPECIES_LANTURN,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SURF, MOVE_THUNDERBOLT, MOVE_CONFUSE_RAY, MOVE_THUNDER_WAVE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // STATIC
+        .species = SPECIES_AMPHAROS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_REFLECT, MOVE_LIGHT_SCREEN, MOVE_THUNDERBOLT, MOVE_FIRE_PUNCH
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .iv = TYPE_GRASS,
+        .level = 90,
+        .whichAbility = 0, // VOLT ABSORB
+        .species = SPECIES_JOLTEON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_HIDDEN_POWER, MOVE_THUNDERBOLT, MOVE_TOXIC, MOVE_SUBSTITUTE
     },
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .iv = TYPE_GRASS,
+        .level = 92,
+        .whichAbility = 0, // STATIC
+        .species = SPECIES_RAICHU,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_THUNDERBOLT, MOVE_SURF, MOVE_HIDDEN_POWER, MOVE_CHARM
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_EllionoreWater[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // PRESSURE
+        .species = SPECIES_SUICUNE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SURF, MOVE_CALM_MIND, MOVE_ICE_BEAM, MOVE_RAIN_DANCE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_LUDICOLO,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_GIGA_DRAIN, MOVE_LEECH_SEED, MOVE_SURF, MOVE_ICE_BEAM
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 85,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_SWAMPERT,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_ENDEAVOR, MOVE_EARTHQUAKE, MOVE_ICE_BEAM, MOVE_ENDURE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 85,
+        .whichAbility = 0, // SWIFT SWIM
+        .species = SPECIES_KINGDRA,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_RAIN_DANCE, MOVE_SURF, MOVE_ICE_BEAM, MOVE_TOXIC
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_OMASTAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_SURF, MOVE_ICE_BEAM, MOVE_WITHDRAW, MOVE_TOXIC
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 92,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_LAPRAS,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ICE_BEAM, MOVE_THUNDERBOLT, MOVE_HYDRO_PUMP, MOVE_ROAR
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_WalterDragon[] = {
     {
-        .iv = TYPE_NORMAL,
-        .level = 30,
+        .iv = TYPE_FLYING,
+        .level = 90,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_SALAMENCE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_DRAGON_DANCE, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 90,
+        .whichAbility = 0, // LEVITATE
+        .species = SPECIES_FLYGON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_TOXIC, MOVE_DRAGON_CLAW
+    },
+    {
+        .iv = TYPE_ELECTRIC,
+        .level = 90,
+        .whichAbility = 0,
+        .species = SPECIES_KINGDRA,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_RAIN_DANCE, MOVE_SURF, MOVE_HIDDEN_POWER, MOVE_BLIZZARD
+    },
+    {
+        .iv = TYPE_FLYING,
+        .level = 90,
+        .whichAbility = 0,
+        .species = SPECIES_DRAGONITE,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE, MOVE_THUNDER
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 93,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_ALTARIA,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_PERISH_SONG, MOVE_HAZE, MOVE_PROTECT, MOVE_DRAGON_CLAW
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 95,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_LATIAS,
+        .heldItem = ITEM_SOUL_DEW,
+        .moves = MOVE_CALM_MIND, MOVE_ICE_BEAM, MOVE_THUNDER, MOVE_DRAGON_CLAW
     }
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_BobbyChampion[] = {
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 94,
+        .whichAbility = 0, // AIR LOCK
+        .species = SPECIES_RAYQUAZA,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_ROAR, MOVE_DRAGON_DANCE, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .level = 92,
+        .whichAbility = 0, // DRIZZLE
+        .species = SPECIES_KYOGRE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_WATER_SPOUT, MOVE_THUNDER, MOVE_ICE_BEAM, MOVE_CALM_MIND
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .level = 95,
+        .whichAbility = 0, // DROUGHT
+        .species = SPECIES_GROUDON,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_SOLAR_BEAM, MOVE_OVERHEAT, MOVE_EARTHQUAKE, MOVE_SUBSTITUTE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 96,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
+        .species = SPECIES_MEWTWO,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .moves = MOVE_CALM_MIND, MOVE_PSYCHIC, MOVE_ICE_BEAM, MOVE_THUNDERBOLT
+    },
+    {
+        .iv = TYPE_FLYING,
+        .level = 98,
+        .whichAbility = 0,
+        .species = SPECIES_HO_OH,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = MOVE_SACRED_FIRE, MOVE_THUNDER, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE
     },
     {
         .iv = TYPE_NORMAL,
-        .level = 30,
+        .level = 97,
         .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 30,
-        .whichAbility = 0,
-        .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_STRENGTH, MOVE_NONE, MOVE_NONE, MOVE_NONE
+        .species = SPECIES_TYRANITAR,
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_FIRE_BLAST, MOVE_ROCK_SLIDE, MOVE_CRUNCH, MOVE_ENDURE
     }
 };

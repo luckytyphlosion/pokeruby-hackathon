@@ -1592,6 +1592,7 @@ void CreateMonWithPerfectHiddenPowerAndAbility(struct Pokemon *mon, u16 species,
     SetMonData(mon, MON_DATA_LEVEL, &level);
     arg = 255;
     SetMonData(mon, MON_DATA_MAIL, &arg);
+    SetMonData(mon, MON_DATA_FRIENDSHIP, &arg);
     CalculateMonStats(mon);
 }
 

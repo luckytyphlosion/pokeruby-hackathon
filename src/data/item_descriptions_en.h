@@ -570,8 +570,8 @@ static const u8 gItemDescription_SitrusBerry[] = _(
 
 static const u8 gItemDescription_FigyBerry[] = _(
     "A hold item that\n"
-    "restores HP but\n"
-    "may confuse.");
+    "restores 1/4 HP\n"
+    "but may confuse.");
 
 static const u8 gItemDescription_WikiBerry[] = _(
     "A hold item that\n"
@@ -590,8 +590,8 @@ static const u8 gItemDescription_AguavBerry[] = _(
 
 static const u8 gItemDescription_IapapaBerry[] = _(
     "A hold item that\n"
-    "restores 1/4 HP but\n"
-    "may confuse.");
+    "restores 1/4 HP\n"
+    "but may confuse.");
 
 static const u8 gItemDescription_RazzBerry[] = _(
     "{POKEBLOCK} ingredient.\n"

@@ -9,61 +9,93 @@ VictoryRoad_1F_BeatOtherMembersFirstText::
 	.string "members before facing me.$"
 
 VictoryRoad_1F_GuardianFireText::
-	.string "FIRE$"
-/*
 	.string "I am MICHAEL of FIRE.\n"
 	.string "I have mastered to control fire\l"
 	.string "and I achieved to become one of the\l"
 	.string "ELITE 17!$"
-*/
+
 
 VictoryRoad_1F_GuardianSteelText::
-	.string "STEEL$"
+	.string "I am JUDE of STEEL.\n"
+	.string "Nothing is tougher than steel!\l"
+	.string "You’ll get a hard time beating me!$"
 
 VictoryRoad_1F_GuardianDarknessText::
-	.string "DARK$"
+	.string "I am ELLAINE of DARKNESS.\n"
+	.string "Creatures of the dark are not only\l"
+	.string "frightening, but they are also strong!$"
 
 VictoryRoad_1F_GuardianNormalText::
-	.string "NORMAL$"
+	.string "I am MATTHEW of NORMAL-types.\n"
+	.string "I specialize on ordinary NORMAL types,\l"
+	.string "but do not underestimate us!$"
 
 VictoryRoad_1F_GuardianFightingText::
-	.string "FIGHTING$"
+	.string "I am ALEXIS of FIGHTING.\n"
+	.string "Each strike of our punches can\l"
+	.string "shake the earth! Hah!$"
 
 VictoryRoad_1F_GuardianFlyingText::
-	.string "FLYING$"
+	.string "I am ADALENE of FLYING-types!\n"
+	.string "Oh, these wings, we can achieve\l"
+	.string "freedom to our hearts and souls.$"
 
 VictoryRoad_1F_GuardianPoisonText::
-	.string "POISON$"
+	.string "I am STEVEN of POISON-types.\n"
+	.string "How horrible it is to be poisoned\l"
+	.string "by powerful venom.$"
 
 VictoryRoad_1F_GuardianGhostText::
-	.string "GHOST$"
+	.string "I am JENNY of GHOST-types.\n"
+	.string "The spirits of this world hold many\l"
+	.string "secrets and hidden potentials.$"
 
 VictoryRoad_1F_GuardianBugText::
-	.string "BUG$"
+	.string "I am DAVID of BUG-types.\n"
+	.string "Some say they’re cute, and some\l"
+	.string "think they’re scary, but really,\l"
+	.string "they’re stronger than they look.$"
 
 VictoryRoad_1F_GuardianRockText::
-	.string "ROCK$"
+	.string "I am BRANDON of ROCK-types.\n"
+	.string "Rocks are stronger than ground...$"
 
 VictoryRoad_1F_GuardianGroundText::
-	.string "GROUND$"
+	.string "I am GRACE of GROUND-types.\n"
+	.string "The sands of nature hold power.$"
 
 VictoryRoad_1F_GuardianIceText::
-	.string "ICE$"
+	.string "I am AURORA of ICE.\n"
+	.string "I can promise to bring you a\l"
+	.string "winter-cold battle! Too cold for you\l"
+	.string "to handle!$"
 
 VictoryRoad_1F_GuardianPsychicText::
-	.string "PSYCHIC$"
+	.string "I am ALLEN of PSYCHIC.\n"
+	.string "I can read your moves before you\l"
+	.string "even give commands to your POKéMON!$"
 
 VictoryRoad_1F_GuardianGrassText::
-	.string "GRASS$"
+	.string "I am MARY JOY of GRASS.\n"
+	.string "Nature has given us many blessings,\l"
+	.string "but be cautious, for it also hides\l"
+	.string "incredible power!$"
 
 VictoryRoad_1F_GuardianElectricText::
-	.string "ELECTRIC$"
+	.string "I am LOUIS of ELECTRICITY.\n"
+	.string "One zap and it’s over.$"
 
 VictoryRoad_1F_GuardianWaterText::
-	.string "WATER$"
+	.string "I am ELLIONORE of WATER.\n"
+	.string "Water is a very unpredictable type,\l"
+	.string "so watch out!\p"
+	.string "Mastering it was not easy.$"
 
 VictoryRoad_1F_GuardianDragonText::
-	.string "DRAGON$"
+	.string "I am WALTER of DRAGONS.\n"
+	.string "These mythical creatures hold amazing\l"
+	.string "powers capable of bringing down\l"
+	.string "almost any opponents!$"
 
 VictoryRoad_1F_BattleWasSuperbReadyToFaceChampionText::
 	.string "That battle was superb!\n"

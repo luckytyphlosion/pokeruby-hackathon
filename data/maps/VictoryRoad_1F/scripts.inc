@@ -212,7 +212,6 @@ VictoryRoad_1F_EventScript_GuardianWater::
 VictoryRoad_1F_EventScript_GuardianDragon::
 	lock
 	faceplayer
-	goto .L_temp
 	goto_if_set FLAG_DEFEATED_ELITE_17_WALTER_DRAGON, VictoryRoad_1F_YouHaveFoughtWell
 	msgbox VictoryRoad_1F_GuardianDragonText, 4
 	compare VAR_ELITE_4_STATE, 16
@@ -220,7 +219,6 @@ VictoryRoad_1F_EventScript_GuardianDragon::
 	call VictoryRoad_1F_DoYouWishToChallenge // quits script if chose no
 	addvar VAR_ELITE_17_REMATCH_COUNT_WALTER_DRAGON, 1
 	trainerbattle 3, TRAINER_WALTER_DRAGON, 0, VictoryRoad_1F_YouHaveFoughtWellText
-.L_temp:
 	msgbox VictoryRoad_1F_BattleWasSuperbReadyToFaceChampionText, 4
 	closemessage
 	special ScrSpecial_HealPlayerParty
