@@ -7,7 +7,8 @@ MEMORY
 {
 	ewram_region (w!x) : ORIGIN = 0x02000000, LENGTH = 0x40000
 	iwram_region (w!x) : ORIGIN = 0x03000000, LENGTH = 0x8000
-	rom_region (rx) : ORIGIN = 0x08000000, LENGTH = 0x1000000
+	rom_region (rx) : ORIGIN = 0x08000000, LENGTH = 0xD00000
+	rom_gfx_region (r) : ORIGIN = 0x08D00000, LENGTH = 0x1000000 - 0xD00000
 }
 
 SECTIONS {
@@ -1201,13 +1202,15 @@ SECTIONS {
         *libc.a(.rodata);
         *libc.a(.data);
         src/libs/libisagbprn.o(.rodata);
+		rom_region_end = .;
     } >rom_region =0
 
     gfx_data :
     ALIGN(4)
     {
         src/data/graphics.o(.rodata);
-    } >rom_region =0
+		rom_gfx_region_end = .;
+    } >rom_gfx_region =0
 
     /* DWARF 2 sections */
     .debug_aranges  0 : { *(.debug_aranges) }
@@ -1226,10 +1229,17 @@ SECTIONS {
         *(*);
     }
 
-	.fill :
+	.fillrom :
 	{
 		FILL(0xff);
 		. = ORIGIN(rom_region) + LENGTH(rom_region) - 1;
 		BYTE(0xff);
 	} >rom_region
+
+	.fillromgfx :
+	{
+		FILL(0xff);
+		. = ORIGIN(rom_gfx_region) + LENGTH(rom_gfx_region) - 1;
+		BYTE(0xff);
+	} >rom_gfx_region
 }

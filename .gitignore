@@ -45,3 +45,5 @@ build/
 .projects/ARM/
 *.diff
 *.SNA
+*.xdelta
+*.UPS
