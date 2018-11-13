@@ -225,10 +225,9 @@ EverGrandeCity_PokemonLeague_TMs::
 	.2byte ITEM_HM08_DIVE
 	.2byte ITEM_NONE
 
-EverGrandeCity_PokemonLeague_MoveDeleterEventScript::
-	end
-
-EverGrandeCity_PokemonLeague_MoveRelearnerEventScript::
+EverGrandeCity_PokemonLeague_MaxElixirItemBallScript::
+	giveitem_std ITEM_ETHER, 1, 1
+	giveitem_std ITEM_ELIXIR, 1, 1
 	end
 
 EverGrandeCity_PokemonLeague_EventScript_15BAD2:: @ 815BAD2

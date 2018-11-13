@@ -7,6 +7,7 @@ EverGrandeCity_PokemonLeague_EventObjects::
 	object_event 6, EVENT_OBJ_GFX_MART_EMPLOYEE, 0, 17, 2, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, EverGrandeCity_PokemonLeague_TMShopEventScript, 0
 	object_event 7, EVENT_OBJ_GFX_OLD_MAN_1, 0, 5, 9, 3, MOVEMENT_TYPE_FACE_LEFT, 0, 0, FALSE, 0, LilycoveCity_MoveDeletersHouse_EventScript_159AAE, 0
 	object_event 8, EVENT_OBJ_GFX_FAT_MAN, 0, 16, 7, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, FallarborTown_House2_EventScript_153C91, 0
+	object_event 9, EVENT_OBJ_GFX_ITEM_BALL, 0, 9, 6, 3, MOVEMENT_TYPE_FACE_DOWN, 0, 0, FALSE, 0, EverGrandeCity_PokemonLeague_MaxElixirItemBallScript, FLAG_ITEM_EVER_GRANDE_CITY_LEAGUE
 
 EverGrandeCity_PokemonLeague_MapWarps::
 	warp_def 9, 11, 3, 0, MAP_EVER_GRANDE_CITY
