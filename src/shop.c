@@ -69,6 +69,7 @@ static void DrawFirstMartScrollIndicators(void);
 static void Shop_DrawViewport(void);
 static void Shop_InitMenus(int, int);
 static void Shop_PrintItemDesc(void);
+static u32 Shop_GetPokemonPrice(u16 pokemonId);
 static void Shop_DoCursorAction(u8);
 static void Shop_LoadViewportObjects(void);
 static void Shop_AnimViewportObjects(void);
@@ -659,7 +660,7 @@ static void Shop_DisplayDecorationPriceInList(u16 itemId, u8 var2, bool32 hasCon
 static void Shop_DisplayPokemonPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)
 {
     u8 *stringPtr = gStringVar1;
-    u32 pokemonPrice = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[itemId].growthRate][gMartInfo.pokemonLevel];
+    u32 pokemonPrice = Shop_GetPokemonPrice(itemId);
     if (hasControlCode)
     {
         stringPtr[0] = EXT_CTRL_CODE_BEGIN;
@@ -1180,6 +1181,15 @@ _080B40E4: .4byte 0x800000f0\n\
 }
 #endif
 
+static u32 Shop_GetPokemonPrice(u16 pokemonId)
+{
+    u32 price = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[pokemonId].growthRate][gMartInfo.pokemonLevel];
+    if (gBaseStats[pokemonId].growthRate == GROWTH_ERRATIC) {
+        price += gMartInfo.pokemonLevel * (200000 / 100);
+    }
+    return price;
+
+}
 static void Shop_DoCursorAction(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -1274,7 +1284,7 @@ static void Shop_DoCursorAction(u8 taskId)
                     }
                 }
                 else if (gMartInfo.martType == MART_TYPE_POKEMON) {
-                    gMartTotalCost = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[itemId].growthRate][gMartInfo.pokemonLevel];
+                    gMartTotalCost = Shop_GetPokemonPrice(itemId);
                     if (!IsEnoughMoney(gSaveBlock1.money, gMartTotalCost))
                     {
                         DisplayItemMessageOnField(taskId, gOtherText_NotEnoughMoney, Shop_DoPricePrintAndReturnToBuyMenu, 0xC3E1); // tail merge
