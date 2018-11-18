@@ -846,9 +846,9 @@ u8 GetMostSuitableMonToSwitchInto(void)
         {
             move = GetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j);
             gBattleMoveDamage = 0;
-            if (move != MOVE_NONE && gBattleMoves[move].power != 1)
+            if (move != MOVE_NONE && gBattleMoves[move].power > 0)
             {
-                AI_CalcDmg(gActiveBattler, opposingBattler);
+                AI_CalcDmg(gActiveBattler, opposingBattler, Random());
                 TypeCalc(move, gActiveBattler, opposingBattler);
             }
             if (bestDmg < gBattleMoveDamage)

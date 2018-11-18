@@ -270,9 +270,8 @@ static const u8 gItemDescription_Calcium[] = _(
     "POKéMON.");
 
 static const u8 gItemDescription_RareCandy[] = _(
-    "Raises the level\n"
-    "of a POKéMON by\n"
-    "one.");
+    "Please play the\n"
+    "game legit.");
 
 static const u8 gItemDescription_PPUp[] = _(
     "Raises the maximum\n"

@@ -1099,7 +1099,7 @@ const struct Item gItems[] =
         .exitsBagOnUse = 0,
         .pocket = POCKET_ITEMS,
         .type = 1,
-        .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
@@ -3203,7 +3203,7 @@ const struct Item gItems[] =
     {
         .name = _("LEFTOVERS"),
         .itemId = ITEM_LEFTOVERS,
-        .price = 10000,
+        .price = 20000,
         .holdEffect = HOLD_EFFECT_LEFTOVERS,
         .holdEffectParam = 10,
         .description = gItemDescription_Leftovers,
@@ -5523,7 +5523,7 @@ const struct Item gItems[] =
     {
         .name = _("HM07"),
         .itemId = ITEM_HM07_WATERFALL,
-        .price = 5000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_HM07,
@@ -5539,7 +5539,7 @@ const struct Item gItems[] =
     {
         .name = _("HM08"),
         .itemId = ITEM_HM08_DIVE,
-        .price = 5000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_HM08,

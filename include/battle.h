@@ -109,8 +109,12 @@ struct AI_ThinkingStruct /* 0x2016800 */
     /*0x0C*/ u32 aiFlags;
     /*0x10*/ u8 aiAction;
     /*0x11*/ u8 aiLogicId;
-    /*0x12*/ u8 filler12[6];
+    /*0x12*/ u8 targetSimulatedRNG[4];
+    /*0x16*/ u8 filler16[2];
     /*0x18*/ u8 simulatedRNG[4];
+    /*0x1c*/ u16 simulatedMoveRNG[4];
+    /*0x24*/ u16 targetSimulatedMoveRNG[4];
+    /*0x28*/
 };
 
 struct BattleStruct /* 0x2000000 */
@@ -825,7 +829,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn);
 u8 GetMoveTarget(u16 move, u8 useMoveTarget);
 
 // asm/battle_4.o
-void AI_CalcDmg(u8, u8);
+uint AI_CalcDmg(u8, u8, u16);
 u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def);
 u8 BankGetTurnOrder(u8 bank);
 

@@ -145,6 +145,10 @@ static void BattleAICmd_end(void);
 static void BattleAICmd_if_level_compare(void);
 static void BattleAICmd_if_taunted(void);
 static void BattleAICmd_if_not_taunted(void);
+static void BattleAICmd_if_target_can_faint_user(void);
+static void BattleAICmd_get_hp_percent_after_target_damage(void);
+static void GetTargetMoveDamages(s32 *);
+static void BattleAICmd_get_target_damage_percent(void);
 
 typedef void (*BattleAICmdFunc)(void);
 
@@ -244,6 +248,9 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
     BattleAICmd_if_level_compare,            // 0x5B
     BattleAICmd_if_taunted,                  // 0x5C
     BattleAICmd_if_not_taunted,              // 0x5D
+    BattleAICmd_if_target_can_faint_user,    // 0x5E
+    BattleAICmd_get_hp_percent_after_target_damage, // 0x5F
+    BattleAICmd_get_target_damage_percent,   // 0x60
 };
 
 #ifdef NONMATCHING
@@ -265,6 +272,7 @@ const u16 sDiscouragedPowerfulMoveEffects[] =
     EFFECT_OVERHEAT,
     0xFFFF
 };
+    
 
 // if the AI is a Link battle, safari, battle tower, or ereader, it will ignore considering item uses.
 void BattleAI_HandleItemUseBeforeAISetup(void)
@@ -314,6 +322,9 @@ void BattleAI_SetupAIData(void)
             AI_THINKING_STRUCT->score[i] = 0;
 
         AI_THINKING_STRUCT->simulatedRNG[i] = 100 - (Random() % 16);
+        AI_THINKING_STRUCT->targetSimulatedRNG[i] = 100 - (Random() % 16);
+        AI_THINKING_STRUCT->simulatedMoveRNG[i] = Random();
+        AI_THINKING_STRUCT->targetSimulatedMoveRNG[i] = Random();
     }
 
     // clear AI stack.
@@ -933,7 +944,7 @@ static void BattleAICmd_get_type(void)
         AI_THINKING_STRUCT->funcResult = gBattleMons[gBankTarget].type2;
         break;
     case 4: // type of move being pointed to
-        AI_THINKING_STRUCT->funcResult = gBattleMoves[AI_THINKING_STRUCT->moveConsidered].type;
+        AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->moveConsidered);
         break;
     }
     gAIScriptPtr += 2;
@@ -945,56 +956,80 @@ static void BattleAICmd_get_move_power(void)
     gAIScriptPtr += 1;
 }
 
-#ifdef NONMATCHING
+#ifndef NONMATCHING
 static void BattleAICmd_is_most_powerful_move(void)
 {
     int i, j;
     s32 damages[MAX_MON_MOVES];
+    // regular move is 1.
+    u8 encouragedMoveEffect = TRUE;
 
-    for (i = 0; sDiscouragedPowerfulMoveEffects[i] != 0xFFFF; i++)
-        if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].effect == sDiscouragedPowerfulMoveEffects[i])
+    for (i = 0; sDiscouragedPowerfulMoveEffects[i] != 0xFFFF; i++) {
+        if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].effect == sDiscouragedPowerfulMoveEffects[i]) {
+            encouragedMoveEffect = FALSE;
             break;
+        }
+    }
+    
+    if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].power == 1) {
+        encouragedMoveEffect = FALSE;
 
-    if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].power > 1
-     && sDiscouragedPowerfulMoveEffects[i] == 0xFFFF)
+        for (i = 0; i < gVariableDamageEffectsAndFunctionsArrayCount; i++) {
+            if (gVariableDamageEffectsAndFunctions[i].effect == gBattleMoves[AI_THINKING_STRUCT->moveConsidered].effect) {
+                encouragedMoveEffect = TRUE;
+                break;
+            }
+        }
+    }
+    
+    if (encouragedMoveEffect)
     {
-        gDynamicBasePower = 0;
-        eDynamicMoveType = 0;
-        eDmgMultiplier = 1;
-        gMoveResultFlags = 0;
-        gCritMultiplier = 1;
-
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
-            for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++)
-            { // _08108276
-                if (gBattleMoves[gBattleMons[gBankAttacker].moves[i]].effect == sDiscouragedPowerfulMoveEffects[j])
-                    break;
-            }
+            u16 currentMove = gBattleMons[gBankAttacker].moves[i];
+            const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
 
-            // _081082BA
-            if (gBattleMons[gBankAttacker].moves[i]
-             && sDiscouragedPowerfulMoveEffects[j] == 0xFFFF
-             && gBattleMoves[gBattleMons[gBankAttacker].moves[i]].power > 1)
-            {
-                gCurrentMove = gBattleMons[gBankAttacker].moves[i];
-                AI_CalcDmg(gBankAttacker, gBankTarget);
-                TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
-                damages[i] = (gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[i]) / 100;
+            if (currentMove) {
+                encouragedMoveEffect = TRUE;
+                for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+                    if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+                        encouragedMoveEffect = FALSE;
+                        break;
+                    }
+                }
+                
+                if (encouragedMoveEffect) {
+                    u8 moveEffectDamageType;
+                    
+                    gCurrentMove = currentMove;
+                    moveEffectDamageType = AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[i]);
 
-                if (damages[i] == 0) // moves always do at least 1 damage.
-                    damages[i] = 1;
-            }
-            else
-            {
+                    if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
+                    && !(TypeCalc(gCurrentMove, gBankAttacker, gBankTarget) & MOVE_RESULT_MISSED)) {
+
+                        if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
+                            damages[i] = (gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[i]) / 100;
+                            // moves always do at least 1 damage.
+                            if (damages[i] == 0) {
+                                damages[i] = 1;
+                            }
+                        }
+
+                    } else {
+                        damages[i] = 0;
+                    }
+                } else {
+                    damages[i] = 0;
+                }
+            } else {
                 damages[i] = 0;
             }
         }
-
+    
         for (i = 0; i < MAX_MON_MOVES; i++)
             if (damages[i] > damages[AI_THINKING_STRUCT->movesetIndex])
                 break;
-
+    
         if (i == MAX_MON_MOVES)
             AI_THINKING_STRUCT->funcResult = 2;
         else
@@ -1423,6 +1458,7 @@ static void BattleAICmd_get_ability(void)
     gAIScriptPtr += 2;
 }
 
+// unused, not updated
 static void BattleAICmd_get_highest_possible_damage(void)
 {
     s32 i;
@@ -1476,6 +1512,7 @@ static void BattleAICmd_if_damage_bonus(void)
     gBattleMoveDamage = 40;
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
 
+    // variable move type calculations done in TypeCalc
     TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
 
     if (gBattleMoveDamage == 120)
@@ -1668,26 +1705,50 @@ static void BattleAICmd_if_stat_level_not_equal(void)
 
 static void BattleAICmd_if_can_faint(void)
 {
-    if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].power < 2)
+    u8 moveEffectDamageType;
+    uint noDrawbackMoveEffect = TRUE;
+    uint j;
+    const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[AI_THINKING_STRUCT->moveConsidered];
+
+    if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].power == 0)
     {
         gAIScriptPtr += 5;
         return;
     }
 
-    gDynamicBasePower = 0;
-    gBattleStruct->dynamicMoveType = 0;
-    gBattleStruct->dmgMultiplier = 1;
-    gMoveResultFlags = 0;
-    gCritMultiplier = 1;
-    gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
-    AI_CalcDmg(gBankAttacker, gBankTarget);
-    TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
+    // Kappa
+    if (currentMoveInfoPtr->effect != EFFECT_EXPLOSION) {
+        for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+            if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+                noDrawbackMoveEffect = FALSE;
+                break;
+            }
+        }
+    }
+    
+    if (!noDrawbackMoveEffect) {
+        gAIScriptPtr += 5;
+        return;
+    }
 
-    gBattleMoveDamage = gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
+    gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
+    moveEffectDamageType = AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[AI_THINKING_STRUCT->movesetIndex]);
+    
+    // TypeCalc also has side effects
+    if (moveEffectDamageType == AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
+    || TypeCalc(gCurrentMove, gBankAttacker, gBankTarget) & MOVE_RESULT_MISSED) {
+        gAIScriptPtr += 5;
+        return;
+    }
+
+    if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
+        gBattleMoveDamage = gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
+        if (gBattleMoveDamage == 0) {
+            gBattleMoveDamage = 1;
+        }
+    }
 
     // moves always do at least 1 damage.
-    if (gBattleMoveDamage == 0)
-        gBattleMoveDamage = 1;
 
     if (gBattleMons[gBankTarget].hp <= gBattleMoveDamage)
         gAIScriptPtr = T1_READ_PTR(gAIScriptPtr + 1);
@@ -1695,6 +1756,7 @@ static void BattleAICmd_if_can_faint(void)
         gAIScriptPtr += 5;
 }
 
+// this is unused so it has not been updated
 static void BattleAICmd_if_cant_faint(void)
 {
     if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].power < 2)
@@ -1709,7 +1771,7 @@ static void BattleAICmd_if_cant_faint(void)
     gMoveResultFlags = 0;
     gCritMultiplier = 1;
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
-    AI_CalcDmg(gBankAttacker, gBankTarget);
+    AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[AI_THINKING_STRUCT->movesetIndex]);
     TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
 
     gBattleMoveDamage = gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
@@ -2012,11 +2074,44 @@ static void BattleAICmd_get_used_item(void)
 
 static void BattleAICmd_get_move_type_from_result(void)
 {
-    AI_THINKING_STRUCT->funcResult = gBattleMoves[AI_THINKING_STRUCT->funcResult].type;
+    AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->funcResult);
 
     gAIScriptPtr += 1;
 }
 
+u8 BattleAI_GetMoveType(u16 move)
+{
+    u8 type;
+
+    if (gBattleMoves[move].effect == EFFECT_HIDDEN_POWER) {
+        type = (((((gBattleMons[gBankAttacker].hpIV & 1)) |
+            ((gBattleMons[gBankAttacker].attackIV & 1) << 1) |
+            ((gBattleMons[gBankAttacker].defenseIV & 1) << 2) |
+            ((gBattleMons[gBankAttacker].speedIV & 1) << 3) |
+            ((gBattleMons[gBankAttacker].spAttackIV & 1) << 4) |
+            ((gBattleMons[gBankAttacker].spDefenseIV & 1) << 5)) * 15) / 63) + 1;
+        if (type >= TYPE_MYSTERY) {
+            type++;
+        }
+    } else if (gBattleMoves[move].effect == EFFECT_WEATHER_BALL) {
+        if (gBattleWeather & WEATHER_RAIN_ANY)
+            type = TYPE_WATER | 0x80;
+        else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
+            type = TYPE_ROCK | 0x80;
+        else if (gBattleWeather & WEATHER_SUN_ANY)
+            type = TYPE_FIRE | 0x80;
+        else if (gBattleWeather & WEATHER_HAIL)
+            type = TYPE_ICE | 0x80;
+        else
+            type = TYPE_NORMAL | 0x80;
+    } else {
+        type = gBattleMoves[move].type;  
+    }
+
+    return type;
+}
+
+// only used to check if it does damage (i.e. power != 0)
 static void BattleAICmd_get_move_power_from_result(void)
 {
     AI_THINKING_STRUCT->funcResult = gBattleMoves[AI_THINKING_STRUCT->funcResult].power;
@@ -2131,6 +2226,119 @@ static void BattleAICmd_if_not_taunted(void)
         gAIScriptPtr = T1_READ_PTR(gAIScriptPtr + 1);
     else
         gAIScriptPtr += 5;
+}
+
+static void BattleAICmd_if_target_can_faint_user(void)
+{
+    s32 damages[MAX_MON_MOVES];
+    uint i;
+
+    GetTargetMoveDamages(damages);
+
+    for (i = 0; i < MAX_MON_MOVES; i++) {
+        if (gBattleMons[gBankAttacker].hp <= damages[i]) {
+            break;
+        }
+    }
+
+    AI_THINKING_STRUCT->funcResult = (i != MAX_MON_MOVES);
+    gAIScriptPtr += 1;
+}
+
+static void GetTargetMoveDamages(s32 * damages)
+{
+    int i, j;
+    // regular move is 1.
+    u8 noDrawbackMoveEffect;
+    
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u16 currentMove = gBattleMons[gBankTarget].moves[i];
+        const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
+        u8 limitations = CheckMoveLimitations(gBankTarget, 0, 0xFF);
+
+        if (currentMove && currentMoveInfoPtr->power > 0 && !(limitations & gBitTable[i])) {
+            noDrawbackMoveEffect = TRUE;
+            for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+                if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+                    noDrawbackMoveEffect = FALSE;
+                    break;
+                }
+            }
+
+            if (noDrawbackMoveEffect) {
+                u8 moveEffectDamageType;
+
+                gCurrentMove = currentMove;
+                moveEffectDamageType = AI_CalcDmg(gBankTarget, gBankAttacker, AI_THINKING_STRUCT->targetSimulatedMoveRNG[i]);
+                if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
+                && !(TypeCalc(gCurrentMove, gBankTarget, gBankAttacker) & MOVE_RESULT_MISSED)) {
+                    if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
+                        damages[i] = (gBattleMoveDamage * AI_THINKING_STRUCT->targetSimulatedRNG[i]) / 100;
+                        // moves always do at least 1 damage.
+                        if (damages[i] == 0) {
+                            damages[i] = 1;
+                        }
+                    }
+                } else {
+                    damages[i] = 0;
+                }
+            } else {
+                damages[i] = 0;
+            }
+        } else {
+            damages[i] = 0;
+        }
+    }
+}
+
+static void BattleAICmd_get_hp_percent_after_target_damage(void)
+{
+    s32 damages[MAX_MON_MOVES];
+    uint i;
+    s32 lowestHPLeft = 0;
+    s32 tempHPLeft;
+
+    GetTargetMoveDamages(damages);
+
+    for (i = 0; i < MAX_MON_MOVES; i++) {
+        tempHPLeft = gBattleMons[gBankAttacker].hp - damages[i];
+        
+        if (tempHPLeft < lowestHPLeft) {
+            lowestHPLeft = tempHPLeft;
+        }
+    }
+
+    if (lowestHPLeft < 0) {
+        lowestHPLeft = 0;
+    }
+
+    AI_THINKING_STRUCT->funcResult = (u32)(lowestHPLeft) * 100 / gBattleMons[gBankAttacker].maxHP;
+    gAIScriptPtr += 1;
+}
+
+static void BattleAICmd_get_target_damage_percent(void)
+{
+    s32 damages[MAX_MON_MOVES];
+    uint i;
+    s32 maxDamage;
+
+    GetTargetMoveDamages(damages);
+
+    maxDamage = damages[0];
+
+    for (i = 1; i < MAX_MON_MOVES; i++) {
+        if (damages[i] > maxDamage) {
+            maxDamage = damages[i];
+        }
+    }
+
+    if (maxDamage > gBattleMons[gBankAttacker].hp) {
+        maxDamage = gBattleMons[gBankAttacker].hp;
+    }
+
+    AI_THINKING_STRUCT->funcResult = (u32)(maxDamage) * 100 / gBattleMons[gBankAttacker].maxHP;
+    gAIScriptPtr += 1;
 }
 
 void AIStackPushVar(u8 *var)

@@ -686,7 +686,7 @@ AI_CheckViability: @ 81DA86D
 	if_effect EFFECT_VITAL_THROW, AI_CV_VitalThrow
 	if_effect EFFECT_SUBSTITUTE, AI_CV_Substitute
 	if_effect EFFECT_RECHARGE, AI_CV_Recharge
-	if_effect EFFECT_LEECH_SEED, AI_CV_Toxic
+	if_effect EFFECT_LEECH_SEED, AI_CV_LeechSeed
 	if_effect EFFECT_DISABLE, AI_CV_Disable
 	if_effect EFFECT_COUNTER, AI_CV_Counter
 	if_effect EFFECT_ENCORE, AI_CV_Encore
@@ -751,12 +751,16 @@ AI_CheckViability: @ 81DA86D
 	if_effect EFFECT_WATER_SPORT, AI_CV_WaterSport
 	if_effect EFFECT_CALM_MIND, AI_CV_SpDefUp
 	if_effect EFFECT_DRAGON_DANCE, AI_CV_DragonDance
+	
 	end
 
 AI_CV_Sleep: @ 81DAB44
 	if_move_effect TARGET, EFFECT_DREAM_EATER, AI_CV_SleepEncourageSlpDamage
 	if_move_effect TARGET, EFFECT_NIGHTMARE, AI_CV_SleepEncourageSlpDamage
-	jump AI_CV_Sleep_End
+	get_considered_move
+	if_not_equal MOVE_SPORE, AI_CV_Sleep_End
+	score +1
+	end
 
 AI_CV_SleepEncourageSlpDamage: @ 81DAB57
 	if_random_less_than 128, AI_CV_Sleep_End
@@ -1590,7 +1594,7 @@ AI_CV_Paralyze_End: @ 81DB3C1
 	end
 
 AI_CV_VitalThrow: @ 81DB3C2
-	if_would_go_first USER, AI_CV_VitalThrow_End
+	if_would_go_first AI_SPEED_CHECK_TARGET, AI_CV_VitalThrow_End
 	if_hp_more_than USER, 60, AI_CV_VitalThrow_End
 	if_hp_less_than USER, 40, AI_CV_VitalThrow2
 	if_random_less_than 180, AI_CV_VitalThrow_End
@@ -1603,22 +1607,58 @@ AI_CV_VitalThrow_End: @ 81DB3E4
 	end
 
 AI_CV_Substitute: @ 81DB3E5
-	if_hp_more_than USER, 90, AI_CV_Substitute4
-	if_hp_more_than USER, 70, AI_CV_Substitute3
-	if_hp_more_than USER, 50, AI_CV_Substitute2
-	if_random_less_than 100, AI_CV_Substitute2
-	score -1
+	get_turn_count
+	if_equal 0, AI_CV_Substitute_FiftyPercentScorePlusOne
+	is_first_turn USER
+	if_equal FALSE, AI_CV_Substitute_NotUserFirstTurn
+	call AI_CV_Substitute_LowPercentScorePlusOne
+AI_CV_Substitute_NotUserFirstTurn:
+	if_would_go_first AI_SPEED_CHECK_TARGET, AI_CV_Substitute_TargetMovesFirst
+// user moves first
+	check_target_can_faint_user
+	if_equal FALSE, AI_CV_Substitute_NotInDanger
+// if we can move first and we're in danger of being fainted, then substitute to potentially buy time/stall pp
+	score +1
+	jump AI_CV_Substitute_NotInDanger
 
-AI_CV_Substitute2: @ 81DB402
-	if_random_less_than 100, AI_CV_Substitute3
-	score -1
+AI_CV_Substitute_TargetMovesFirst:
+	get_hp_percent_after_target_damage
+// maybe don't bother making a substitute if we probably can't make one
+	if_more_than 25, AI_CV_Substitute_NotInDanger
+	call AI_CV_Substitute_FiftyPercentMinusOne
 
-AI_CV_Substitute3: @ 81DB40A
-	if_random_less_than 100, AI_CV_Substitute4
-	score -1
+AI_CV_Substitute_NotInDanger:
+	call AI_CV_Substitute_CheckFocusPunchOrSubIfTargetCantBreak
+	call AI_CV_Substitute_CheckStatus
+	call AI_CV_Substitute_CheckBatonPass
+	call AI_CV_Substitute_CheckSalacBerry
+	call AI_CV_Substitute_CheckLeechSeed
+	call AI_CV_Substitute_CheckLeftovers
+	end
 
-AI_CV_Substitute4: @ 81DB412
-	if_would_go_first USER, AI_CV_Substitute_End
+AI_CV_Substitute_CheckFocusPunchOrSubIfTargetCantBreak:
+// already established earlier that we won't make a substitute if we likely can't
+	if_has_move USER, MOVE_FOCUS_PUNCH, AI_CV_Substitute_TrySubPunch
+// check if target can break the sub
+	get_target_damage_percent
+// if so, don't encourage
+	if_more_than 24, AI_CV_Substitute_End
+// otherwise, 50/50 to encourage
+AI_CV_Substitute_FiftyPercentScorePlusOne:
+	if_random_less_than 128, AI_CV_SubstituteEncourage
+	end
+
+AI_CV_Substitute_LowPercentScorePlusOne:
+	if_random_less_than 50, AI_CV_SubstituteEncourage
+	end
+
+AI_CV_Substitute_TrySubPunch:
+	if_would_go_first AI_SPEED_CHECK_TARGET, AI_CV_SubstituteEncourage
+	get_target_damage_percent
+	if_less_than 25, AI_CV_SubstituteEncourage
+	end
+
+AI_CV_Substitute_CheckStatus:
 	get_move TARGET
 	get_move_effect_from_result
 	if_equal EFFECT_SLEEP, AI_CV_Substitute5
@@ -1628,24 +1668,61 @@ AI_CV_Substitute4: @ 81DB412
 	if_equal EFFECT_WILL_O_WISP, AI_CV_Substitute5
 	if_equal EFFECT_CONFUSE, AI_CV_Substitute6
 	if_equal EFFECT_LEECH_SEED, AI_CV_Substitute7
-	jump AI_CV_Substitute_End
+	end
 
 AI_CV_Substitute5: @ 81DB44A
 	if_not_status TARGET, SLP | PSN | BRN | FRZ | PAR | TOX, AI_CV_Substitute8
-	jump AI_CV_Substitute_End
+	end
 
 AI_CV_Substitute6: @ 81DB459
 	if_not_status2 TARGET, S_CONFUSED, AI_CV_Substitute8
-	jump AI_CV_Substitute_End
+	end
 
 AI_CV_Substitute7: @ 81DB468
 	if_status3 TARGET, S_LEECH_SEED, AI_CV_Substitute_End
 
-AI_CV_Substitute8: @ 81DB472
+AI_CV_Substitute8:
 	if_random_less_than 100, AI_CV_Substitute_End
+
+AI_CV_SubstituteEncourage:
 	score +1
 
 AI_CV_Substitute_End: @ 81DB47A
+	end
+
+AI_CV_Substitute_CheckBatonPass:
+	if_dont_have_move USER, MOVE_BATON_PASS, AI_CV_Substitute_End
+// idk heuristic 
+	if_hp_less_than USER, 50, AI_CV_Substitute_End
+	if_random_less_than 128, AI_CV_Substitute_End
+	score +1
+	end
+
+AI_CV_Substitute_CheckSalacBerry:
+	get_item USER
+	if_not_equal ITEM_SALAC_BERRY, AI_CV_Substitute_End
+// todo actual speed check
+	if_random_less_than 128, AI_CV_Substitute_End
+	score +1
+	end
+
+AI_CV_Substitute_CheckLeechSeed:
+	if_status3 USER, S_LEECH_SEED, AI_CV_Substitute_FiftyPercentScorePlusTwo
+	end
+
+AI_CV_Substitute_CheckLeftovers:
+	get_item USER
+	if_not_equal ITEM_LEFTOVERS, AI_CV_Substitute_End
+	jump AI_CV_Substitute_FiftyPercentScorePlusOne
+
+AI_CV_Substitute_FiftyPercentScorePlusTwo:
+	if_random_less_than 128, AI_CV_Substitute_End
+	score +2
+	end
+
+AI_CV_Substitute_FiftyPercentMinusOne:
+	if_random_less_than 128, AI_CV_Substitute_End
+	score -1
 	end
 
 AI_CV_Recharge: @ 81DB47B
@@ -1985,11 +2062,28 @@ AI_CV_Protect_ScoreUp2: @ 81DB7A6
 
 AI_CV_Protect2: @ 81DB7A8
 	get_protect_count USER
-	if_equal 0, AI_CV_Protect_End
+	if_equal 0, AI_CV_Protect_CheckLeftovers
 	score -1
 	if_random_less_than 128, AI_CV_Protect_End
 	score -1
 	jump AI_CV_Protect_End
+
+AI_CV_Protect_CheckLeftovers:
+	get_item USER
+	if_not_equal ITEM_LEFTOVERS, AI_CV_Protect_End
+	get_move TARGET
+	get_move_power_from_result
+	if_equal 0, AI_CV_Protect_LeftoversLowProtect
+	if_random_less_than 192, AI_CV_Protect_ScorePlusOne
+	end
+
+AI_CV_Protect_LeftoversLowProtect:
+	if_random_less_than 64, AI_CV_Protect_ScorePlusOne
+	end
+
+AI_CV_Protect_ScorePlusOne:
+	score +1
+	end
 
 AI_CV_Protect3: @ 81DB7BF
 	get_move TARGET
@@ -2022,6 +2116,12 @@ AI_CV_Foresight_End: @ 81DB7F8
 	end
 
 AI_CV_Endure: @ 81DB7F9
+// gotcha! param1 is NOT a USER/TARGET constant
+	if_would_go_first 1, AI_CV_Endure_CheckTargetDamage
+
+AI_CV_Endure_TargetCannotFaintUser:
+	get_protect_count USER
+	if_not_equal 0, AI_CV_Endure2
 	if_hp_less_than USER, 4, AI_CV_Endure2
 	if_hp_less_than USER, 35, AI_CV_Endure3
 
@@ -2031,17 +2131,32 @@ AI_CV_Endure2: @ 81DB807
 
 AI_CV_Endure3: @ 81DB80E
 	if_random_less_than 70, AI_CV_Endure_End
+
+AI_CV_Endure_ScorePlusOne:
 	score +1
 
 AI_CV_Endure_End: @ 81DB816
 	end
 
+AI_CV_Endure_CheckTargetDamage:
+	check_target_can_faint_user
+	if_equal TRUE, AI_CV_Endure_RandomChance
+	jump AI_CV_Endure_TargetCannotFaintUser
+
+AI_CV_Endure_RandomChance:
+	if_random_less_than 128, AI_CV_Endure2
+	get_protect_count USER
+	if_not_equal 0, AI_CV_Endure_ScorePlusOne
+	score +5
+	end
+
 AI_CV_BatonPass: @ 81DB817
-	if_stat_level_more_than USER, ATTACK, 8, AI_CV_BatonPass2
-	if_stat_level_more_than USER, DEFENSE, 8, AI_CV_BatonPass2
-	if_stat_level_more_than USER, SP_ATTACK, 8, AI_CV_BatonPass2
-	if_stat_level_more_than USER, SP_DEFENSE, 8, AI_CV_BatonPass2
-	if_stat_level_more_than USER, EVASION, 8, AI_CV_BatonPass2
+	if_stat_level_more_than USER, ATTACK, 7, AI_CV_BatonPass2
+	if_stat_level_more_than USER, DEFENSE, 7, AI_CV_BatonPass2
+	if_stat_level_more_than USER, SP_ATTACK, 7, AI_CV_BatonPass2
+	if_stat_level_more_than USER, SP_DEFENSE, 7, AI_CV_BatonPass2
+	if_stat_level_more_than USER, EVASION, 7, AI_CV_BatonPass2
+	if_stat_level_more_than USER, SPEED, 7, AI_CV_BatonPass2
 	jump AI_CV_BatonPass5
 
 AI_CV_BatonPass2: @ 81DB844
@@ -2050,6 +2165,8 @@ AI_CV_BatonPass2: @ 81DB844
 	jump AI_CV_BatonPass4
 
 AI_CV_BatonPass3: @ 81DB856
+	check_target_can_faint_user
+	if_equal TRUE, AI_CV_BatonPass4
 	if_hp_more_than USER, 70, AI_CV_BatonPass_End
 
 AI_CV_BatonPass4: @ 81DB85D
@@ -2345,10 +2462,11 @@ AI_CV_FocusPunch: @ 81DBB65
 	if_status TARGET, SLP, AI_CV_FocusPunch_ScoreUp1
 	if_status2 TARGET, S_INFATUATED, AI_CV_FocusPunch3
 	if_status2 TARGET, S_CONFUSED, AI_CV_FocusPunch3
-	is_first_turn USER
+	if_status2 USER, S_SUBSTITUTE, AI_CV_FocusPunch_ScoreUp1
+	/*is_first_turn USER
 	if_not_equal 0, AI_CV_FocusPunch_End
 	if_random_less_than 100, AI_CV_FocusPunch_End
-	score +1
+	score +1*/
 	jump AI_CV_FocusPunch_End
 
 AI_CV_FocusPunch2: @ 81DBBA4
@@ -2709,7 +2827,14 @@ AI_TryToFaint_ScoreUp4: @ 81DBEB2
 AI_TryToFaint_End: @ 81DBEB4
 	end
 
+AI_CV_LeechSeed:
+	is_first_turn USER
+	if_more_than 1, AI_SetupFirstTurn_End
+	score +2
+	end
+
 AI_SetupFirstTurn: @ 81DBEB5
+// oops! this should be is_first_turn
 	get_turn_count
 	if_not_equal 0, AI_SetupFirstTurn_End
 	get_effect

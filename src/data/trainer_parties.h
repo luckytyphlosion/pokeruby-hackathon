@@ -9928,12 +9928,12 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JudeSteel
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_EllaineDarkness[] = {
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_DARK,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_CACTURNE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_DESTINY_BOND, MOVE_SUBSTITUTE, MOVE_FOCUS_PUNCH, MOVE_LEECH_SEED
+        .moves = MOVE_HIDDEN_POWER, MOVE_SUBSTITUTE, MOVE_FOCUS_PUNCH, MOVE_LEECH_SEED
     },
     {
         .iv = TYPE_GRASS,
@@ -10228,18 +10228,18 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JennyGhos
         .whichAbility = 0,
         .species = SPECIES_GENGAR,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_THUNDERBOLT, MOVE_ICE_BEAM, MOVE_GIGA_DRAIN, MOVE_TAUNT
+        .moves = MOVE_THUNDERBOLT, MOVE_ICE_PUNCH, MOVE_GIGA_DRAIN, MOVE_TAUNT
     },
 };
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[] = {
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_GHOST,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_HERACROSS,
         .heldItem = ITEM_CHOICE_BAND,
-        .moves = MOVE_MEGAHORN, MOVE_ROCK_SLIDE, MOVE_FOCUS_PUNCH, MOVE_BRICK_BREAK
+        .moves = MOVE_MEGAHORN, MOVE_ROCK_SLIDE, MOVE_HIDDEN_POWER, MOVE_BRICK_BREAK
     },
     {
         .iv = TYPE_NORMAL,
@@ -10247,6 +10247,7 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[
         .whichAbility = 0,
         .species = SPECIES_FORRETRESS,
         .heldItem = ITEM_HARD_STONE,
+        // meme
         .moves = MOVE_COUNTER, MOVE_DEFENSE_CURL, MOVE_ROLLOUT, MOVE_EXPLOSION
     },
     {
@@ -10446,12 +10447,12 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AllenPsyc
         .moves = MOVE_TRICK, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_FIRE_PUNCH
     },
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_WATER,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_ESPEON,
         .heldItem = ITEM_SALAC_BERRY,
-        .moves = MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_SUBSTITUTE, MOVE_CALM_MIND
+        .moves = MOVE_PSYCHIC, MOVE_HIDDEN_POWER, MOVE_SUBSTITUTE, MOVE_CALM_MIND
     },
     {
         .iv = TYPE_NORMAL,
@@ -10494,15 +10495,15 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MaryJoyGr
         .whichAbility = 0,
         .species = SPECIES_SCEPTILE,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_LEAF_BLADE, MOVE_SUNNY_DAY, MOVE_BRICK_BREAK, MOVE_THUNDER_PUNCH
+        .moves = MOVE_LEAF_BLADE, MOVE_LEECH_SEED, MOVE_BRICK_BREAK, MOVE_THUNDER_PUNCH
     },
     {
         .iv = TYPE_NORMAL,
         .level = 85,
-        .whichAbility = 0, // CHLOROPHYLL
-        .species = SPECIES_TROPIUS,
+        .whichAbility = 0, // NATURAL CURE
+        .species = SPECIES_CELEBI,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_SUNNY_DAY, MOVE_SOLAR_BEAM, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE
+        .moves = MOVE_CALM_MIND, MOVE_BATON_PASS, MOVE_PSYCHIC, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_GRASS,

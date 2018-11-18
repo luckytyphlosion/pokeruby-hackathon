@@ -254,6 +254,9 @@
 	.4byte \address
 	.endm
 
+	.equ AI_SPEED_CHECK_USER, 0
+	.equ AI_SPEED_CHECK_TARGET, 1
+	
 	@ nullsub
 	.macro ai_2a
 	.byte 0x2a
@@ -474,7 +477,7 @@
 	.byte 0x50
 	.endm
 
-	.macro get_protect_count target
+	.macro get_protect_count target:req
 	.byte 0x51
 	.byte \target
 	.endm
@@ -551,4 +554,16 @@
 	.macro if_not_taunted address
 	.byte 0x5d
 	.4byte \address
+	.endm
+
+	.macro check_target_can_faint_user
+	.byte 0x5e
+	.endm
+
+	.macro get_hp_percent_after_target_damage
+	.byte 0x5f
+	.endm
+
+	.macro get_target_damage_percent
+	.byte 0x60
 	.endm

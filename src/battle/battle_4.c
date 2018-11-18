@@ -30,6 +30,7 @@
 #include "trainer.h"
 #include "constants/vars.h"
 #include "event_data.h"
+#include "battle_ai.h"
 
 // TODO: put this into battle_controllers.h
 
@@ -530,6 +531,7 @@ static void atkA9_trychoosesleeptalkmove(void);
 static void atkAA_setdestinybond(void);
 static void atkAB_trysetdestinybondtohappen(void);
 static void atkAC_remaininghptopower(void);
+static void GetFlailEffectMovePower(u8 bankAttacker);
 static void atkAD_tryspiteppreduce(void);
 static void atkAE_healpartystatus(void);
 static void atkAF_cursetarget(void);
@@ -551,6 +553,7 @@ static void atkBE_rapidspinfree(void);
 static void atkBF_setdefensecurlbit(void);
 static void atkC0_recoverbasedonsunlight(void);
 static void atkC1_hiddenpowercalc(void);
+static void CalculateHiddenPower(u8 bankAttacker);
 static void atkC2_selectfirstvalidtarget(void);
 static void atkC3_trysetfutureattack(void);
 static void atkC4_trydobeatup(void);
@@ -579,6 +582,7 @@ static void atkDA_tryswapabilities(void);
 static void atkDB_tryimprision(void);
 static void atkDC_trysetgrudge(void);
 static void atkDD_weightdamagecalculation(void);
+static u8 GetWeightDamageEffectBasePower(u8 bankTarget);
 static void atkDE_asistattackselect(void);
 static void atkDF_trysetmagiccoat(void);
 static void atkE0_trysetsnatch(void);
@@ -591,6 +595,7 @@ static void atkE6_docastformchangeanimation(void);
 static void atkE7_trycastformdatachange(void);
 static void atkE8_settypebasedhalvers(void);
 static void atkE9_setweatherballtype(void);
+static void SetWeatherBallTypeAndDmgMultiplier(void);
 static void atkEA_tryrecycleitem(void);
 static void atkEB_settypetoterrain(void);
 static void atkEC_pursuitrelated(void);
@@ -605,6 +610,20 @@ static void atkF4_subattackerhpbydmg(void);
 static void atkF5_removeattackerstatus1(void);
 static void atkF6_finishaction(void);
 static void atkF7_finishturn(void);
+
+static u8 VariableDamageEffect_LevelDamage(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_HiddenPower(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_Return(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_Endeavor(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_Flail(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_SonicBoom(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_SuperFang(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_LowKick(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_DragonRage(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_Psywave(uint bankAttacker, uint simulatedRNG);
+static u8 VariableDamageEffect_Present(uint bankAttacker, uint simulatedRNG);
+static u8 VariableDamageEffect_Frustration(uint bankAttacker, uint bankTarget);
+static u8 VariableDamageEffect_Magnitude(uint bankAttacker, uint simulatedRNG);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -1098,6 +1117,77 @@ static const u8 sBallCatchBonuses[] =
     20, 15, 10, 15 // Ultra, Great, Poke, Safari
 };
 
+// includes only the moves that are actually used on the elite 17 parties
+const struct VariableDamageEffectAndFunction gVariableDamageEffectsAndFunctions[] = {
+    {
+        .effect = EFFECT_LEVEL_DAMAGE,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_LevelDamage
+    },
+    {
+        .effect = EFFECT_HIDDEN_POWER,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_HiddenPower
+    },
+    {
+        .effect = EFFECT_RETURN,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_Return
+    },
+    {
+        .effect = EFFECT_ENDEAVOR,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_Endeavor
+    },
+    {
+        .effect = EFFECT_FLAIL,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_Flail
+    },
+    {
+        .effect = EFFECT_SONICBOOM,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_SonicBoom
+    },
+    {
+        .effect = EFFECT_SUPER_FANG,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_SuperFang
+    },
+    {
+        .effect = EFFECT_LOW_KICK,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_LowKick
+    },
+    {
+        .effect = EFFECT_DRAGON_RAGE,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_DragonRage
+    },
+    {
+        .effect = EFFECT_PSYWAVE,
+        .argType = VARIABLE_DAMAGE_SIMULATED_RNG,
+        .function = VariableDamageEffect_Psywave
+    },
+    {
+        .effect = EFFECT_PRESENT,
+        .argType = VARIABLE_DAMAGE_SIMULATED_RNG,
+        .function = VariableDamageEffect_Present
+    },
+    {
+        .effect = EFFECT_FRUSTRATION,
+        .argType = VARIABLE_DAMAGE_NO_SIMULATED_RNG,
+        .function = VariableDamageEffect_Frustration
+    },
+    {
+        .effect = EFFECT_MAGNITUDE,
+        .argType = VARIABLE_DAMAGE_SIMULATED_RNG,
+        .function = VariableDamageEffect_Magnitude
+    }        
+};
+
+const uint gVariableDamageEffectsAndFunctionsArrayCount = (sizeof(gVariableDamageEffectsAndFunctions) / sizeof(struct VariableDamageEffectAndFunction));
+
 static void atk00_attackcanceler(void)
 {
     s32 i;
@@ -1486,19 +1576,180 @@ static void atk05_damagecalc(void)
     gBattlescriptCurrInstr++;
 }
 
-void AI_CalcDmg(u8 BankAtk, u8 BankDef)
+uint AI_CalcDmg(u8 bankAtk, u8 bankDef, u16 simulatedRNG)
 {
-    u16 side_hword = gSideAffecting[GetBattlerPosition(BankDef) & 1];
-    gBattleMoveDamage = CalculateBaseDamage(&gBattleMons[BankAtk], &gBattleMons[BankDef], gCurrentMove,
-                                            side_hword, gDynamicBasePower,
-                                            gBattleStruct->dynamicMoveType, BankAtk, BankDef);
-    gDynamicBasePower = 0;
-    gBattleMoveDamage = gBattleMoveDamage * gCritMultiplier * gBattleStruct->dmgMultiplier;
+    u16 sideHword = gSideAffecting[GetBattlerPosition(bankDef) & 1];
+    int i;
+    int okayOrVariableDamageMoveWithImplementedAIBehaviour = AI_CALCDMG_NORMAL_MOVE;
 
-    if (gStatuses3[BankAtk] & STATUS3_CHARGED_UP && gBattleMoves[gCurrentMove].type == TYPE_ELECTRIC)
-        gBattleMoveDamage *= 2;
-    if (gProtectStructs[BankAtk].helpingHand)
-        gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    gDynamicBasePower = 0;
+    gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dmgMultiplier = 1;
+    gMoveResultFlags = 0;
+    gCritMultiplier = 1;
+    gBattleMoveDamage = 0;
+
+    if (gBattleMoves[gCurrentMove].power == 1) {
+        okayOrVariableDamageMoveWithImplementedAIBehaviour = AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE;
+        
+        for (i = 0; i < ARRAY_COUNT(gVariableDamageEffectsAndFunctions); i++) {
+            if (gVariableDamageEffectsAndFunctions[i].effect == gBattleMoves[gCurrentMove].effect) {
+                uint variableDamageFunctionSecondArg;
+                if (gVariableDamageEffectsAndFunctions[i].argType == VARIABLE_DAMAGE_NO_SIMULATED_RNG) {
+                    variableDamageFunctionSecondArg = bankDef;
+                // simulated RNG
+                } else {
+                    variableDamageFunctionSecondArg = simulatedRNG;
+                }
+                okayOrVariableDamageMoveWithImplementedAIBehaviour = gVariableDamageEffectsAndFunctions[i].function(bankAtk, variableDamageFunctionSecondArg);
+                break;
+            }
+        }
+    } else if (gBattleMoves[gCurrentMove].effect == EFFECT_WEATHER_BALL) {
+        SetWeatherBallTypeAndDmgMultiplier();
+    }
+
+    if (okayOrVariableDamageMoveWithImplementedAIBehaviour == AI_CALCDMG_NORMAL_MOVE) {
+        gBattleMoveDamage = CalculateBaseDamage(&gBattleMons[bankAtk], &gBattleMons[bankDef], gCurrentMove,
+                                                sideHword, gDynamicBasePower,
+                                                gBattleStruct->dynamicMoveType, bankAtk, bankDef);
+        gDynamicBasePower = 0;
+        gBattleMoveDamage = gBattleMoveDamage * gCritMultiplier * gBattleStruct->dmgMultiplier;
+    
+        if (gStatuses3[bankAtk] & STATUS3_CHARGED_UP && gBattleMoves[gCurrentMove].type == TYPE_ELECTRIC)
+            gBattleMoveDamage *= 2;
+        if (gProtectStructs[bankAtk].helpingHand)
+            gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    }
+
+    return okayOrVariableDamageMoveWithImplementedAIBehaviour;
+}
+
+static u8 VariableDamageEffect_LevelDamage(uint bankAttacker, uint bankTarget)
+{
+    gBattleMoveDamage = gBattleMons[bankAttacker].level;
+    return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+}
+
+static u8 VariableDamageEffect_HiddenPower(uint bankAttacker, uint bankTarget)
+{
+    CalculateHiddenPower(bankAttacker);
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_Return(uint bankAttacker, uint bankTarget)
+{
+    gDynamicBasePower = 10 * (gBattleMons[bankAttacker].friendship) / 25;
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_Endeavor(uint bankAttacker, uint bankTarget)
+{
+    if (gBattleMons[bankTarget].hp <= gBattleMons[bankAttacker].hp) {
+        gBattleMoveDamage = 0;
+        return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+    } else {
+        gBattleMoveDamage = gBattleMons[bankTarget].hp - gBattleMons[bankAttacker].hp;
+        return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+    }
+}
+
+static u8 VariableDamageEffect_Flail(uint bankAttacker, uint bankTarget)
+{
+    GetFlailEffectMovePower(bankAttacker);
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_SonicBoom(uint bankAttacker, uint bankTarget)
+{
+    gBattleMoveDamage = 20;
+    return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+}
+
+static u8 VariableDamageEffect_SuperFang(uint bankAttacker, uint bankTarget)
+{
+    gBattleMoveDamage = gBattleMons[bankTarget].hp / 2;
+    if (gBattleMoveDamage == 0)
+        gBattleMoveDamage = 1;
+    return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+}
+
+static u8 VariableDamageEffect_LowKick(uint bankAttacker, uint bankTarget)
+{
+    gDynamicBasePower = GetWeightDamageEffectBasePower(bankTarget);
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_DragonRage(uint bankAttacker, uint bankTarget)
+{
+    gBattleMoveDamage = 40;
+    return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+}
+
+static u8 VariableDamageEffect_Psywave(uint bankAttacker, uint simulatedRNG)
+{
+    // slightly inaccurate from how RNG is actually chosen for psywave but isn't too important here anyway
+    uint randDmgMultiplier = simulatedRNG % 11;
+    randDmgMultiplier *= 10;
+    gBattleMoveDamage = gBattleMons[bankAttacker].level * (randDmgMultiplier + 50) / 100;
+    return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+}
+
+static u8 VariableDamageEffect_Present(uint bankAttacker, uint simulatedRNG)
+{
+    simulatedRNG = simulatedRNG & 0xff;
+    if (simulatedRNG < 102)
+        gDynamicBasePower = 40;
+    else if (simulatedRNG < 178)
+        gDynamicBasePower = 80;
+    else if (simulatedRNG < 204)
+        gDynamicBasePower = 120;
+    else
+    {
+        gBattleMoveDamage = -1;
+        return AI_CALCDMG_CONSTANT_DAMAGE_MOVE;
+    }
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_Frustration(uint bankAttacker, uint bankTarget)
+{
+    gDynamicBasePower = 10 * (255 - gBattleMons[bankAttacker].friendship) / 25;
+    return AI_CALCDMG_NORMAL_MOVE;
+}
+
+static u8 VariableDamageEffect_Magnitude(uint bankAttacker, uint simulatedRNG)
+{
+    simulatedRNG = simulatedRNG % 100;
+    if (simulatedRNG < 5)
+    {
+        gDynamicBasePower = 10;
+    }
+    else if (simulatedRNG < 15)
+    {
+        gDynamicBasePower = 30;
+    }
+    else if (simulatedRNG < 35)
+    {
+        gDynamicBasePower = 50;
+    }
+    else if (simulatedRNG < 65)
+    {
+        gDynamicBasePower = 70;
+    }
+    else if (simulatedRNG < 85)
+    {
+        gDynamicBasePower = 90;
+    }
+    else if (simulatedRNG < 95)
+    {
+        gDynamicBasePower = 110;
+    }
+    else
+    {
+        gDynamicBasePower = 150;
+    }
+    return AI_CALCDMG_NORMAL_MOVE;
 }
 
 static void ModulateDmgByType(u8 multiplier)
@@ -1721,8 +1972,12 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    move_type = gBattleMoves[move].type;
-
+    if (gBattleStruct->dynamicMoveType) {
+        move_type = gBattleStruct->dynamicMoveType & 0x3F;
+    } else {
+        move_type = BattleAI_GetMoveType(move);
+    }
+    
     //check stab
     if (gBattleMons[bank_atk].type1 == move_type || gBattleMons[bank_atk].type2 == move_type)
     {
@@ -1745,7 +2000,6 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
                 i += 3;
                 continue;
             }
-
             else if (gTypeEffectiveness[i] == move_type)
             {
                 //check type1
@@ -1753,7 +2007,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
                     ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
                 //check type2
                 if (gTypeEffectiveness[i + 1] == gBattleMons[bank_def].type2 &&
-                    gBattleMons[gBankTarget /* what the christ */].type1 != gBattleMons[bank_def].type2)
+                    gBattleMons[bank_def].type1 != gBattleMons[bank_def].type2)
                     ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
             }
             i += 3;
@@ -1779,7 +2033,10 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    move_type = gBattleMoves[move].type;
+    if (gBattleStruct->dynamicMoveType)
+        move_type = gBattleStruct->dynamicMoveType & 0x3F;
+    else
+        move_type = BattleAI_GetMoveType(move);
 
     if (ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
         flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
@@ -1804,6 +2061,7 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
             i += 3;
         }
     }
+
     if (ability == ABILITY_WONDER_GUARD
      && (!(flags & MOVE_RESULT_SUPER_EFFECTIVE) || ((flags & (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)) == (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)))
      && gBattleMoves[move].power)
@@ -12945,7 +13203,7 @@ static void atkA0_psywavedamageeffect(void)
     rand_dmg *= 10;
     gBattleMoveDamage = gBattleMons[gBankAttacker].level * (rand_dmg + 50) / 100;
     gBattlescriptCurrInstr++;
-}
+}    
 
 static void atkA1_counterdamagecalculator(void)
 {
@@ -13504,15 +13762,20 @@ static void atkAB_trysetdestinybondtohappen(void)
 
 static void atkAC_remaininghptopower(void)
 {
-    s32 hp_fraction = GetScaledHPFraction(gBattleMons[gBankAttacker].hp, gBattleMons[gBankAttacker].maxHP, 48);
+    GetFlailEffectMovePower(gBankAttacker);
+    gBattlescriptCurrInstr++;
+}
+
+static void GetFlailEffectMovePower(u8 bankAttacker)
+{
+    s32 hpFraction = GetScaledHPFraction(gBattleMons[bankAttacker].hp, gBattleMons[bankAttacker].maxHP, 48);
     int i;
     for (i = 0; i < 12; i += 2)
     {
-        if (hp_fraction <= sFlailHpScaleToPowerTable[i])
+        if (hpFraction <= sFlailHpScaleToPowerTable[i])
             break;
     }
     gDynamicBasePower = sFlailHpScaleToPowerTable[i + 1];
-    gBattlescriptCurrInstr++;
 }
 
 static void atkAD_tryspiteppreduce(void)
@@ -13764,7 +14027,7 @@ static void atkB6_happinesstodamagecalculation(void)
 {
     if (gBattleMoves[gCurrentMove].effect == EFFECT_RETURN)
         gDynamicBasePower = 10 * (gBattleMons[gBankAttacker].friendship) / 25;
-    else //EFFECT_FRUSTRATION
+    else // EFFECT_FRUSTRATION
         gDynamicBasePower = 10 * (255 - gBattleMons[gBankAttacker].friendship) / 25;
     gBattlescriptCurrInstr++;
 }
@@ -14011,19 +14274,26 @@ static void atkC0_recoverbasedonsunlight(void)
 
 static void atkC1_hiddenpowercalc(void)
 {
-	u8 power = ((gBattleMons[gBankAttacker].hpIV & 2) >> 1) |
-	           ((gBattleMons[gBankAttacker].attackIV & 2)) |
-	           ((gBattleMons[gBankAttacker].defenseIV & 2) << 1) |
-	           ((gBattleMons[gBankAttacker].speedIV & 2) << 2) |
-	           ((gBattleMons[gBankAttacker].spAttackIV & 2) << 3) |
-	           ((gBattleMons[gBankAttacker].spDefenseIV & 2) << 4);
-	u8 type = ((gBattleMons[gBankAttacker].hpIV & 1)) |
-	          ((gBattleMons[gBankAttacker].attackIV & 1) << 1) |
-	          ((gBattleMons[gBankAttacker].defenseIV & 1) << 2) |
-	          ((gBattleMons[gBankAttacker].speedIV & 1) << 3) |
-	          ((gBattleMons[gBankAttacker].spAttackIV & 1) << 4) |
-	          ((gBattleMons[gBankAttacker].spDefenseIV & 1) << 5);
-	
+	CalculateHiddenPower(gBankAttacker);
+
+	gBattlescriptCurrInstr++;
+}
+
+static void CalculateHiddenPower(u8 bankAttacker)
+{
+    u8 power = ((gBattleMons[bankAttacker].hpIV & 2) >> 1) |
+	           ((gBattleMons[bankAttacker].attackIV & 2)) |
+	           ((gBattleMons[bankAttacker].defenseIV & 2) << 1) |
+	           ((gBattleMons[bankAttacker].speedIV & 2) << 2) |
+	           ((gBattleMons[bankAttacker].spAttackIV & 2) << 3) |
+	           ((gBattleMons[bankAttacker].spDefenseIV & 2) << 4);
+	u8 type = ((gBattleMons[bankAttacker].hpIV & 1)) |
+	          ((gBattleMons[bankAttacker].attackIV & 1) << 1) |
+	          ((gBattleMons[bankAttacker].defenseIV & 1) << 2) |
+	          ((gBattleMons[bankAttacker].speedIV & 1) << 3) |
+	          ((gBattleMons[bankAttacker].spAttackIV & 1) << 4) |
+	          ((gBattleMons[bankAttacker].spDefenseIV & 1) << 5);
+
 	gDynamicBasePower = 30 + (power * 40 / 63);
 	
 	gBattleStruct->dynamicMoveType = ((type * 15) / 63) + 1;
@@ -14031,8 +14301,6 @@ static void atkC1_hiddenpowercalc(void)
 		gBattleStruct->dynamicMoveType++;
 	
 	gBattleStruct->dynamicMoveType |= 0xC0;
-	
-	gBattlescriptCurrInstr++;
 }
 
 static void atkC2_selectfirstvalidtarget(void)
@@ -15031,17 +15299,23 @@ static void atkDC_trysetgrudge(void)
 
 static void atkDD_weightdamagecalculation(void)
 {
+    gDynamicBasePower = GetWeightDamageEffectBasePower(gBankTarget);
+    gBattlescriptCurrInstr++;
+}
+
+static u8 GetWeightDamageEffectBasePower(u8 bankTarget)
+{
     int i;
+
     for (i = 0; sWeightToDamageTable[i] != 0xFFFF; i += 2)
     {
-        if (sWeightToDamageTable[i] > GetPokedexHeightWeight(SpeciesToNationalPokedexNum(gBattleMons[gBankTarget].species), 1))
+        if (sWeightToDamageTable[i] > GetPokedexHeightWeight(SpeciesToNationalPokedexNum(gBattleMons[bankTarget].species), 1))
             break;
     }
     if (sWeightToDamageTable[i] != 0xFFFF)
-        gDynamicBasePower = sWeightToDamageTable[i + 1];
+        return sWeightToDamageTable[i + 1];
     else
-        gDynamicBasePower = 120;
-    gBattlescriptCurrInstr++;
+        return 120;
 }
 
 #ifdef NONMATCHING
@@ -15473,22 +15747,28 @@ static void atkE8_settypebasedhalvers(void) //water/mud sport
 
 static void atkE9_setweatherballtype(void)
 {
+    SetWeatherBallTypeAndDmgMultiplier();
+    gBattlescriptCurrInstr++;
+}
+
+static void SetWeatherBallTypeAndDmgMultiplier(void)
+{
     if (WEATHER_HAS_EFFECT)
     {
-        if ((u8)(gBattleWeather))
+        if ((u8)(gBattleWeather)) {
             gBattleStruct->dmgMultiplier = 2;
-        if (gBattleWeather & WEATHER_RAIN_ANY)
-            gBattleStruct->dynamicMoveType = TYPE_WATER | 0x80;
-        else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
-            gBattleStruct->dynamicMoveType = TYPE_ROCK | 0x80;
-        else if (gBattleWeather & WEATHER_SUN_ANY)
-            gBattleStruct->dynamicMoveType = TYPE_FIRE | 0x80;
-        else if (gBattleWeather & WEATHER_HAIL)
-            gBattleStruct->dynamicMoveType = TYPE_ICE | 0x80;
-        else
+            if (gBattleWeather & WEATHER_RAIN_ANY)
+                gBattleStruct->dynamicMoveType = TYPE_WATER | 0x80;
+            else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
+                gBattleStruct->dynamicMoveType = TYPE_ROCK | 0x80;
+            else if (gBattleWeather & WEATHER_SUN_ANY)
+                gBattleStruct->dynamicMoveType = TYPE_FIRE | 0x80;
+            else if (gBattleWeather & WEATHER_HAIL)
+                gBattleStruct->dynamicMoveType = TYPE_ICE | 0x80;
+        } else {
             gBattleStruct->dynamicMoveType = TYPE_NORMAL | 0x80;
+        }
     }
-    gBattlescriptCurrInstr++;
 }
 
 static void atkEA_tryrecycleitem(void)
