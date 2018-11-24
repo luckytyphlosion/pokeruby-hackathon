@@ -564,6 +564,7 @@
 	.byte 0x5f
 	.endm
 
-	.macro get_target_damage_percent
+	.macro get_max_damage_percent target:req
 	.byte 0x60
+	.byte \target
 	.endm

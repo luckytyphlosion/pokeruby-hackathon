@@ -9877,12 +9877,12 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MichaelFi
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JudeSteel[] = {
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_STEEL,
         .level = 85,
         .whichAbility = 0, // STURDY
         .species = SPECIES_AGGRON,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_ROCK_SLIDE, MOVE_IRON_TAIL, MOVE_IRON_DEFENSE, MOVE_THUNDER_WAVE
+        .moves = MOVE_ROCK_SLIDE, MOVE_HIDDEN_POWER, MOVE_IRON_DEFENSE, MOVE_THUNDER_WAVE
     },
     {
         .iv = TYPE_ROCK,
@@ -10242,28 +10242,27 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[
         .moves = MOVE_MEGAHORN, MOVE_ROCK_SLIDE, MOVE_HIDDEN_POWER, MOVE_BRICK_BREAK
     },
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_BUG,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_FORRETRESS,
-        .heldItem = ITEM_HARD_STONE,
-        // meme
-        .moves = MOVE_COUNTER, MOVE_DEFENSE_CURL, MOVE_ROLLOUT, MOVE_EXPLOSION
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_COUNTER, MOVE_HIDDEN_POWER, MOVE_LIGHT_SCREEN, MOVE_EXPLOSION
     },
     {
-        .iv = TYPE_STEEL,
+        .iv = TYPE_BUG,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_SCIZOR,
-        .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_BATON_PASS, MOVE_SUBSTITUTE, MOVE_SWORDS_DANCE, MOVE_HIDDEN_POWER
+        .heldItem = ITEM_SALAC_BERRY,
+        .moves = MOVE_STEEL_WING, MOVE_SUBSTITUTE, MOVE_SWORDS_DANCE, MOVE_HIDDEN_POWER
     },
     {
         .iv = TYPE_NORMAL,
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_NINJASK,
-        .heldItem = ITEM_LEFTOVERS,
+        .heldItem = ITEM_LIECHI_BERRY,
         .moves = MOVE_BATON_PASS, MOVE_PROTECT, MOVE_AERIAL_ACE, MOVE_SUBSTITUTE
     },
     {
@@ -10276,7 +10275,7 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[
     },
     {
         .iv = TYPE_BUG,
-        .level = 85,
+        .level = 92,
         .whichAbility = 0,
         .species = SPECIES_ARMALDO,
         .heldItem = ITEM_LEFTOVERS,
@@ -10730,7 +10729,7 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_BobbyCham
         .level = 98,
         .whichAbility = 0,
         .species = SPECIES_HO_OH,
-        .heldItem = ITEM_CHOICE_BAND,
+        .heldItem = ITEM_LEFTOVERS,
         .moves = MOVE_SACRED_FIRE, MOVE_THUNDER, MOVE_HIDDEN_POWER, MOVE_EARTHQUAKE
     },
     {

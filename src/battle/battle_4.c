@@ -1186,6 +1186,15 @@ const struct VariableDamageEffectAndFunction gVariableDamageEffectsAndFunctions[
     }        
 };
 
+static const u8 sConstantDamageMoveEffects[] = {
+    EFFECT_LEVEL_DAMAGE,
+    EFFECT_ENDEAVOR,
+    EFFECT_SONICBOOM,
+    EFFECT_SUPER_FANG,
+    EFFECT_DRAGON_RAGE,
+    EFFECT_PSYWAVE
+};
+
 const uint gVariableDamageEffectsAndFunctionsArrayCount = (sizeof(gVariableDamageEffectsAndFunctions) / sizeof(struct VariableDamageEffectAndFunction));
 
 static void atk00_attackcanceler(void)
@@ -1605,6 +1614,8 @@ uint AI_CalcDmg(u8 bankAtk, u8 bankDef, u16 simulatedRNG)
                 break;
             }
         }
+    } else if (gBattleMoves[gCurrentMove].power == 0) {
+        return AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE;
     } else if (gBattleMoves[gCurrentMove].effect == EFFECT_WEATHER_BALL) {
         SetWeatherBallTypeAndDmgMultiplier();
     }
@@ -1929,12 +1940,12 @@ static void CheckWonderGuardAndLevitate(void)
     }
 }
 
-static void ModulateDmgByType2(u8 multiplier, u16 move, u8* flags) //a literal copy of the ModulateDmgbyType1 with different args...
+static void ModulateDmgByType2(u8 multiplier, u16 move, u8* flags, uint constantDamageMove) //a literal copy of the ModulateDmgbyType1 with different args...
 {
     gBattleMoveDamage = gBattleMoveDamage * multiplier / 10;
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
-
+    
     switch (multiplier)
     {
     case 0: //no effect
@@ -1943,7 +1954,7 @@ static void ModulateDmgByType2(u8 multiplier, u16 move, u8* flags) //a literal c
         *flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
         break;
     case 5: //not very effecting
-        if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
+        if (!constantDamageMove && gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
         {
             if (*flags & MOVE_RESULT_SUPER_EFFECTIVE)
                 *flags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
@@ -1952,7 +1963,7 @@ static void ModulateDmgByType2(u8 multiplier, u16 move, u8* flags) //a literal c
         }
         break;
     case 20: //super effective
-        if (gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
+        if (!constantDamageMove && gBattleMoves[move].power && !(*flags & MOVE_RESULT_NO_EFFECT))
         {
             if (*flags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
                 *flags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
@@ -1965,9 +1976,10 @@ static void ModulateDmgByType2(u8 multiplier, u16 move, u8* flags) //a literal c
 
 u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
 {
-    int i = 0;
+    int i;
     u8 flags = 0;
     u8 move_type;
+    uint constantDamageMove = FALSE;
 
     if (move == MOVE_STRUGGLE)
         return 0;
@@ -1978,8 +1990,15 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
         move_type = BattleAI_GetMoveType(move);
     }
     
+    for (i = 0; i < ARRAY_COUNT(sConstantDamageMoveEffects); i++) {
+        if (sConstantDamageMoveEffects[i] == gBattleMoves[move].effect) {
+            constantDamageMove = TRUE;
+            break;
+        }
+    }
+
     //check stab
-    if (gBattleMons[bank_atk].type1 == move_type || gBattleMons[bank_atk].type2 == move_type)
+    if (!constantDamageMove && (gBattleMons[bank_atk].type1 == move_type || gBattleMons[bank_atk].type2 == move_type))
     {
         gBattleMoveDamage = gBattleMoveDamage * 15;
         gBattleMoveDamage = gBattleMoveDamage / 10;
@@ -1991,6 +2010,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     }
     else
     {
+        i = 0;
         while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
         {
             if (gTypeEffectiveness[i] == TYPE_FORESIGHT)
@@ -2004,11 +2024,11 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
             {
                 //check type1
                 if (gTypeEffectiveness[i + 1] == gBattleMons[bank_def].type1)
-                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
+                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags, constantDamageMove);
                 //check type2
                 if (gTypeEffectiveness[i + 1] == gBattleMons[bank_def].type2 &&
                     gBattleMons[bank_def].type1 != gBattleMons[bank_def].type2)
-                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
+                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags, constantDamageMove);
             }
             i += 3;
         }
@@ -2029,6 +2049,7 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
     int i = 0;
     u8 flags = 0;
     u8 type1 = gBaseStats[species].type1, type2 = gBaseStats[species].type2, move_type;
+    uint constantDamageMove = FALSE;
 
     if (move == MOVE_STRUGGLE)
         return 0;
@@ -2037,6 +2058,13 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
         move_type = gBattleStruct->dynamicMoveType & 0x3F;
     else
         move_type = BattleAI_GetMoveType(move);
+
+    for (i = 0; i < ARRAY_COUNT(sConstantDamageMoveEffects); i++) {
+        if (sConstantDamageMoveEffects[i] == gBattleMoves[move].effect) {
+            constantDamageMove = TRUE;
+            break;
+        }
+    }
 
     if (ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
         flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
@@ -2053,10 +2081,10 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
             {
                 //check type1
                 if (gTypeEffectiveness[i + 1] == type1)
-                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
+                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags, constantDamageMove);
                 //check type2
                 if (gTypeEffectiveness[i + 1] == type2 && gBattleMons[gBankTarget].type1 != type2) //gf you morons, you should check if (type1 != type2)...
-                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags);
+                    ModulateDmgByType2(gTypeEffectiveness[i + 2], move, &flags, constantDamageMove);
             }
             i += 3;
         }

@@ -698,7 +698,7 @@ AI_CheckViability: @ 81DA86D
 	if_effect EFFECT_FLAIL, AI_CV_Flail
 	if_effect EFFECT_HEAL_BELL, AI_CV_HealBell
 	if_effect EFFECT_THIEF, AI_CV_Thief
-	if_effect EFFECT_MEAN_LOOK, AI_CV_Trap
+	if_effect EFFECT_MEAN_LOOK, AI_CV_MeanLook
 	if_effect EFFECT_MINIMIZE, AI_CV_EvasionUp
 	if_effect EFFECT_CURSE, AI_CV_Curse
 	if_effect EFFECT_PROTECT, AI_CV_Protect
@@ -746,12 +746,12 @@ AI_CheckViability: @ 81DA86D
 	if_effect EFFECT_OVERHEAT, AI_CV_Overheat
 	if_effect EFFECT_TICKLE, AI_CV_DefenseDown
 	if_effect EFFECT_COSMIC_POWER, AI_CV_SpDefUp
-	if_effect EFFECT_BULK_UP, AI_CV_DefenseUp
+	if_effect EFFECT_BULK_UP, AI_CV_BulkUp
 	if_effect EFFECT_POISON_TAIL, AI_CV_HighCrit
 	if_effect EFFECT_WATER_SPORT, AI_CV_WaterSport
-	if_effect EFFECT_CALM_MIND, AI_CV_SpDefUp
+	if_effect EFFECT_CALM_MIND, AI_CV_CalmMind
 	if_effect EFFECT_DRAGON_DANCE, AI_CV_DragonDance
-	
+	if_effect EFFECT_PERISH_SONG, AI_CV_PerishSong
 	end
 
 AI_CV_Sleep: @ 81DAB44
@@ -905,7 +905,12 @@ AI_CV_AttackUp_ScoreDown2: @ 81DACA8
 AI_CV_AttackUp_End: @ 81DACAA
 	end
 
+AI_CV_BulkUp:
+	call AI_CV_AttackUp
+
 AI_CV_DefenseUp: @ 81DACAB
+	get_max_damage_percent USER
+	if_more_than 49, AI_CV_DefenseUp_End
 	if_stat_level_less_than USER, DEFENSE, 9, AI_CV_DefenseUp2
 	if_random_less_than 100, AI_CV_DefenseUp3
 	score -1
@@ -985,7 +990,13 @@ AI_CV_SpAtkUp_ScoreDown2: @ 81DAD5F
 AI_CV_SpAtkUp_End: @ 81DAD61
 	end
 
+AI_CV_CalmMind:
+	call AI_CV_SpAtkUp
+
+// fallthrough
 AI_CV_SpDefUp: @ 81DAD62
+	get_max_damage_percent USER
+	if_more_than 49, AI_CV_SpDefUp_End
 	if_stat_level_less_than USER, SP_DEFENSE, 9, AI_CV_SpDefUp2
 	if_random_less_than 100, AI_CV_SpDefUp3
 	score -1
@@ -1290,11 +1301,11 @@ AI_CV_EvasionDown_End: @ 81DB074
 	end
 
 AI_CV_Haze: @ 81DB075
-	if_stat_level_more_than USER, ATTACK, 8, AI_CV_Haze2
-	if_stat_level_more_than USER, DEFENSE, 8, AI_CV_Haze2
-	if_stat_level_more_than USER, SP_ATTACK, 8, AI_CV_Haze2
-	if_stat_level_more_than USER, SP_DEFENSE, 8, AI_CV_Haze2
-	if_stat_level_more_than USER, EVASION, 8, AI_CV_Haze2
+	if_stat_level_more_than USER, ATTACK, 7, AI_CV_Haze2
+	if_stat_level_more_than USER, DEFENSE, 7, AI_CV_Haze2
+	if_stat_level_more_than USER, SP_ATTACK, 7, AI_CV_Haze2
+	if_stat_level_more_than USER, SP_DEFENSE, 7, AI_CV_Haze2
+	if_stat_level_more_than USER, EVASION, 7, AI_CV_Haze2
 	if_stat_level_less_than TARGET, ATTACK, 4, AI_CV_Haze2
 	if_stat_level_less_than TARGET, DEFENSE, 4, AI_CV_Haze2
 	if_stat_level_less_than TARGET, SP_ATTACK, 4, AI_CV_Haze2
@@ -1307,11 +1318,11 @@ AI_CV_Haze2: @ 81DB0CA
 	score -3
 
 AI_CV_Haze3: @ 81DB0D2
-	if_stat_level_more_than TARGET, ATTACK, 8, AI_CV_Haze4
-	if_stat_level_more_than TARGET, DEFENSE, 8, AI_CV_Haze4
-	if_stat_level_more_than TARGET, SP_ATTACK, 8, AI_CV_Haze4
-	if_stat_level_more_than TARGET, SP_DEFENSE, 8, AI_CV_Haze4
-	if_stat_level_more_than TARGET, EVASION, 8, AI_CV_Haze4
+	if_stat_level_more_than TARGET, ATTACK, 6, AI_CV_Haze4
+	if_stat_level_more_than TARGET, DEFENSE, 6, AI_CV_Haze4
+	if_stat_level_more_than TARGET, SP_ATTACK, 6, AI_CV_Haze4
+	if_stat_level_more_than TARGET, SP_DEFENSE, 6, AI_CV_Haze4
+	if_stat_level_more_than TARGET, EVASION, 6, AI_CV_Haze4
 	if_stat_level_less_than USER, ATTACK, 4, AI_CV_Haze4
 	if_stat_level_less_than USER, DEFENSE, 4, AI_CV_Haze4
 	if_stat_level_less_than USER, SP_ATTACK, 4, AI_CV_Haze4
@@ -1336,11 +1347,11 @@ AI_CV_Bide_End: @ 81DB141
 	end
 
 AI_CV_Roar: @ 81DB142
-	if_stat_level_more_than TARGET, ATTACK, 8, AI_CV_Roar2
-	if_stat_level_more_than TARGET, DEFENSE, 8, AI_CV_Roar2
-	if_stat_level_more_than TARGET, SP_ATTACK, 8, AI_CV_Roar2
-	if_stat_level_more_than TARGET, SP_DEFENSE, 8, AI_CV_Roar2
-	if_stat_level_more_than TARGET, EVASION, 8, AI_CV_Roar2
+	if_stat_level_more_than TARGET, ATTACK, 6, AI_CV_Roar2
+	if_stat_level_more_than TARGET, DEFENSE, 6, AI_CV_Roar2
+	if_stat_level_more_than TARGET, SP_ATTACK, 6, AI_CV_Roar2
+	if_stat_level_more_than TARGET, SP_DEFENSE, 6, AI_CV_Roar2
+	if_stat_level_more_than TARGET, EVASION, 6, AI_CV_Roar2
 	score -3
 	jump AI_CV_Roar_End
 
@@ -1429,6 +1440,7 @@ AI_CV_Toxic_End: @ 81DB242
 	end
 
 AI_CV_LightScreen: @ 81DB243
+// FIXME
 	if_hp_less_than USER, 50, AI_CV_LightScreen_ScoreDown2
 	get_type ENEMY_TYPE1
 	if_in_bytes AI_CV_LightScreen_SpecialTypeList, AI_CV_LightScreen_End
@@ -1498,15 +1510,17 @@ AI_CV_SuperFang: @ 81DB2D3
 AI_CV_SuperFang_End: @ 81DB2DC
 	end
 
+AI_CV_MeanLook:
 AI_CV_Trap: @ 81DB2DD
 	if_status TARGET, TOX, AI_CV_Trap2
 	if_status2 TARGET, S_CURSED, AI_CV_Trap2
-	if_status3 TARGET, S_PERISH_SONG, AI_CV_Trap2
+	if_status3 TARGET, S_PERISH_SONG, AI_CV_Trap_ScorePlusOne
 	if_status2 TARGET, S_INFATUATED, AI_CV_Trap2
 	jump AI_CV_Trap_End
 
 AI_CV_Trap2: @ 81DB30A
 	if_random_less_than 128, AI_CV_Trap_End
+AI_CV_Trap_ScorePlusOne:
 	score +1
 
 AI_CV_Trap_End: @ 81DB312
@@ -1545,6 +1559,7 @@ AI_CV_Confuse_End: @ 81DB363
 	end
 
 AI_CV_Reflect: @ 81DB364
+// FIXME
 	if_hp_less_than USER, 50, AI_CV_Reflect_ScoreDown2
 	get_type ENEMY_TYPE1
 	if_in_bytes AI_CV_Reflect_PhysicalTypeList, AI_CV_Reflect_End
@@ -1640,7 +1655,7 @@ AI_CV_Substitute_CheckFocusPunchOrSubIfTargetCantBreak:
 // already established earlier that we won't make a substitute if we likely can't
 	if_has_move USER, MOVE_FOCUS_PUNCH, AI_CV_Substitute_TrySubPunch
 // check if target can break the sub
-	get_target_damage_percent
+	get_max_damage_percent TARGET
 // if so, don't encourage
 	if_more_than 24, AI_CV_Substitute_End
 // otherwise, 50/50 to encourage
@@ -1654,7 +1669,7 @@ AI_CV_Substitute_LowPercentScorePlusOne:
 
 AI_CV_Substitute_TrySubPunch:
 	if_would_go_first AI_SPEED_CHECK_TARGET, AI_CV_SubstituteEncourage
-	get_target_damage_percent
+	get_max_damage_percent TARGET
 	if_less_than 25, AI_CV_SubstituteEncourage
 	end
 
@@ -2222,7 +2237,8 @@ AI_CV_RainDance: @ 81DB8E9
 	if_equal ABILITY_SWIFT_SWIM, AI_CV_RainDance3
 
 AI_CV_RainDance2: @ 81DB8F7
-	if_hp_less_than USER, 40, AI_CV_RainDance_ScoreDown1
+	// FIXME
+	if_hp_less_than USER, 40, AI_CV_RainDance_ScoreDown1 // THIS CAN BE MANIPULATED
 	get_weather
 	if_equal BATTLE_WEATHER_HAIL, AI_CV_RainDance3
 	if_equal BATTLE_WEATHER_SUN, AI_CV_RainDance3
@@ -2527,6 +2543,7 @@ AI_CV_Trick_EffectsToEncourage: @ 81DBC07
 	.byte -1
 
 AI_CV_Trick_EffectsToEncourage2: @ 81DBC0F
+	.byte HOLD_EFFECT_MACHO_BRACE
 	.byte HOLD_EFFECT_CHOICE_BAND
 	.byte -1
 
@@ -2794,6 +2811,14 @@ AI_CV_WaterSport_ScoreDown1: @ 81DBE71
 	score -1
 
 AI_CV_WaterSport_End: @ 81DBE73
+	end
+
+AI_CV_PerishSong:
+	get_max_damage_percent USER
+	if_more_than 49, AI_CV_PerishSong_End
+	score +1
+
+AI_CV_PerishSong_End:
 	end
 
 AI_CV_DragonDance: @ 81DBE74

@@ -277,6 +277,8 @@ VictoryRoad_1F_YouHaveFoughtWell::
 	end
 
 VictoryRoad_1F_EventScript_NurseJoy::
+	lock
+	faceplayer
 	switch VAR_TEMP_1
 	case 0, VictoryRoad_1F_EventScript_HealThreeTimes
 	case 1, VictoryRoad_1F_EventScript_HealTwoTimes

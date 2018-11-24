@@ -30,6 +30,7 @@
 #include "data2.h"
 #include "script_pokemon_80C4.h"
 #include "pokemon.h"
+#include "constants/species.h"
 
 extern bool8 SellMenu_QuantityRoller(u8, u8);
 extern void ChangePokemonNickname(void);
@@ -715,11 +716,6 @@ static void Shop_PrintItemDescText(void)
         {
             ConvertIntToDecimalStringN(gStringVar1, gMartInfo.pokemonLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
             StringExpandPlaceholders(gStringVar3, sPokemonShopLevelDescription);
-            if (gMartInfo.pokemonLevel <= 5) {
-                gStringVar3[0] = CHAR_SPACE;
-            } else if (gMartInfo.pokemonLevel >= 100) {
-                gStringVar3[15] = CHAR_SPACE;
-            }
             sub_8072AB0(gStringVar3, 0x4, 0x68, 0x68, 0x30, 0);
         }
         else
@@ -1183,13 +1179,26 @@ _080B40E4: .4byte 0x800000f0\n\
 
 static u32 Shop_GetPokemonPrice(u16 pokemonId)
 {
-    u32 price = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[pokemonId].growthRate][gMartInfo.pokemonLevel];
+    u32 price;
+    switch (pokemonId) {
+        case SPECIES_DRATINI:
+        case SPECIES_LARVITAR:
+        case SPECIES_BELDUM:
+        case SPECIES_BAGON:
+            price = POKEMON_SHOP_PRICE + gExperienceTables[GROWTH_FLUCTUATING][gMartInfo.pokemonLevel];
+            break;
+        default:
+            price = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[pokemonId].growthRate][gMartInfo.pokemonLevel];
+            break;
+    }
+
     if (gBaseStats[pokemonId].growthRate == GROWTH_ERRATIC) {
         price += gMartInfo.pokemonLevel * (200000 / 100);
     }
-    return price;
 
+    return price;
 }
+
 static void Shop_DoCursorAction(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -1237,23 +1246,25 @@ static void Shop_DoCursorAction(u8 taskId)
             }
         }
         else if (((gMain.newAndRepeatedKeys & DPAD_ANY) == DPAD_LEFT) && gMartInfo.martType == MART_TYPE_POKEMON) {
-            if (gMartInfo.pokemonLevel > 5) {
-                PlaySE(SE_SELECT);
-                gMartInfo.pokemonLevel--;
-                SetVBlankCallback(NULL);
-                Shop_DisplayPriceInList(0, 7, 0);
-                Shop_PrintItemDescText();
-                SetVBlankCallback(VBlankCB);
+            if (gMartInfo.pokemonLevel <= 5) {
+                gMartInfo.pokemonLevel = 101;
             }
+            PlaySE(SE_SELECT);
+            gMartInfo.pokemonLevel--;
+            SetVBlankCallback(NULL);
+            Shop_DisplayPriceInList(0, 7, 0);
+            Shop_PrintItemDescText();
+            SetVBlankCallback(VBlankCB);
         } else if (((gMain.newAndRepeatedKeys & DPAD_ANY) == DPAD_RIGHT) && gMartInfo.martType == MART_TYPE_POKEMON) {
-            if (gMartInfo.pokemonLevel < 100) {
-                PlaySE(SE_SELECT);
-                gMartInfo.pokemonLevel++;
-                SetVBlankCallback(NULL);
-                Shop_DisplayPriceInList(0, 7, 0);
-                Shop_PrintItemDescText();
-                SetVBlankCallback(VBlankCB);
+            if (gMartInfo.pokemonLevel >= 100) {
+                gMartInfo.pokemonLevel = 5;
             }
+            PlaySE(SE_SELECT);
+            gMartInfo.pokemonLevel++;
+            SetVBlankCallback(NULL);
+            Shop_DisplayPriceInList(0, 7, 0);
+            Shop_PrintItemDescText();
+            SetVBlankCallback(VBlankCB);
         }
         else if (gMain.newKeys & A_BUTTON)
         {

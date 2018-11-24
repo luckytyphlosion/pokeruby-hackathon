@@ -88,6 +88,7 @@ static void BattleAICmd_get_turn_count(void);
 static void BattleAICmd_get_type(void);
 static void BattleAICmd_get_move_power(void);
 static void BattleAICmd_is_most_powerful_move(void);
+static void GetUserMoveDamages(s32 * damages);
 static void BattleAICmd_get_move(void);
 static void BattleAICmd_if_arg_equal(void);
 static void BattleAICmd_if_arg_not_equal(void);
@@ -148,7 +149,7 @@ static void BattleAICmd_if_not_taunted(void);
 static void BattleAICmd_if_target_can_faint_user(void);
 static void BattleAICmd_get_hp_percent_after_target_damage(void);
 static void GetTargetMoveDamages(s32 *);
-static void BattleAICmd_get_target_damage_percent(void);
+static void BattleAICmd_get_max_damage_percent(void);
 
 typedef void (*BattleAICmdFunc)(void);
 
@@ -250,7 +251,7 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
     BattleAICmd_if_not_taunted,              // 0x5D
     BattleAICmd_if_target_can_faint_user,    // 0x5E
     BattleAICmd_get_hp_percent_after_target_damage, // 0x5F
-    BattleAICmd_get_target_damage_percent,   // 0x60
+    BattleAICmd_get_max_damage_percent,      // 0x60
 };
 
 #ifdef NONMATCHING
@@ -956,10 +957,9 @@ static void BattleAICmd_get_move_power(void)
     gAIScriptPtr += 1;
 }
 
-#ifndef NONMATCHING
 static void BattleAICmd_is_most_powerful_move(void)
 {
-    int i, j;
+    int i;
     s32 damages[MAX_MON_MOVES];
     // regular move is 1.
     u8 encouragedMoveEffect = TRUE;
@@ -984,48 +984,8 @@ static void BattleAICmd_is_most_powerful_move(void)
     
     if (encouragedMoveEffect)
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
-        {
-            u16 currentMove = gBattleMons[gBankAttacker].moves[i];
-            const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
+        GetUserMoveDamages(damages);
 
-            if (currentMove) {
-                encouragedMoveEffect = TRUE;
-                for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
-                    if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
-                        encouragedMoveEffect = FALSE;
-                        break;
-                    }
-                }
-                
-                if (encouragedMoveEffect) {
-                    u8 moveEffectDamageType;
-                    
-                    gCurrentMove = currentMove;
-                    moveEffectDamageType = AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[i]);
-
-                    if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
-                    && !(TypeCalc(gCurrentMove, gBankAttacker, gBankTarget) & MOVE_RESULT_MISSED)) {
-
-                        if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
-                            damages[i] = (gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[i]) / 100;
-                            // moves always do at least 1 damage.
-                            if (damages[i] == 0) {
-                                damages[i] = 1;
-                            }
-                        }
-
-                    } else {
-                        damages[i] = 0;
-                    }
-                } else {
-                    damages[i] = 0;
-                }
-            } else {
-                damages[i] = 0;
-            }
-        }
-    
         for (i = 0; i < MAX_MON_MOVES; i++)
             if (damages[i] > damages[AI_THINKING_STRUCT->movesetIndex])
                 break;
@@ -1042,251 +1002,55 @@ static void BattleAICmd_is_most_powerful_move(void)
 
     gAIScriptPtr += 1;
 }
-#else
-NAKED
-static void BattleAICmd_is_most_powerful_move(void)
+
+static void GetUserMoveDamages(s32 * damages)
 {
-    asm(".syntax unified\n\
-    push {r4-r7,lr}\n\
-    mov r7, r10\n\
-    mov r6, r9\n\
-    mov r5, r8\n\
-    push {r5-r7}\n\
-    sub sp, 0x14\n\
-    movs r3, 0\n\
-    ldr r0, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-    ldrh r1, [r0]\n\
-    ldr r4, _0810832C @ =0x0000ffff\n\
-    ldr r6, _08108330 @ =gBattleMoves\n\
-    ldr r5, _08108334 @ =gSharedMem + 0x16800\n\
-    cmp r1, r4\n\
-    beq _0810822E\n\
-    ldrh r1, [r5, 0x2]\n\
-    lsls r0, r1, 1\n\
-    adds r0, r1\n\
-    lsls r0, 2\n\
-    adds r0, r6\n\
-    ldrb r2, [r0]\n\
-    ldr r1, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-_0810821E:\n\
-    ldrh r0, [r1]\n\
-    cmp r2, r0\n\
-    beq _0810822E\n\
-    adds r1, 0x2\n\
-    adds r3, 0x1\n\
-    ldrh r0, [r1]\n\
-    cmp r0, r4\n\
-    bne _0810821E\n\
-_0810822E:\n\
-    ldrh r0, [r5, 0x2]\n\
-    lsls r1, r0, 1\n\
-    adds r1, r0\n\
-    lsls r1, 2\n\
-    adds r1, r6\n\
-    ldrb r0, [r1, 0x1]\n\
-    cmp r0, 0x1\n\
-    bhi _08108240\n\
-    b _081083B2\n\
-_08108240:\n\
-    lsls r0, r3, 1\n\
-    ldr r1, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-    adds r0, r1\n\
-    ldrh r3, [r0]\n\
-    ldr r0, _0810832C @ =0x0000ffff\n\
-    cmp r3, r0\n\
-    beq _08108250\n\
-    b _081083B2\n\
-_08108250:\n\
-    ldr r0, _08108338 @ =gDynamicBasePower\n\
-    movs r1, 0\n\
-    strh r1, [r0]\n\
-    ldr r2, _0810833C @ =0xfffff81c\n\
-    adds r0, r5, r2\n\
-    strb r1, [r0]\n\
-    adds r2, 0x3\n\
-    adds r0, r5, r2\n\
-    movs r2, 0x1\n\
-    strb r2, [r0]\n\
-    ldr r0, _08108340 @ =gMoveResultFlags\n\
-    strb r1, [r0]\n\
-    ldr r0, _08108344 @ =gCritMultiplier\n\
-    strb r2, [r0]\n\
-    movs r6, 0\n\
-    mov r9, r3\n\
-    ldr r0, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-    ldrh r0, [r0]\n\
-    str r0, [sp, 0x10]\n\
-_08108276:\n\
-    movs r3, 0\n\
-    ldr r5, _08108348 @ =gBattleMons\n\
-    lsls r4, r6, 1\n\
-    ldr r7, _0810834C @ =gBankAttacker\n\
-    lsls r1, r6, 2\n\
-    mov r8, r1\n\
-    adds r2, r6, 0x1\n\
-    mov r10, r2\n\
-    ldr r0, [sp, 0x10]\n\
-    cmp r0, r9\n\
-    beq _081082BA\n\
-    ldr r2, _08108330 @ =gBattleMoves\n\
-    ldrb r1, [r7]\n\
-    movs r0, 0x58\n\
-    muls r0, r1\n\
-    adds r0, r4, r0\n\
-    adds r1, r5, 0\n\
-    adds r1, 0xC\n\
-    adds r0, r1\n\
-    ldrh r1, [r0]\n\
-    lsls r0, r1, 1\n\
-    adds r0, r1\n\
-    lsls r0, 2\n\
-    adds r0, r2\n\
-    ldrb r2, [r0]\n\
-    ldr r1, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-_081082AA:\n\
-    ldrh r0, [r1]\n\
-    cmp r2, r0\n\
-    beq _081082BA\n\
-    adds r1, 0x2\n\
-    adds r3, 0x1\n\
-    ldrh r0, [r1]\n\
-    cmp r0, r9\n\
-    bne _081082AA\n\
-_081082BA:\n\
-    ldrb r1, [r7]\n\
-    movs r0, 0x58\n\
-    muls r0, r1\n\
-    adds r0, r4, r0\n\
-    adds r1, r5, 0\n\
-    adds r1, 0xC\n\
-    adds r1, r0, r1\n\
-    ldrh r0, [r1]\n\
-    cmp r0, 0\n\
-    beq _0810835C\n\
-    lsls r0, r3, 1\n\
-    ldr r2, _08108328 @ =sDiscouragedPowerfulMoveEffects\n\
-    adds r0, r2\n\
-    ldrh r0, [r0]\n\
-    cmp r0, r9\n\
-    bne _0810835C\n\
-    ldr r0, _08108330 @ =gBattleMoves\n\
-    ldrh r2, [r1]\n\
-    lsls r1, r2, 1\n\
-    adds r1, r2\n\
-    lsls r1, 2\n\
-    adds r1, r0\n\
-    ldrb r0, [r1, 0x1]\n\
-    cmp r0, 0x1\n\
-    bls _0810835C\n\
-    ldr r5, _08108350 @ =gCurrentMove\n\
-    strh r2, [r5]\n\
-    ldrb r0, [r7]\n\
-    ldr r4, _08108354 @ =gBankTarget\n\
-    ldrb r1, [r4]\n\
-    bl AI_CalcDmg\n\
-    ldrh r0, [r5]\n\
-    ldrb r1, [r7]\n\
-    ldrb r2, [r4]\n\
-    bl TypeCalc\n\
-    mov r4, sp\n\
-    add r4, r8\n\
-    ldr r2, _08108358 @ =gBattleMoveDamage\n\
-    ldr r0, _08108334 @ =gSharedMem + 0x16800\n\
-    adds r0, 0x18\n\
-    adds r0, r6, r0\n\
-    ldrb r1, [r0]\n\
-    ldr r0, [r2]\n\
-    muls r0, r1\n\
-    movs r1, 0x64\n\
-    bl __divsi3\n\
-    str r0, [r4]\n\
-    cmp r0, 0\n\
-    bne _08108364\n\
-    movs r0, 0x1\n\
-    str r0, [r4]\n\
-    b _08108364\n\
-    .align 2, 0\n\
-_08108328: .4byte sDiscouragedPowerfulMoveEffects\n\
-_0810832C: .4byte 0x0000ffff\n\
-_08108330: .4byte gBattleMoves\n\
-_08108334: .4byte gSharedMem + 0x16800\n\
-_08108338: .4byte gDynamicBasePower\n\
-_0810833C: .4byte 0xfffff81c\n\
-_08108340: .4byte gMoveResultFlags\n\
-_08108344: .4byte gCritMultiplier\n\
-_08108348: .4byte gBattleMons\n\
-_0810834C: .4byte gBankAttacker\n\
-_08108350: .4byte gCurrentMove\n\
-_08108354: .4byte gBankTarget\n\
-_08108358: .4byte gBattleMoveDamage\n\
-_0810835C:\n\
-    mov r1, sp\n\
-    add r1, r8\n\
-    movs r0, 0\n\
-    str r0, [r1]\n\
-_08108364:\n\
-    mov r6, r10\n\
-    cmp r6, 0x3\n\
-    ble _08108276\n\
-    movs r6, 0\n\
-    ldr r1, _081083A4 @ =gSharedMem + 0x16800\n\
-    ldrb r0, [r1, 0x1]\n\
-    lsls r0, 2\n\
-    add r0, sp\n\
-    ldr r2, [sp]\n\
-    ldr r0, [r0]\n\
-    adds r5, r1, 0\n\
-    ldr r4, _081083A8 @ =gAIScriptPtr\n\
-    cmp r2, r0\n\
-    bgt _0810839A\n\
-    adds r3, r5, 0\n\
-    mov r2, sp\n\
-_08108384:\n\
-    adds r2, 0x4\n\
-    adds r6, 0x1\n\
-    cmp r6, 0x3\n\
-    bgt _0810839A\n\
-    ldrb r0, [r3, 0x1]\n\
-    lsls r0, 2\n\
-    add r0, sp\n\
-    ldr r1, [r2]\n\
-    ldr r0, [r0]\n\
-    cmp r1, r0\n\
-    ble _08108384\n\
-_0810839A:\n\
-    cmp r6, 0x4\n\
-    bne _081083AC\n\
-    movs r0, 0x2\n\
-    str r0, [r5, 0x8]\n\
-    b _081083B8\n\
-    .align 2, 0\n\
-_081083A4: .4byte gSharedMem + 0x16800\n\
-_081083A8: .4byte gAIScriptPtr\n\
-_081083AC:\n\
-    movs r0, 0x1\n\
-    str r0, [r5, 0x8]\n\
-    b _081083B8\n\
-_081083B2:\n\
-    movs r0, 0\n\
-    str r0, [r5, 0x8]\n\
-    ldr r4, _081083D0 @ =gAIScriptPtr\n\
-_081083B8:\n\
-    ldr r0, [r4]\n\
-    adds r0, 0x1\n\
-    str r0, [r4]\n\
-    add sp, 0x14\n\
-    pop {r3-r5}\n\
-    mov r8, r3\n\
-    mov r9, r4\n\
-    mov r10, r5\n\
-    pop {r4-r7}\n\
-    pop {r0}\n\
-    bx r0\n\
-    .align 2, 0\n\
-_081083D0: .4byte gAIScriptPtr\n\
-    .syntax divided\n");
+    uint i, j;
+    uint encouragedMoveEffect = TRUE;
+    
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u16 currentMove = gBattleMons[gBankAttacker].moves[i];
+        const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
+
+        if (currentMove) {
+            encouragedMoveEffect = TRUE;
+            for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+                if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+                    encouragedMoveEffect = FALSE;
+                    break;
+                }
+            }
+
+            if (encouragedMoveEffect) {
+                u8 moveEffectDamageType;
+                
+                gCurrentMove = currentMove;
+                moveEffectDamageType = AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[i]);
+
+                if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
+                && !(TypeCalc(gCurrentMove, gBankAttacker, gBankTarget) & MOVE_RESULT_MISSED)) {
+
+                    if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
+                        damages[i] = (gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[i]) / 100;
+                        // moves always do at least 1 damage.
+                        if (damages[i] == 0) {
+                            damages[i] = 1;
+                        }
+                    } else {
+                        damages[i] = gBattleMoveDamage;
+                    }
+                } else {
+                    damages[i] = 0;
+                }
+            } else {
+                damages[i] = 0;
+            }
+        } else {
+            damages[i] = 0;
+        }
+    }
 }
-#endif // NONMATCHING
 
 static void BattleAICmd_get_move(void)
 {
@@ -2279,6 +2043,8 @@ static void GetTargetMoveDamages(s32 * damages)
                         if (damages[i] == 0) {
                             damages[i] = 1;
                         }
+                    } else {
+                        damages[i] = gBattleMoveDamage;
                     }
                 } else {
                     damages[i] = 0;
@@ -2317,13 +2083,20 @@ static void BattleAICmd_get_hp_percent_after_target_damage(void)
     gAIScriptPtr += 1;
 }
 
-static void BattleAICmd_get_target_damage_percent(void)
+static void BattleAICmd_get_max_damage_percent(void)
 {
     s32 damages[MAX_MON_MOVES];
     uint i;
     s32 maxDamage;
-
-    GetTargetMoveDamages(damages);
+    uint bankAttacker;
+    
+    if (gAIScriptPtr[1] == USER) {
+        bankAttacker = gBankAttacker;
+        GetUserMoveDamages(damages);
+    } else {
+        bankAttacker = gBankTarget;
+        GetTargetMoveDamages(damages);
+    }
 
     maxDamage = damages[0];
 
@@ -2333,12 +2106,12 @@ static void BattleAICmd_get_target_damage_percent(void)
         }
     }
 
-    if (maxDamage > gBattleMons[gBankAttacker].hp) {
-        maxDamage = gBattleMons[gBankAttacker].hp;
+    if (maxDamage > gBattleMons[bankAttacker].hp) {
+        maxDamage = gBattleMons[bankAttacker].hp;
     }
 
-    AI_THINKING_STRUCT->funcResult = (u32)(maxDamage) * 100 / gBattleMons[gBankAttacker].maxHP;
-    gAIScriptPtr += 1;
+    AI_THINKING_STRUCT->funcResult = (u32)(maxDamage) * 100 / gBattleMons[bankAttacker].maxHP;
+    gAIScriptPtr += 2;
 }
 
 void AIStackPushVar(u8 *var)

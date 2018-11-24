@@ -48,7 +48,7 @@ static bool8 ShouldSwitchIfPerishSong(void)
     return FALSE;
 }
 
-#ifdef NONMATCHING
+#ifndef NONMATCHING
 static bool8 ShouldSwitchIfWonderGuard(void)
 {
     u8 opposingBattler;

@@ -3252,7 +3252,7 @@ BattleScript_DamagingWeatherLoop: @ 81D8F95
 	weatherdamage
 	jumpifword EQUAL, gBattleMoveDamage, 0x0, BattleScript_DamagingWeatherLoopIncrement
 	printfromtable gSandStormHailDmgStringIds
-	waitmessage 64
+	waitmessage 5
 	orword gHitMarker, HITMARKER_x20 | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000 | HITMARKER_GRUDGE
 	effectivenesssound
 	hitanimation USER
@@ -4417,7 +4417,7 @@ BattleScript_ItemHealHP_End2:: @ 81D9AA1
 BattleScript_ItemHealHP_Ret:: @ 81D9AA7
 	playanimation USER, B_ANIM_ITEM_EFFECT, NULL
 	printstring BATTLE_TEXT_RestoredHPLittle
-	waitmessage 64
+	waitmessage 5
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	healthbarupdate USER
 	datahpupdate USER
