@@ -465,7 +465,7 @@
 	.byte \target
 	.endm
 
-	.macro get_move_type_from_result
+	.macro get_target_move_type_from_result
 	.byte 0x4e
 	.endm
 

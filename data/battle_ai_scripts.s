@@ -931,7 +931,7 @@ AI_CV_DefenseUp4: @ 81DACDC
 	get_move_power_from_result
 	if_equal 0, AI_CV_DefenseUp5
 	get_move TARGET
-	get_move_type_from_result
+	get_target_move_type_from_result
 	if_not_in_bytes AI_CV_DefenseUp_PhysicalTypes, AI_CV_DefenseUp_ScoreDown2
 	if_random_less_than 60, AI_CV_DefenseUp_End
 
@@ -1017,7 +1017,7 @@ AI_CV_SpDefUp4: @ 81DAD93
 	get_move_power_from_result
 	if_equal 0, AI_CV_SpDefUp5
 	get_move TARGET
-	get_move_type_from_result
+	get_target_move_type_from_result
 	if_in_bytes AI_CV_SpDefUp_PhysicalTypes, AI_CV_SpDefUp_ScoreDown2
 	if_random_less_than 60, AI_CV_SpDefUp_End
 
@@ -1794,7 +1794,7 @@ AI_CV_Counter3: @ 81DB4FE
 
 AI_CV_Counter4: @ 81DB514
 	get_move TARGET
-	get_move_type_from_result
+	get_target_move_type_from_result
 	if_not_in_bytes AI_CV_Counter_PhysicalTypeList, AI_CV_Counter_ScoreDown1
 	if_random_less_than 100, AI_CV_Counter_End
 	score +1
@@ -2338,7 +2338,7 @@ AI_CV_MirrorCoat3: @ 81DBA09
 
 AI_CV_MirrorCoat4: @ 81DBA1F
 	get_move TARGET
-	get_move_type_from_result
+	get_target_move_type_from_result
 	if_not_in_bytes AI_CV_MirrorCoat_SpecialTypeList, AI_CV_MirrorCoat_ScoreDown1
 	if_random_less_than 100, AI_CV_MirrorCoat_End
 	score +1

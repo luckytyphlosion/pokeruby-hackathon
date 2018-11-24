@@ -129,7 +129,7 @@ static void BattleAICmd_is_first_turn(void);
 static void BattleAICmd_get_stockpile_count(void);
 static void BattleAICmd_is_double_battle(void);
 static void BattleAICmd_get_used_item(void);
-static void BattleAICmd_get_move_type_from_result(void);
+static void BattleAICmd_get_target_move_type_from_result(void);
 static void BattleAICmd_get_move_power_from_result(void);
 static void BattleAICmd_get_move_effect_from_result(void);
 static void BattleAICmd_get_protect_count(void);
@@ -231,7 +231,7 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
     BattleAICmd_get_stockpile_count,         // 0x4B
     BattleAICmd_is_double_battle,            // 0x4C
     BattleAICmd_get_used_item,               // 0x4D
-    BattleAICmd_get_move_type_from_result,   // 0x4E
+    BattleAICmd_get_target_move_type_from_result,   // 0x4E
     BattleAICmd_get_move_power_from_result,  // 0x4F
     BattleAICmd_get_move_effect_from_result, // 0x50
     BattleAICmd_get_protect_count,           // 0x51
@@ -943,7 +943,7 @@ static void BattleAICmd_get_type(void)
         AI_THINKING_STRUCT->funcResult = gBattleMons[gBankTarget].type2;
         break;
     case 4: // type of move being pointed to
-        AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->moveConsidered);
+        AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->moveConsidered, gBankAttacker);
         break;
     }
     gAIScriptPtr += 2;
@@ -1785,24 +1785,24 @@ static void BattleAICmd_get_used_item(void)
     gAIScriptPtr += 2;
 }
 
-static void BattleAICmd_get_move_type_from_result(void)
+static void BattleAICmd_get_target_move_type_from_result(void)
 {
-    AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->funcResult);
+    AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->funcResult, gBankTarget);
 
     gAIScriptPtr += 1;
 }
 
-u8 BattleAI_GetMoveType(u16 move)
+u8 BattleAI_GetMoveType(u16 move, uint bankAttacker)
 {
     u8 type;
 
     if (gBattleMoves[move].effect == EFFECT_HIDDEN_POWER) {
-        type = (((((gBattleMons[gBankAttacker].hpIV & 1)) |
-            ((gBattleMons[gBankAttacker].attackIV & 1) << 1) |
-            ((gBattleMons[gBankAttacker].defenseIV & 1) << 2) |
-            ((gBattleMons[gBankAttacker].speedIV & 1) << 3) |
-            ((gBattleMons[gBankAttacker].spAttackIV & 1) << 4) |
-            ((gBattleMons[gBankAttacker].spDefenseIV & 1) << 5)) * 15) / 63) + 1;
+        type = (((((gBattleMons[bankAttacker].hpIV & 1)) |
+            ((gBattleMons[bankAttacker].attackIV & 1) << 1) |
+            ((gBattleMons[bankAttacker].defenseIV & 1) << 2) |
+            ((gBattleMons[bankAttacker].speedIV & 1) << 3) |
+            ((gBattleMons[bankAttacker].spAttackIV & 1) << 4) |
+            ((gBattleMons[bankAttacker].spDefenseIV & 1) << 5)) * 15) / 63) + 1;
         if (type >= TYPE_MYSTERY) {
             type++;
         }

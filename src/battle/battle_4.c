@@ -1987,7 +1987,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     if (gBattleStruct->dynamicMoveType) {
         move_type = gBattleStruct->dynamicMoveType & 0x3F;
     } else {
-        move_type = BattleAI_GetMoveType(move);
+        move_type = BattleAI_GetMoveType(move, bank_atk);
     }
     
     for (i = 0; i < ARRAY_COUNT(sConstantDamageMoveEffects); i++) {
@@ -2044,7 +2044,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     return flags;
 }
 
-u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
+u8 AI_TypeCalc(u16 move, u16 species, u8 ability, u8 bankAttacker)
 {
     int i = 0;
     u8 flags = 0;
@@ -2057,7 +2057,7 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
     if (gBattleStruct->dynamicMoveType)
         move_type = gBattleStruct->dynamicMoveType & 0x3F;
     else
-        move_type = BattleAI_GetMoveType(move);
+        move_type = BattleAI_GetMoveType(move, bankAttacker);
 
     for (i = 0; i < ARRAY_COUNT(sConstantDamageMoveEffects); i++) {
         if (sConstantDamageMoveEffects[i] == gBattleMoves[move].effect) {

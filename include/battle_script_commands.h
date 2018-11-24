@@ -49,7 +49,7 @@
 #define WINDOW_CLEAR            0x1
 #define WINDOW_x80              0x80
 
-u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility);
+u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility, u8 bankAttacker);
 u8 BankGetTurnOrder(u8 bank);
 void SetMoveEffect(bool8 primary, u8 certain);
 void BattleDestroyYesNoCursorAt(u8 cursorPosition);

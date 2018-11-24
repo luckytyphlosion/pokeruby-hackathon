@@ -40,13 +40,12 @@ struct VariableDamageEffectAndFunction
 void BattleAI_SetupAIData(void);
 u8 BattleAI_GetAIActionToUse(void);
 void BattleAI_DoAIProcessing(void);
-u8 BattleAI_GetMoveType(u16);
+u8 BattleAI_GetMoveType(u16 move, uint bankAttacker);
 void sub_810745C(void);
 void AIStackPushVar(u8 *);
 u8 AIStackPop(void);
 void BattleAI_HandleItemUseBeforeAISetup(void);
 void RecordAbilityBattle(u8 a, u8 b);
-u8 BattleAI_GetMoveType(u16 move);
 void GetBattleMonMoveDamages(s32 *, uint);
 
 extern const struct VariableDamageEffectAndFunction gVariableDamageEffectsAndFunctions[];
