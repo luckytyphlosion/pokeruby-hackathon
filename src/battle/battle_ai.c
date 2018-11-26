@@ -252,10 +252,7 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
     BattleAICmd_get_max_damage_percent,      // 0x60
 };
 
-#ifdef NONMATCHING
-static
-#endif
-const u16 sDiscouragedPowerfulMoveEffects[] =
+const u16 gDiscouragedPowerfulMoveEffects[] =
 {
     EFFECT_EXPLOSION,
     EFFECT_DREAM_EATER,
@@ -943,7 +940,7 @@ static void BattleAICmd_get_type(void)
         AI_THINKING_STRUCT->funcResult = gBattleMons[gBankTarget].type2;
         break;
     case 4: // type of move being pointed to
-        AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->moveConsidered, gBankAttacker);
+        AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->moveConsidered, &gBattleMons[gBankAttacker]);
         break;
     }
     gAIScriptPtr += 2;
@@ -962,8 +959,8 @@ static void BattleAICmd_is_most_powerful_move(void)
     // regular move is 1.
     u8 encouragedMoveEffect = TRUE;
 
-    for (i = 0; sDiscouragedPowerfulMoveEffects[i] != 0xFFFF; i++) {
-        if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].effect == sDiscouragedPowerfulMoveEffects[i]) {
+    for (i = 0; gDiscouragedPowerfulMoveEffects[i] != 0xFFFF; i++) {
+        if (gBattleMoves[AI_THINKING_STRUCT->moveConsidered].effect == gDiscouragedPowerfulMoveEffects[i]) {
             encouragedMoveEffect = FALSE;
             break;
         }
@@ -982,7 +979,7 @@ static void BattleAICmd_is_most_powerful_move(void)
     
     if (encouragedMoveEffect)
     {
-        GetBattleMonMoveDamages(damages, USER);
+        AI_GetBattleMonMoveDamages(damages, USER);
 
         for (i = 0; i < MAX_MON_MOVES; i++)
             if (damages[i] > damages[AI_THINKING_STRUCT->movesetIndex])
@@ -1190,7 +1187,7 @@ static void BattleAICmd_get_highest_possible_damage(void)
 
         if (gCurrentMove)
         {
-            TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
+            TypeCalc(gCurrentMove, &gBattleMons[gBankAttacker], &gBattleMons[gBankTarget]);
 
             // reduce by 1/3.
             if (gBattleMoveDamage == 120)
@@ -1226,7 +1223,7 @@ static void BattleAICmd_if_damage_bonus(void)
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
 
     // variable move type calculations done in TypeCalc
-    TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
+    TypeCalc(gCurrentMove, &gBattleMons[gBankAttacker], &gBattleMons[gBankTarget]);
 
     if (gBattleMoveDamage == 120)
         gBattleMoveDamage = 80;
@@ -1431,8 +1428,8 @@ static void BattleAICmd_if_can_faint(void)
 
     // Kappa
     if (currentMoveInfoPtr->effect != EFFECT_EXPLOSION) {
-        for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
-            if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+        for (j = 0; gDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+            if (currentMoveInfoPtr->effect == gDiscouragedPowerfulMoveEffects[j]) {
                 noDrawbackMoveEffect = FALSE;
                 break;
             }
@@ -1449,7 +1446,7 @@ static void BattleAICmd_if_can_faint(void)
     
     // TypeCalc also has side effects
     if (moveEffectDamageType == AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
-    || TypeCalc(gCurrentMove, gBankAttacker, gBankTarget) & MOVE_RESULT_MISSED) {
+    || TypeCalc(gCurrentMove, &gBattleMons[gBankAttacker], &gBattleMons[gBankTarget]) & MOVE_RESULT_MISSED) {
         gAIScriptPtr += 5;
         return;
     }
@@ -1485,7 +1482,7 @@ static void BattleAICmd_if_cant_faint(void)
     gCritMultiplier = 1;
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
     AI_CalcDmg(gBankAttacker, gBankTarget, AI_THINKING_STRUCT->simulatedMoveRNG[AI_THINKING_STRUCT->movesetIndex]);
-    TypeCalc(gCurrentMove, gBankAttacker, gBankTarget);
+    TypeCalc(gCurrentMove, &gBattleMons[gBankAttacker], &gBattleMons[gBankTarget]);
 
     gBattleMoveDamage = gBattleMoveDamage * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
 
@@ -1787,22 +1784,22 @@ static void BattleAICmd_get_used_item(void)
 
 static void BattleAICmd_get_target_move_type_from_result(void)
 {
-    AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->funcResult, gBankTarget);
+    AI_THINKING_STRUCT->funcResult = BattleAI_GetMoveType(AI_THINKING_STRUCT->funcResult, &gBattleMons[gBankTarget]);
 
     gAIScriptPtr += 1;
 }
 
-u8 BattleAI_GetMoveType(u16 move, uint bankAttacker)
+u8 BattleAI_GetMoveType(u16 move, struct BattlePokemon * attacker)
 {
     u8 type;
 
     if (gBattleMoves[move].effect == EFFECT_HIDDEN_POWER) {
-        type = (((((gBattleMons[bankAttacker].hpIV & 1)) |
-            ((gBattleMons[bankAttacker].attackIV & 1) << 1) |
-            ((gBattleMons[bankAttacker].defenseIV & 1) << 2) |
-            ((gBattleMons[bankAttacker].speedIV & 1) << 3) |
-            ((gBattleMons[bankAttacker].spAttackIV & 1) << 4) |
-            ((gBattleMons[bankAttacker].spDefenseIV & 1) << 5)) * 15) / 63) + 1;
+        type = (((((attacker->hpIV & 1)) |
+            ((attacker->attackIV & 1) << 1) |
+            ((attacker->defenseIV & 1) << 2) |
+            ((attacker->speedIV & 1) << 3) |
+            ((attacker->spAttackIV & 1) << 4) |
+            ((attacker->spDefenseIV & 1) << 5)) * 15) / 63) + 1;
         if (type >= TYPE_MYSTERY) {
             type++;
         }
@@ -1946,7 +1943,7 @@ static void BattleAICmd_if_target_can_faint_user(void)
     s32 damages[MAX_MON_MOVES];
     uint i;
 
-    GetBattleMonMoveDamages(damages, TARGET);
+    AI_GetBattleMonMoveDamages(damages, TARGET);
 
     for (i = 0; i < MAX_MON_MOVES; i++) {
         if (gBattleMons[gBankAttacker].hp <= damages[i]) {
@@ -1958,26 +1955,54 @@ static void BattleAICmd_if_target_can_faint_user(void)
     gAIScriptPtr += 1;
 }
 
-void GetBattleMonMoveDamages(s32 * damages, uint sideAttacking)
+void AI_GetBattleMonMoveDamages(s32 * damages, uint sideAttacking)
+{
+    uint attacker, target;
+
+    if (sideAttacking == USER) {
+        attacker = gBankAttacker;
+        target = gBankTarget;
+    } else {
+        attacker = gBankTarget;
+        target = gBankAttacker;
+    }
+
+    GetBattleMonMoveDamages_WithHPArgs(damages, sideAttacking, attacker, target, NULL, FALSE, 0, 0);
+}
+
+void GetBattleMonMoveDamages_WithHPArgs(s32 * damages, uint sideAttacking, uint attacker, uint target, struct AIDamageCalcSimulatedRNGs * simulatedRNGStruct, uint hpArgsProvided, s16 attackerHP, s16 targetHP)
 {
     uint i, j;
     uint encouragedMoveEffect = TRUE;
     u16 * simulatedMoveRNG;
     u8 * simulatedRNG;
-    uint attacker, target;
     u8 limitations;
+    s16 attackerMaxHP;
 
-    if (sideAttacking == USER) {
-        attacker = gBankAttacker;
-        target = gBankTarget;
-        simulatedMoveRNG = AI_THINKING_STRUCT->simulatedMoveRNG;
-        simulatedRNG = AI_THINKING_STRUCT->simulatedRNG;
+    if (simulatedRNGStruct != NULL) {
+        if (sideAttacking != SIDE_ATTACKING_CALLED_FROM_SWITCH) {
+            // crash
+            asm(".short 0xde00");
+        }
+
+        simulatedMoveRNG = simulatedRNGStruct->simulatedMoveRNGs;
+        simulatedRNG = simulatedRNGStruct->simulatedRNGs;
     } else {
-        attacker = gBankTarget;
-        target = gBankAttacker;
-        simulatedMoveRNG = AI_THINKING_STRUCT->targetSimulatedMoveRNG;
-        simulatedRNG = AI_THINKING_STRUCT->targetSimulatedRNG;
+        if (sideAttacking == USER) {
+            simulatedMoveRNG = AI_THINKING_STRUCT->simulatedMoveRNG;
+            simulatedRNG = AI_THINKING_STRUCT->simulatedRNG;
+        } else {
+            simulatedMoveRNG = AI_THINKING_STRUCT->targetSimulatedMoveRNG;
+            simulatedRNG = AI_THINKING_STRUCT->targetSimulatedRNG;
+        }
     }
+
+    if (!hpArgsProvided) {
+        attackerHP = gBattleMons[attacker].hp;
+        targetHP = gBattleMons[target].hp;
+    }
+
+    attackerMaxHP = gBattleMons[attacker].maxHP;
 
     limitations = CheckMoveLimitations(attacker, 0, 0xFF);
 
@@ -1985,12 +2010,11 @@ void GetBattleMonMoveDamages(s32 * damages, uint sideAttacking)
     {
         u16 currentMove = gBattleMons[attacker].moves[i];
         const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
-         
 
         if (currentMove && currentMoveInfoPtr->power > 0 && !(limitations & gBitTable[i])) {
             encouragedMoveEffect = TRUE;
-            for (j = 0; sDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
-                if (currentMoveInfoPtr->effect == sDiscouragedPowerfulMoveEffects[j]) {
+            for (j = 0; gDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+                if (currentMoveInfoPtr->effect == gDiscouragedPowerfulMoveEffects[j]) {
                     encouragedMoveEffect = FALSE;
                     break;
                 }
@@ -2000,10 +2024,10 @@ void GetBattleMonMoveDamages(s32 * damages, uint sideAttacking)
                 u8 moveEffectDamageType;
                 
                 gCurrentMove = currentMove;
-                moveEffectDamageType = AI_CalcDmg(attacker, target, simulatedMoveRNG[i]);
+                moveEffectDamageType = AI_CalcDmg_Entry(attacker, target, &gBattleMons[attacker], &gBattleMons[target], simulatedMoveRNG[i], attackerHP, attackerMaxHP, targetHP, TRUE);
 
                 if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
-                && !(TypeCalc(gCurrentMove, attacker, target) & MOVE_RESULT_MISSED)) {
+                && !(TypeCalc(gCurrentMove, &gBattleMons[attacker], &gBattleMons[target]) & MOVE_RESULT_MISSED)) {
                     if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
                         damages[i] = (gBattleMoveDamage * simulatedRNG[i]) / 100;
                         // moves always do at least 1 damage.
@@ -2032,7 +2056,7 @@ static void BattleAICmd_get_hp_percent_after_target_damage(void)
     s32 lowestHPLeft = 0;
     s32 tempHPLeft;
 
-    GetBattleMonMoveDamages(damages, TARGET);
+    AI_GetBattleMonMoveDamages(damages, TARGET);
 
     for (i = 0; i < MAX_MON_MOVES; i++) {
         tempHPLeft = gBattleMons[gBankAttacker].hp - damages[i];
@@ -2057,7 +2081,7 @@ static void BattleAICmd_get_max_damage_percent(void)
     s32 maxDamage;
     uint bankAttacker;
     
-    GetBattleMonMoveDamages(damages, gAIScriptPtr[1]);
+    AI_GetBattleMonMoveDamages(damages, gAIScriptPtr[1]);
 
     maxDamage = damages[0];
 

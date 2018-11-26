@@ -13,6 +13,9 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/species.h"
+#include "battle_ai.h"
+#include "item.h"
+#include "constants/hold_effects.h"
 
 extern u8 gUnknown_02023A14_50;
 
@@ -34,6 +37,18 @@ static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent);
 static bool8 ShouldUseItem(void);
 
+EWRAM_DATA struct BattlePokemon gAISwitchTempBattlePokemon = {0};
+
+static uint CanAttackerDoFullOrCreateHealLoop(uint activeBattler, uint opposingBattler);
+static uint CanAvailableMonDoFullOrCreateHealLoop(struct Pokemon * monInWaiting, uint activeBattler, uint opposingBattler);
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP(s32 * damages, uint attacker, uint target, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs, s16 * simulatedHPs);
+static int CanAttackerKOOrCreateHealLoop_CanFaintOtherSide(s32 * damages, uint attacker, uint target, s16 * simulatedHPs);
+static void CreateTempAISwitchBattlePokemonFromPokemonStruct(struct Pokemon * enemyMon);
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex(s32 * damages, uint attacker, uint target, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs);
+static s32 AISwitch_CalculateMoveDamage(uint currentMoveIndex, u8 bankAtk, u8 bankDef, struct BattlePokemon * battleMonAttacker, struct BattlePokemon * battleMonDefender, struct AIDamageCalcSimulatedRNGs * simulatedRNGStruct, s16 attackerHP, s16 attackerMaxHP, s16 targetHP, uint allowBankStructReads);
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(s32 * damages, uint sideAttacking, struct BattlePokemon * activeBattleMon, uint bankActive, uint bankOpposing, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs, s16 * simulatedHPs, u16 choicedMove);
+static u8 AISwitch_CheckMoveLimitations(struct BattlePokemon * battleMon, u16 choicedMove);
+static uint GetGreatestDamageIndex(s32 * damages);
 
 static bool8 ShouldSwitchIfPerishSong(void)
 {
@@ -568,11 +583,16 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
     return FALSE;
 }
 
-static bool8 ShouldSwitch(void)
+static uint ShouldSwitch(void)
 {
     u8 battlerIn1, battlerIn2;
     s32 i;
     s32 availableToSwitch;
+    u8 switchWeightings[PARTY_SIZE];
+    u8 consideredSwitchMons[PARTY_SIZE];
+    uint consideredSwitchMonsLength;
+    u8 activeMonSwitchWeighting1, activeMonSwitchWeighting2;
+    u8 highestSwitchWeighting;
 
     if (gBattleMons[gActiveBattler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
         return FALSE;
@@ -605,28 +625,76 @@ static bool8 ShouldSwitch(void)
         battlerIn2 = gActiveBattler;
     }
 
-    for (i = 0; i < 6; i++)
+    activeMonSwitchWeighting1 = CanAttackerDoFullOrCreateHealLoop(battlerIn1, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
+    if (battlerIn1 != battlerIn2) {
+        activeMonSwitchWeighting2 = CanAttackerDoFullOrCreateHealLoop(battlerIn2, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
+    }
+    for (i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
+        if (GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0) {
+            switchWeightings[i] = AI_SWITCHSCORE_DONT_SWITCH_IMPOSSIBLE;
             continue;
-        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+        }
+        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE) {
+            switchWeightings[i] = AI_SWITCHSCORE_DONT_SWITCH_IMPOSSIBLE;
             continue;
-        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+        }
+        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG) {
+            switchWeightings[i] = AI_SWITCHSCORE_DONT_SWITCH_IMPOSSIBLE;
             continue;
-        if (i == gBattlerPartyIndexes[battlerIn1])
+        }
+        if (i == gBattlerPartyIndexes[battlerIn1]) {
+            // lol half-assed double battle logic
+            switchWeightings[i] = activeMonSwitchWeighting1;
             continue;
-        if (i == gBattlerPartyIndexes[battlerIn2])
+        }
+        if (battlerIn1 != battlerIn2 && i == gBattlerPartyIndexes[battlerIn2]) {
+            switchWeightings[i] = activeMonSwitchWeighting2;
             continue;
-        if (i == ewram16068arr(battlerIn1))
+        }
+        if (i == ewram16068arr(battlerIn1)) {
+            switchWeightings[i] = AI_SWITCHSCORE_DONT_SWITCH_IMPOSSIBLE;
             continue;
-        if (i == ewram16068arr(battlerIn2))
+        }
+        if (battlerIn1 != battlerIn2 && i == ewram16068arr(battlerIn2)) {
+            switchWeightings[i] = AI_SWITCHSCORE_DONT_SWITCH_IMPOSSIBLE;
             continue;
+        }
 
+        switchWeightings[i] = CanAvailableMonDoFullOrCreateHealLoop(&gEnemyParty[i], battlerIn1, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
         availableToSwitch++;
     }
 
     if (availableToSwitch == 0)
         return FALSE;
+    
+    consideredSwitchMonsLength = 0;
+    highestSwitchWeighting = AI_SWITCHSCORE_DONT_SWITCH_DEFAULT;
+    
+    for (i = 0; i < PARTY_SIZE; i++) {
+        if (switchWeightings[i] < highestSwitchWeighting) {
+        // clear all previous flags if there is a higher switch weighting
+            consideredSwitchMons[0] = i;
+            consideredSwitchMonsLength = 1;
+            highestSwitchWeighting = switchWeightings[i];
+        } else if (switchWeightings[i] == highestSwitchWeighting) {
+        // if we have a mon that's equal in weighting, add it to the flags
+            consideredSwitchMons[consideredSwitchMonsLength++] = i;
+        }
+    }
+    
+    if (consideredSwitchMonsLength) {
+        if (highestSwitchWeighting == AI_SWITCHSCORE_DO_SWITCH_3
+        || highestSwitchWeighting == AI_SWITCHSCORE_DO_SWITCH_4
+        || highestSwitchWeighting == AI_SWITCHSCORE_DO_SWITCH_7
+        || highestSwitchWeighting == AI_SWITCHSCORE_DO_SWITCH_8) {
+            // pick randomly for now
+            Emitcmd33(1, B_ACTION_SWITCH, 0);
+            return 2 + consideredSwitchMons[Random() % consideredSwitchMonsLength];
+        }
+    }
+                
+
     if (ShouldSwitchIfPerishSong())
         return TRUE;
     if (ShouldSwitchIfWonderGuard())
@@ -635,7 +703,6 @@ static bool8 ShouldSwitch(void)
         return TRUE;
     if (ShouldSwitchIfNaturalCure())
         return TRUE;
-    //if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) {
     if (HasSuperEffectiveMoveAgainstOpponents(FALSE))
         return FALSE;
     if (AreStatsRaised())
@@ -643,32 +710,453 @@ static bool8 ShouldSwitch(void)
     if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, 2)
         || FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 3))
         return TRUE;
-    //} else {
-
 
     return FALSE;
 }
 
-/*static uint CanAttackerKOOrCreateHealLoop() {
-    bool32 canOutspeed = gActiveBattler;
-    bool32 canKO;
+static void InitializeSimulatedRNGStruct(struct AIDamageCalcSimulatedRNGs * simulatedRNGStruct)
+{
+    uint i;
+    for (i = 0; i < MAX_MON_MOVES; i++) {
+        simulatedRNGStruct->simulatedMoveRNGs[i] = Random();
+        simulatedRNGStruct->simulatedRNGs[i] = 100 - (Random() & 0xf);
+    }
+}
+
+// TODO FIX BAD MAXHP / 2 LOGIC
+static uint CanAttackerDoFullOrCreateHealLoop(uint activeBattler, uint opposingBattler) {
+    uint canOutspeed;
     s32 damages[MAX_MON_MOVES];
-    uint i, j;
+    uint i;
+    s32 greatestDamage = 0;
+    uint greatestDamageIndex = 0;
+    struct AIDamageCalcSimulatedRNGs activeBattlerSimulatedRNGs;
+    struct AIDamageCalcSimulatedRNGs opposingBattlerSimulatedRNGs;
+    s16 simulatedHPs[MAX_BATTLERS_COUNT];
+
+    for (i = 0; i < MAX_BATTLERS_COUNT; i++) {
+        simulatedHPs[i] = gBattleMons[i].hp;
+    }
+
+    canOutspeed = (GetWhoStrikesFirst_BattlePokemonStructsChosenMovesAsParams(&gBattleMons[activeBattler], &gBattleMons[opposingBattler], activeBattler, opposingBattler, 0, TRUE, 0xFFFF, 0xFFFF) == 0);
+
+    InitializeSimulatedRNGStruct(&activeBattlerSimulatedRNGs);
+    InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+    // NOTE: EACH CASE MUST BE TESTED INDIVIDUALLY AND CANNOT BE COMPRESSED BECAUSE OF FLAIL
+    if (canOutspeed) {
+        // simulate user attacking opposing
+        greatestDamageIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP(damages, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs);
+        greatestDamage = damages[greatestDamageIndex];
+
+        if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+            return AI_SWITCHSCORE_DONT_SWITCH_1;
+        } else if (greatestDamage >= gBattleMons[opposingBattler].maxHP / 2) {
+            // we can do at least half
+            // check if we can take a hit from the other side
+            if (CanAttackerKOOrCreateHealLoop_CanFaintOtherSide(damages, opposingBattler, activeBattler, simulatedHPs) >= 0) {
+                return AI_SWITCHSCORE_DONT_SWITCH_5;
+            }
+        }
+        // can we at least k.o.?
+        if (simulatedHPs[opposingBattler] <= 0) {
+            return AI_SWITCHSCORE_DONT_SWITCH_CAN_KO_9;
+        } else {
+            return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+        }
+    } else {
+        // simulate opposing attacking user
+        GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP(damages, opposingBattler, activeBattler, &activeBattlerSimulatedRNGs, simulatedHPs);
+
+        // if we're dead, don't consider staying in as a viable option
+        if (simulatedHPs[activeBattler] <= 0) {
+            return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+        }
+
+        greatestDamage = damages[GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP(damages, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs)];
+
+        // can user do 100% to opposing?
+        if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+            return AI_SWITCHSCORE_DONT_SWITCH_2;
+        } else if (greatestDamage >= gBattleMons[opposingBattler].maxHP / 2) {
+            // we can do at least half
+            // check if we can take a hit from the other side AGAIN
+            if (CanAttackerKOOrCreateHealLoop_CanFaintOtherSide(damages, opposingBattler, activeBattler, simulatedHPs) >= 0) {
+                return AI_SWITCHSCORE_DONT_SWITCH_6;
+            }
+        }
+        // can we at least k.o.?
+        if (simulatedHPs[opposingBattler] <= 0) {
+            return AI_SWITCHSCORE_DONT_SWITCH_CAN_KO_10;
+        } else {
+            return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+        }
+    }
+}
+
+// GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(s32 * damages, uint sideAttacking, BattlePokemon * activeBattleMon, uint bankActive, uint bankOpposing, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs, s16 * simulatedHPs, u16 choicedMove)
+static uint CanAvailableMonDoFullOrCreateHealLoop(struct Pokemon * monInWaiting, uint activeBattler, uint opposingBattler)
+{
+    uint canOutspeed;
+    s32 damages[MAX_MON_MOVES];
+    uint i;
+    s32 greatestDamage = 0;
+    struct AIDamageCalcSimulatedRNGs activeBattlerSimulatedRNGs;
+    struct AIDamageCalcSimulatedRNGs opposingBattlerSimulatedRNGs;
+    s16 simulatedHPs[MAX_BATTLERS_COUNT];
+    u16 choicedMove;
+    uint opposingBattlerChosenMoveIndex;
+    s32 opposingBattlerChosenMoveDamage;
+
+    CreateTempAISwitchBattlePokemonFromPokemonStruct(monInWaiting);
+
+    for (i = 0; i < MAX_BATTLERS_COUNT; i++) {
+        if (i == activeBattler) {
+            simulatedHPs[i] = gAISwitchTempBattlePokemon.hp;
+        } else {
+            simulatedHPs[i] = gBattleMons[i].hp;
+        }
+    }
     
-    for (
-}*/
+    InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+
+    opposingBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex(damages, opposingBattler, activeBattler, &opposingBattlerSimulatedRNGs);
+    opposingBattlerChosenMoveDamage = AISwitch_CalculateMoveDamage(opposingBattlerChosenMoveIndex, opposingBattler, activeBattler, &gBattleMons[opposingBattler], &gAISwitchTempBattlePokemon, &opposingBattlerSimulatedRNGs, simulatedHPs[opposingBattler], gBattleMons[opposingBattler].maxHP, simulatedHPs[activeBattler], TRUE);
+    
+    if (opposingBattlerChosenMoveDamage >= simulatedHPs[activeBattler]) {
+        return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+    }
+
+    simulatedHPs[activeBattler] -= opposingBattlerChosenMoveDamage;
+
+    canOutspeed = (GetWhoStrikesFirst_BattlePokemonStructsChosenMovesAsParams(&gAISwitchTempBattlePokemon, &gBattleMons[opposingBattler], activeBattler, opposingBattler, 0, TRUE, 0xFFFF, 0xFFFF) == 0);
+
+    if (canOutspeed) {
+        uint activeBattlerChosenMoveIndex;
+        // user turn
+        InitializeSimulatedRNGStruct(&activeBattlerSimulatedRNGs);
+        activeBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, USER, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs, MOVE_NONE);
+        choicedMove = gAISwitchTempBattlePokemon.moves[activeBattlerChosenMoveIndex];
+        greatestDamage = damages[activeBattlerChosenMoveIndex];
+
+        if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+            return AI_SWITCHSCORE_DO_SWITCH_3;
+        } else {
+            // opposing turn
+            InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+            GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, TARGET, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &opposingBattlerSimulatedRNGs, simulatedHPs, MOVE_NONE);
+            // can we live another attack?
+            if (simulatedHPs[activeBattler] > 0) {
+                // if so, see if attacking again will faint
+                InitializeSimulatedRNGStruct(&activeBattlerSimulatedRNGs);
+                activeBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, USER, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs, choicedMove);
+                greatestDamage += damages[activeBattlerChosenMoveIndex];
+                if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+                    return AI_SWITCHSCORE_DO_SWITCH_7;
+                }
+            }
+        }
+        return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+    } else {
+        // can't outspeed, calculate opposing battler attacking first
+        uint activeBattlerChosenMoveIndex;
+        // opposing turn
+        InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+        opposingBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, TARGET, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &opposingBattlerSimulatedRNGs, simulatedHPs, MOVE_NONE);
+        // don't consider if we can't live another attack again
+        if (simulatedHPs[activeBattler] > 0) {
+            // now try attacking
+            // user turn
+            InitializeSimulatedRNGStruct(&activeBattlerSimulatedRNGs);
+            activeBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, USER, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs, MOVE_NONE);
+            greatestDamage = damages[activeBattlerChosenMoveIndex];
+            if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+                return AI_SWITCHSCORE_DO_SWITCH_4;
+            } else {
+            // we can't do 100%
+                // opposing turn
+                InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+                GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, TARGET, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &opposingBattlerSimulatedRNGs, simulatedHPs, MOVE_NONE);
+                // can we live another attack?
+                if (simulatedHPs[activeBattler] > 0) {
+                    InitializeSimulatedRNGStruct(&activeBattlerSimulatedRNGs);
+                    activeBattlerChosenMoveIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(damages, USER, &gAISwitchTempBattlePokemon, activeBattler, opposingBattler, &activeBattlerSimulatedRNGs, simulatedHPs, choicedMove);
+                    greatestDamage += damages[activeBattlerChosenMoveIndex];
+                    if (greatestDamage >= gBattleMons[opposingBattler].maxHP) {
+                        return AI_SWITCHSCORE_DO_SWITCH_8;
+                    }
+                }
+            }
+        }
+        return AI_SWITCHSCORE_DONT_SWITCH_BAD;
+    }
+}
+
+static void CreateTempAISwitchBattlePokemonFromPokemonStruct(struct Pokemon * enemyMon) {
+    uint size;
+    uint species;
+    
+    gAISwitchTempBattlePokemon.species = GetMonData(enemyMon, MON_DATA_SPECIES);
+    species = gAISwitchTempBattlePokemon.species;
+
+    gAISwitchTempBattlePokemon.attack = GetMonData(enemyMon, MON_DATA_ATK);
+    gAISwitchTempBattlePokemon.defense = GetMonData(enemyMon, MON_DATA_DEF);
+    gAISwitchTempBattlePokemon.speed = GetMonData(enemyMon, MON_DATA_SPEED);
+    gAISwitchTempBattlePokemon.spAttack = GetMonData(enemyMon, MON_DATA_SPATK);
+    gAISwitchTempBattlePokemon.spDefense = GetMonData(enemyMon, MON_DATA_SPDEF);
+
+    for (size = 0; size < 4; size++)
+    {
+        gAISwitchTempBattlePokemon.moves[size] = GetMonData(enemyMon, MON_DATA_MOVE1 + size);
+        gAISwitchTempBattlePokemon.pp[size] = GetMonData(enemyMon, MON_DATA_PP1 + size);
+    }
+
+    gAISwitchTempBattlePokemon.hpIV = GetMonData(enemyMon, MON_DATA_HP_IV);
+    gAISwitchTempBattlePokemon.attackIV = GetMonData(enemyMon, MON_DATA_ATK_IV);
+    gAISwitchTempBattlePokemon.defenseIV = GetMonData(enemyMon, MON_DATA_DEF_IV);
+    gAISwitchTempBattlePokemon.speedIV = GetMonData(enemyMon, MON_DATA_SPEED_IV);
+    gAISwitchTempBattlePokemon.spAttackIV = GetMonData(enemyMon, MON_DATA_SPATK_IV);
+    gAISwitchTempBattlePokemon.spDefenseIV = GetMonData(enemyMon, MON_DATA_SPDEF_IV);
+    gAISwitchTempBattlePokemon.isEgg = GetMonData(enemyMon, MON_DATA_IS_EGG);
+    gAISwitchTempBattlePokemon.altAbility = GetMonData(enemyMon, MON_DATA_ALT_ABILITY);
+
+    for (size = 0; size < BATTLE_STATS_NO; size++) {
+        gAISwitchTempBattlePokemon.statStages[size] = 6;
+    }
+
+    gAISwitchTempBattlePokemon.ability = GetAbilityBySpecies(species, gAISwitchTempBattlePokemon.altAbility);
+
+    gAISwitchTempBattlePokemon.type1 = gBaseStats[species].type1;
+    gAISwitchTempBattlePokemon.type2 = gBaseStats[species].type2;
+    gAISwitchTempBattlePokemon.hp = GetMonData(enemyMon, MON_DATA_HP);
+    gAISwitchTempBattlePokemon.level = GetMonData(enemyMon, MON_DATA_LEVEL);
+    gAISwitchTempBattlePokemon.friendship = GetMonData(enemyMon, MON_DATA_FRIENDSHIP);
+    gAISwitchTempBattlePokemon.maxHP = GetMonData(enemyMon, MON_DATA_MAX_HP);
+    gAISwitchTempBattlePokemon.item = GetMonData(enemyMon, MON_DATA_HELD_ITEM);
+    gAISwitchTempBattlePokemon.ppBonuses = GetMonData(enemyMon, MON_DATA_PP_BONUSES);
+    gAISwitchTempBattlePokemon.experience = GetMonData(enemyMon, MON_DATA_EXP);
+    gAISwitchTempBattlePokemon.personality = GetMonData(enemyMon, MON_DATA_PERSONALITY);
+    gAISwitchTempBattlePokemon.status1 = GetMonData(enemyMon, MON_DATA_STATUS);
+    gAISwitchTempBattlePokemon.status2 = 0;
+}
+
+static void AISwitch_GetBattleMonMoveDamages_UserMonInWaiting(s32 * damages, uint sideAttacking, struct BattlePokemon * activeBattleMon, uint bankActive, uint bankOpposing, struct AIDamageCalcSimulatedRNGs * simulatedRNGStruct, s16 activeHP, s16 opposingHP, u16 choicedMove)
+{
+    uint i, j;
+    uint encouragedMoveEffect = TRUE;
+    uint bankAtk, bankDef;
+    u8 limitations;
+    s16 attackerHP, attackerMaxHP, targetHP;
+    struct BattlePokemon * battleMonAttacker;
+    struct BattlePokemon * battleMonDefender;
+    uint allowBankStructReads;
+
+    if (sideAttacking == USER) {
+        bankAtk = bankActive;
+        bankDef = bankOpposing;
+        attackerHP = activeHP;
+        attackerMaxHP = activeBattleMon->maxHP;
+        targetHP = opposingHP;
+        limitations = AISwitch_CheckMoveLimitations(activeBattleMon, choicedMove);
+        battleMonAttacker = activeBattleMon;
+        battleMonDefender = &gBattleMons[bankOpposing];
+        allowBankStructReads = FALSE;
+    } else {
+        bankAtk = bankOpposing;
+        bankDef = bankActive;
+        attackerHP = opposingHP;
+        attackerMaxHP = gBattleMons[bankOpposing].maxHP;
+        targetHP = activeHP;
+        limitations = CheckMoveLimitations(bankOpposing, 0, 0xFF);
+        battleMonAttacker = &gBattleMons[bankOpposing];
+        battleMonDefender = activeBattleMon;
+        allowBankStructReads = TRUE;
+    }
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u16 currentMove = battleMonAttacker->moves[i];
+        const struct BattleMove * currentMoveInfoPtr = &gBattleMoves[currentMove];
+
+        if (currentMove && currentMoveInfoPtr->power > 0 && !(limitations & gBitTable[i])) {
+            encouragedMoveEffect = TRUE;
+            for (j = 0; gDiscouragedPowerfulMoveEffects[j] != 0xFFFF; j++) {
+                if (currentMoveInfoPtr->effect == gDiscouragedPowerfulMoveEffects[j]) {
+                    encouragedMoveEffect = FALSE;
+                    break;
+                }
+            }
+
+            if (encouragedMoveEffect) {
+                damages[i] = AISwitch_CalculateMoveDamage(i, bankAtk, bankDef, battleMonAttacker, battleMonDefender, simulatedRNGStruct, attackerHP, attackerMaxHP, targetHP, allowBankStructReads);
+            } else {
+                damages[i] = 0;
+            }
+        } else {
+            damages[i] = 0;
+        }
+    }
+}
+
+static s32 AISwitch_CalculateMoveDamage(uint currentMoveIndex, u8 bankAtk, u8 bankDef, struct BattlePokemon * battleMonAttacker, struct BattlePokemon * battleMonDefender, struct AIDamageCalcSimulatedRNGs * simulatedRNGStruct, s16 attackerHP, s16 attackerMaxHP, s16 targetHP, uint allowBankStructReads)
+{
+    u8 moveEffectDamageType;
+    s32 damage;
+
+    gCurrentMove = battleMonAttacker->moves[currentMoveIndex];
+    moveEffectDamageType = AI_CalcDmg_Entry(bankAtk, bankDef, battleMonAttacker, battleMonDefender, simulatedRNGStruct->simulatedMoveRNGs[currentMoveIndex], attackerHP, attackerMaxHP, targetHP, allowBankStructReads);
+
+    if (moveEffectDamageType != AI_CALCDMG_UNIMPLEMENTED_VARIABLE_DAMAGE_MOVE
+    && !(TypeCalc(gCurrentMove, battleMonAttacker, battleMonDefender) & MOVE_RESULT_MISSED)) {
+        if (moveEffectDamageType != AI_CALCDMG_CONSTANT_DAMAGE_MOVE) {
+            damage = (gBattleMoveDamage * simulatedRNGStruct->simulatedRNGs[currentMoveIndex]) / 100;
+            // moves always do at least 1 damage.
+            if (damage == 0) {
+                damage = 1;
+            }
+        } else {
+            damage = gBattleMoveDamage;
+        }
+    } else {
+        damage = 0;
+    }
+    return damage;
+}
+    
+static u8 AISwitch_CheckMoveLimitations(struct BattlePokemon * battleMon, u16 choicedMove)
+{
+    u8 holdEffect;
+    int i;
+    uint unusableMoves = 0;
+
+    // there should be an enigma berry check here but lol
+    holdEffect = ItemId_GetHoldEffect(battleMon->item);
+
+    for (i = 0; i < 4; i++)
+    {
+        if (battleMon->moves[i] == 0)
+            unusableMoves |= gBitTable[i];
+        if (battleMon->pp[i] == 0)
+            unusableMoves |= gBitTable[i];
+        //if ((check & MOVE_LIMITATION_DISABLED) && gBattleMons[bank].moves[i] == gDisableStructs[bank].disabledMove)
+        //    unusableMoves |= gBitTable[i];
+        //if (gBattleMons[bank].moves[i] == gLastUsedMove[bank] && check & MOVE_LIMITATION_TORMENTED && gBattleMons[bank].status2 & STATUS2_TORMENT)
+        //    unusableMoves |= gBitTable[i];
+        //if ((check & MOVE_LIMITATION_TAUNT) && gDisableStructs[bank].tauntTimer1 && gBattleMoves[gBattleMons[bank].moves[i]].power == 0)
+        //    unusableMoves |= gBitTable[i];
+        //if ((check & MOVE_LIMITATION_IMPRISION) && IsImprisoned(bank, gBattleMons[bank].moves[i]))
+        //    unusableMoves |= gBitTable[i];
+        //if ((check & MOVE_LIMITATION_ENCORE) && gDisableStructs[bank].encoreTimer1 && gDisableStructs[bank].encoredMove != gBattleMons[bank].moves[i])
+        //    unusableMoves |= gBitTable[i];
+        if (holdEffect == HOLD_EFFECT_CHOICE_BAND
+        && choicedMove != 0
+        && choicedMove != 0xFFFF
+        && choicedMove != battleMon->moves[i])
+            unusableMoves |= gBitTable[i];
+    }
+    return unusableMoves;
+}
+
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex(s32 * damages, uint attacker, uint target, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs)
+{
+    GetBattleMonMoveDamages_WithHPArgs(damages, SIDE_ATTACKING_CALLED_FROM_SWITCH, attacker, target, battlerSimulatedRNGs, TRUE, gBattleMons[attacker].hp, gBattleMons[target].hp);
+    return GetGreatestDamageIndex(damages);
+}
+
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP(s32 * damages, uint attacker, uint target, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs, s16 * simulatedHPs)
+{
+    s32 greatestDamage;
+    uint greatestDamageIndex;
+
+    GetBattleMonMoveDamages_WithHPArgs(damages, SIDE_ATTACKING_CALLED_FROM_SWITCH, attacker, target, battlerSimulatedRNGs, TRUE, simulatedHPs[attacker], simulatedHPs[target]);
+    greatestDamageIndex = GetGreatestDamageIndex(damages);
+    greatestDamage = damages[greatestDamageIndex];
+
+    if (greatestDamage < simulatedHPs[target]) {
+        simulatedHPs[target] -= greatestDamage;
+    } else {
+        simulatedHPs[target] = 0;
+    }
+    return greatestDamageIndex;
+}
+
+static uint GetGreatestDamageIndex(s32 * damages) {
+    s32 greatestDamage;
+    uint i;
+    uint greatestDamageIndex = 0;
+
+    greatestDamage = damages[0];
+    for (i = 1; i < MAX_MON_MOVES; i++) {
+        if (damages[i] > greatestDamage) {
+            greatestDamage = damages[i];
+            greatestDamageIndex = i;
+        }
+    }
+    return greatestDamageIndex;
+}
+ 
+static int CanAttackerKOOrCreateHealLoop_CanFaintOtherSide(s32 * damages, uint attacker, uint target, s16 * simulatedHPs) {
+    struct AIDamageCalcSimulatedRNGs opposingBattlerSimulatedRNGs;
+    int greatestDamageIndex;
+
+    InitializeSimulatedRNGStruct(&opposingBattlerSimulatedRNGs);
+    greatestDamageIndex = GetBattleMonMoveDamagesAndGreatestDamageIndex(damages, attacker, target, &opposingBattlerSimulatedRNGs);
+    
+    if (damages[greatestDamageIndex] >= simulatedHPs[target]) {
+        simulatedHPs[target] = 0;
+        return -1;
+    } else {
+        simulatedHPs[target] -= damages[greatestDamageIndex];
+    }
+    return greatestDamageIndex;
+}
+ 
+static uint GetBattleMonMoveDamagesAndGreatestDamageIndex_SimulateHP_UserMonInWaiting(s32 * damages, uint sideAttacking, struct BattlePokemon * activeBattleMon, uint bankActive, uint bankOpposing, struct AIDamageCalcSimulatedRNGs * battlerSimulatedRNGs, s16 * simulatedHPs, u16 choicedMove) {
+    s32 greatestDamage;
+    uint greatestDamageIndex;
+    uint target;
+
+    AISwitch_GetBattleMonMoveDamages_UserMonInWaiting(damages, sideAttacking, activeBattleMon, bankActive, bankOpposing, battlerSimulatedRNGs, simulatedHPs[bankActive], simulatedHPs[bankOpposing], choicedMove);
+
+    greatestDamageIndex = GetGreatestDamageIndex(damages);
+    greatestDamage = damages[greatestDamageIndex];
+    
+    if (sideAttacking == USER) {
+        target = bankOpposing;
+    } else {
+        target = bankActive;
+    }
+
+    if (greatestDamage < simulatedHPs[target]) {
+        simulatedHPs[target] -= greatestDamage;
+    } else {
+        simulatedHPs[target] = 0;
+    }
+    return greatestDamageIndex;
+}
 
 void AI_TrySwitchOrUseItem(void)
 {
     u8 battlerIn1, battlerIn2;
-
+    uint monToSwitchTo;
+    
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        if (ShouldSwitch())
+        monToSwitchTo = ShouldSwitch();
+        if (monToSwitchTo)
         {
             if (ewram160C8arr(GetBattlerPosition(gActiveBattler)) == 6)
             {
-                s32 monToSwitchId = GetMostSuitableMonToSwitchInto();
+                s32 monToSwitchId;
+                
+                if (monToSwitchTo > TRUE) {
+                    monToSwitchId = monToSwitchTo - 2;
+                    if (monToSwitchId < 0 || monToSwitchId >= 6) {
+                        asm(".short 0xde00");
+                    }
+                } else {
+                    monToSwitchId = GetMostSuitableMonToSwitchInto();
+                }
+
                 if (monToSwitchId == 6)
                 {
                     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
@@ -815,7 +1303,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
             for (i = 0; i < 4; i++)
             {
                 move = GetMonData(&gEnemyParty[bestMonId], MON_DATA_MOVE1 + i);
-                if (move != MOVE_NONE && TypeCalc(move, gActiveBattler, opposingBattler) & MOVE_RESULT_SUPER_EFFECTIVE)
+                if (move != MOVE_NONE && TypeCalc(move, &gBattleMons[gActiveBattler], &gBattleMons[opposingBattler]) & MOVE_RESULT_SUPER_EFFECTIVE)
                     break;
             }
 
@@ -861,7 +1349,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
             if (move != MOVE_NONE && gBattleMoves[move].power > 0)
             {
                 AI_CalcDmg(gActiveBattler, opposingBattler, Random());
-                TypeCalc(move, gActiveBattler, opposingBattler);
+                TypeCalc(move, &gBattleMons[gActiveBattler], &gBattleMons[opposingBattler]);
             }
             if (bestDmg < gBattleMoveDamage)
             {

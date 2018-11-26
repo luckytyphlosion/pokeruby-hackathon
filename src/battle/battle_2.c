@@ -5982,25 +5982,28 @@ void SwapTurnOrder(u8 a, u8 b)
 // 2 = second mon moves first because it won a 50/50 roll
 u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 {
+    return GetWhoStrikesFirst_BattlePokemonStructsChosenMovesAsParams(&gBattleMons[bank1], &gBattleMons[bank2], bank1, bank2, gRandomTurnNumber, ignoreMovePriorities, 0xFFFF, 0xFFFF);
+}
+
+u8 GetWhoStrikesFirst_BattlePokemonStructsChosenMovesAsParams(struct BattlePokemon * battleMonStruct1, struct BattlePokemon * battleMonStruct2, u8 bank1, u8 bank2, u16 randomVal, bool8 ignoreMovePriorities, u16 bank1Move, u16 bank2Move)
+{
     int bank1SpeedMultiplier, bank2SpeedMultiplier;
     u32 bank1AdjustedSpeed, bank2AdjustedSpeed;
     u8 heldItemEffect;
     u8 heldItemEffectParam;
-    u16 bank1Move;
-    u16 bank2Move;
     u8 strikesFirst = 0;
 
     // Check for abilities that boost speed in weather.
     if (WEATHER_HAS_EFFECT)
     {
-        if ((gBattleMons[bank1].ability == ABILITY_SWIFT_SWIM && (gBattleWeather & WEATHER_RAIN_ANY))
-            || (gBattleMons[bank1].ability == ABILITY_CHLOROPHYLL && (gBattleWeather & WEATHER_SUN_ANY)))
+        if ((battleMonStruct1->ability == ABILITY_SWIFT_SWIM && (gBattleWeather & WEATHER_RAIN_ANY))
+            || (battleMonStruct1->ability == ABILITY_CHLOROPHYLL && (gBattleWeather & WEATHER_SUN_ANY)))
             bank1SpeedMultiplier = 2;
         else
             bank1SpeedMultiplier = 1;
 
-        if ((gBattleMons[bank2].ability == ABILITY_SWIFT_SWIM && (gBattleWeather & WEATHER_RAIN_ANY))
-            || (gBattleMons[bank2].ability == ABILITY_CHLOROPHYLL && (gBattleWeather & WEATHER_SUN_ANY)))
+        if ((battleMonStruct2->ability == ABILITY_SWIFT_SWIM && (gBattleWeather & WEATHER_RAIN_ANY))
+            || (battleMonStruct2->ability == ABILITY_CHLOROPHYLL && (gBattleWeather & WEATHER_SUN_ANY)))
             bank2SpeedMultiplier = 2;
         else
             bank2SpeedMultiplier = 1;
@@ -6012,76 +6015,68 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
     }
 
     // Calculate adjusted speed for first mon.
-    bank1AdjustedSpeed = (gBattleMons[bank1].speed * bank1SpeedMultiplier)
-        * gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][1];
+    bank1AdjustedSpeed = (battleMonStruct1->speed * bank1SpeedMultiplier)
+        * gStatStageRatios[battleMonStruct1->statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[battleMonStruct1->statStages[STAT_STAGE_SPEED]][1];
 
-    if (gBattleMons[bank1].item == ITEM_ENIGMA_BERRY)
+    if (battleMonStruct1->item == ITEM_ENIGMA_BERRY)
     {
         heldItemEffect = gEnigmaBerries[bank1].holdEffect;
         heldItemEffectParam = gEnigmaBerries[bank1].holdEffectParam;
     }
     else
     {
-        heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank1].item);
-        heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank1].item);
+        heldItemEffect = ItemId_GetHoldEffect(battleMonStruct1->item);
+        heldItemEffectParam = ItemId_GetHoldEffectParam(battleMonStruct1->item);
     }
 
-    // Only give badge speed boost to the player's mon.
-    if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && FlagGet(FLAG_BADGE03_GET) && GetBattlerSide(bank1) == 0)
-        bank1AdjustedSpeed = (bank1AdjustedSpeed * 110) / 100;
+    // speed badge boost check was here
 
     if (heldItemEffect == HOLD_EFFECT_MACHO_BRACE)
         bank1AdjustedSpeed /= 2;
 
-    if (gBattleMons[bank1].status1 & STATUS_PARALYSIS)
+    if (battleMonStruct1->status1 & STATUS_PARALYSIS)
         bank1AdjustedSpeed /= 4;
 
-    if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
+    if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && randomVal < (heldItemEffectParam * 0xFFFF) / 100)
         bank1AdjustedSpeed = UINT_MAX;
 
     // Calculate adjusted speed for second mon.
-    bank2AdjustedSpeed = gBattleMons[bank2].speed * bank2SpeedMultiplier
-        * gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][1];
+    bank2AdjustedSpeed = battleMonStruct2->speed * bank2SpeedMultiplier
+        * gStatStageRatios[battleMonStruct2->statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[battleMonStruct2->statStages[STAT_STAGE_SPEED]][1];
 
-    if (gBattleMons[bank2].item == ITEM_ENIGMA_BERRY)
+    if (battleMonStruct2->item == ITEM_ENIGMA_BERRY)
     {
         heldItemEffect = gEnigmaBerries[bank2].holdEffect;
         heldItemEffectParam = gEnigmaBerries[bank2].holdEffectParam;
     }
     else
     {
-        heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank2].item);
-        heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank2].item);
+        heldItemEffect = ItemId_GetHoldEffect(battleMonStruct2->item);
+        heldItemEffectParam = ItemId_GetHoldEffectParam(battleMonStruct2->item);
     }
 
-    // Only give badge speed boost to the player's mon.
-    if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && FlagGet(FLAG_BADGE03_GET) && GetBattlerSide(bank2) == 0)
-    {
-        bank2AdjustedSpeed = (bank2AdjustedSpeed * 110) / 100;
-    }
+    // speed badge boost check was here
 
     if (heldItemEffect == HOLD_EFFECT_MACHO_BRACE)
         bank2AdjustedSpeed /= 2;
 
-    if (gBattleMons[bank2].status1 & STATUS_PARALYSIS)
+    if (battleMonStruct2->status1 & STATUS_PARALYSIS)
         bank2AdjustedSpeed /= 4;
 
-    if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
+    if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && randomVal < (heldItemEffectParam * 0xFFFF) / 100)
         bank2AdjustedSpeed = UINT_MAX;
 
     if (ignoreMovePriorities)
     {
         bank1Move = MOVE_NONE;
         bank2Move = MOVE_NONE;
-    }
-    else
-    {
+    } else if (bank1Move == 0xFFFF && bank2Move == 0xFFFF) {
         if (gActionForBanks[bank1] == 0)
         {
             if (gProtectStructs[bank1].onlyStruggle)
                 bank1Move = MOVE_STRUGGLE;
             else
-                bank1Move = gBattleMons[bank1].moves[ewram1608Carr(bank1)];
+                bank1Move = battleMonStruct1->moves[ewram1608Carr(bank1)];
         }
         else
             bank1Move = MOVE_NONE;
@@ -6091,7 +6086,7 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
             if (gProtectStructs[bank2].onlyStruggle)
                 bank2Move = MOVE_STRUGGLE;
             else
-                bank2Move = gBattleMons[bank2].moves[ewram1608Carr(bank2)];
+                bank2Move = battleMonStruct2->moves[ewram1608Carr(bank2)];
         }
         else
             bank2Move = MOVE_NONE;

@@ -816,6 +816,7 @@ bool8 TryRunFromBattle(u8 bank);
 void sub_8012324(void);
 void SwapTurnOrder(u8, u8);
 u8 GetWhoStrikesFirst(u8, u8, u8);
+u8 GetWhoStrikesFirst_BattlePokemonStructsChosenMovesAsParams(struct BattlePokemon * battleMonStruct1, struct BattlePokemon * battleMonStruct2, u8 bank1, u8 bank2, u16 randomVal, bool8 ignoreMovePriorities, u16 bank1Move, u16 bank2Move);
 
 void debug_sub_8010800(void);
 
@@ -830,7 +831,8 @@ u8 GetMoveTarget(u16 move, u8 useMoveTarget);
 
 // asm/battle_4.o
 uint AI_CalcDmg(u8, u8, u16);
-u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def);
+uint AI_CalcDmg_Entry(u8 bankAtk, u8 bankDef, struct BattlePokemon * attacker, struct BattlePokemon * defender, u16 simulatedRNG, s16 attackerHP, s16 attackerMaxHP, s16 targetHP, uint allowBankStructReads);
+u8 TypeCalc(u16 move, struct BattlePokemon * attacker, struct BattlePokemon * defender);
 u8 BankGetTurnOrder(u8 bank);
 
 // asm/battle_5.o
@@ -863,5 +865,10 @@ void sub_80324E0(u8 a);
 void SetBankFuncToLinkOpponentBufferRunCommand(void);
 
 void GameClear(void);
+
+// battle/calculate_base_damage.o
+s32 CalculateBaseDamage(struct BattlePokemon * attacker, struct BattlePokemon * defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef);
+
+s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef, uint allowBankStructReads);
 
 #endif // GUARD_BATTLE_H
