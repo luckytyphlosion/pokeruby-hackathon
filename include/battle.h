@@ -869,6 +869,6 @@ void GameClear(void);
 // battle/calculate_base_damage.o
 s32 CalculateBaseDamage(struct BattlePokemon * attacker, struct BattlePokemon * defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef);
 
-s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef, uint allowBankStructReads);
+s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef, uint allowBankStructReads, u16 attackerHP);
 
 #endif // GUARD_BATTLE_H

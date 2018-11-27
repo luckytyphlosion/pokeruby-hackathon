@@ -1638,7 +1638,7 @@ uint AI_CalcDmg_Entry(u8 bankAtk, u8 bankDef, struct BattlePokemon * attacker, s
     if (okayOrVariableDamageMoveWithImplementedAIBehaviour == AI_CALCDMG_NORMAL_MOVE) {
         gBattleMoveDamage = CalculateBaseDamage_WithBankStructReadsArg(attacker, defender, gCurrentMove,
                                                 sideHword, gDynamicBasePower,
-                                                gBattleStruct->dynamicMoveType, bankAtk, bankDef, allowBankStructReads);
+                                                gBattleStruct->dynamicMoveType, bankAtk, bankDef, allowBankStructReads, attackerHP);
         gDynamicBasePower = 0;
         gBattleMoveDamage = gBattleMoveDamage * gCritMultiplier * gBattleStruct->dmgMultiplier;
     

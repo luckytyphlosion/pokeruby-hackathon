@@ -81,10 +81,10 @@ u8 GetBattlerSide(u8 bank);
 
 s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef)
 {
-    return CalculateBaseDamage_WithBankStructReadsArg(attacker, defender, move, sideStatus, powerOverride, typeOverride, bankAtk, bankDef, TRUE);
+    return CalculateBaseDamage_WithBankStructReadsArg(attacker, defender, move, sideStatus, powerOverride, typeOverride, bankAtk, bankDef, TRUE, attacker->hp);
 }
 
-s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef, uint allowBankStructReads)
+s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef, uint allowBankStructReads, u16 attackerHP)
 {
     u32 i;
     s32 damage = 0;
@@ -184,13 +184,13 @@ s32 CalculateBaseDamage_WithBankStructReadsArg(struct BattlePokemon *attacker, s
         gBattleMovePower /= 2;
     if (type == TYPE_FIRE && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFE, 0))
         gBattleMovePower /= 2;
-    if (type == TYPE_GRASS && attacker->ability == ABILITY_OVERGROW && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_GRASS && attacker->ability == ABILITY_OVERGROW && attackerHP <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_FIRE && attacker->ability == ABILITY_BLAZE && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_FIRE && attacker->ability == ABILITY_BLAZE && attackerHP <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_WATER && attacker->ability == ABILITY_TORRENT && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_WATER && attacker->ability == ABILITY_TORRENT && attackerHP <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attackerHP <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
