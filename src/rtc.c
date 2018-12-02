@@ -364,10 +364,10 @@ void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2)
     }
 }
 
-u32 RtcGetMinuteCount()
+uint RtcGetSecondCount()
 {
     RtcGetInfo(&sRtc);
-    return (24 * 60) * RtcGetDayCount(&sRtc) + 60 * sRtc.hour + sRtc.minute;
+    return (24 * 60 * 60) * RtcGetDayCount(&sRtc) + 60 * 60 * sRtc.hour + 60 * sRtc.minute + sRtc.second;
 }
 
 #if DEBUG

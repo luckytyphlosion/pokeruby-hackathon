@@ -52,3 +52,4 @@ unk_debug_bss_3 = .;
 . = ALIGN(4); *libgcc.a:fp-bit.o(.bss);
 . = ALIGN(4); *libc.a:syscalls.o(.bss);
 . = ALIGN(4); src/battle/battle_ai_switch_items.o(iwram_data);
+. = ALIGN(4); src/random.o(iwram_data);

@@ -17,6 +17,7 @@
 
 extern struct SoundInfo gSoundInfo;
 extern u32 IntrMain[];
+extern struct StableRandomState gRNGState;
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -186,9 +187,8 @@ void SetMainCallback2(MainCallback callback)
 
 static void SeedRngWithRtc(void)
 {
-    u32 seed = RtcGetMinuteCount();
-    seed = (seed >> 16) ^ (seed & 0xFFFF);
-    SeedRng(seed);
+    uint seed = RtcGetSecondCount();
+    StableRandomInitialize(&gRNGState, seed, seed, 6);
 }
 
 void InitKeys(void)
