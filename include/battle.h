@@ -564,6 +564,12 @@ struct WishFutureKnock
     u8 knockedOffPokes[2];
 };
 
+struct TrainerMoney
+{
+    u8 classId;
+    u8 value;
+};
+
 extern struct BattleHistory unk_2016A00;
 extern struct DisableStruct gDisableStructs[MAX_BATTLERS_COUNT];
 extern struct BattleResults gBattleResults;

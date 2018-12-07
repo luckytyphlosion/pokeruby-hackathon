@@ -25,7 +25,7 @@ gTrainerMoney:: @ 81F98F0
 	.byte        TRAINER_CLASS_BUG_MANIAC, 15, 0, 0
 	.byte           TRAINER_CLASS_PSYCHIC,  6, 0, 0
 	.byte         TRAINER_CLASS_GENTLEMAN, 20, 0, 0
-	.byte        TRAINER_CLASS_ELITE_FOUR, 25, 0, 0
+	.byte        TRAINER_CLASS_ELITE_FOUR, 10, 0, 0
 	.byte            TRAINER_CLASS_LEADER, 25, 0, 0
 	.byte        TRAINER_CLASS_SCHOOL_KID,  5, 0, 0
 	.byte         TRAINER_CLASS_SR_AND_JR,  4, 0, 0

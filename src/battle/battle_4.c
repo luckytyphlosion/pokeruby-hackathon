@@ -162,7 +162,6 @@ extern struct Window gUnknown_03004210;
 extern const u8 BattleText_YesNo[];
 extern u8 gPlayerPartyCount;
 extern u16 gMoveToLearn; //move to learn
-extern const u8 gTrainerMoney[];
 extern u16 gRandomMove;
 extern u8* gBattleScriptsForMoveEffects[];
 extern u16 gChosenMove; //last used move in battle
@@ -300,6 +299,7 @@ extern u8 BattleScript_FaintAttacker[];
 extern u8 BattleScript_FaintTarget[];
 extern u8 BattleScript_DestinyBondTakesLife[];
 extern u8 BattleScript_SelectingImprisionedMoveInPalace[];
+extern const struct TrainerMoney gTrainerMoney[];
 
 // read via orr
 #define BSScriptRead32(ptr) ((ptr)[0] | (ptr)[1] << 8 | (ptr)[2] << 16 | (ptr)[3] << 24)
@@ -10237,14 +10237,14 @@ static void atk5D_getmoneyreward(void)
             {
                 const struct TrainerMonNoItemDefaultMoves *party;
                 party = gTrainers[gTrainerBattleOpponent].party.NoItemDefaultMoves;
-                r5 = party[gTrainerBattleOpponent].level;
+                r5 = party[gTrainers[gTrainerBattleOpponent].partySize - 1].level;
             }
             break;
         case 2:
             {
                 const struct TrainerMonItemDefaultMoves *party;
                 party = gTrainers[gTrainerBattleOpponent].party.ItemDefaultMoves;
-                r5 = party[gTrainerBattleOpponent].level;
+                r5 = party[gTrainers[gTrainerBattleOpponent].partySize - 1].level;
             }
             break;
         case 1:
@@ -10253,17 +10253,20 @@ static void atk5D_getmoneyreward(void)
             {
                 const struct TrainerMonNoItemCustomMoves *party;
                 party = gTrainers[gTrainerBattleOpponent].party.NoItemCustomMoves;
-                r5 = party[gTrainerBattleOpponent].level;
+                r5 = party[gTrainers[gTrainerBattleOpponent].partySize - 1].level;
             }
             break;
         }
-        for (; gTrainerMoney[i * 4] != 0xFF && gTrainerMoney[i * 4 + 1] != gTrainers[gTrainerBattleOpponent].trainerClass ; i++) {}
+        for (; gTrainerMoney[i].classId != 0xFF; i++)
+        {
+            if (gTrainerMoney[i].classId == gTrainers[gTrainerBattleOpponent].trainerClass)
+                break;
+        }
 
-        moneyToGive = (r5 << 2) * gBattleStruct->moneyMultiplier;
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-            moneyToGive = 2 * gTrainerMoney[i * 4 + 1] * moneyToGive;
+            moneyToGive = 2 * gTrainerMoney[i].value * (r5 << 2) * gBattleStruct->moneyMultiplier;
         else
-            moneyToGive = 1 * gTrainerMoney[i * 4 + 1] * moneyToGive;
+            moneyToGive = 1 * gTrainerMoney[i].value * (r5 << 2) * gBattleStruct->moneyMultiplier;
     }
 
     AddMoney(&gSaveBlock1.money, moneyToGive);
