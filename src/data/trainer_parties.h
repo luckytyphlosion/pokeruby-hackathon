@@ -10234,6 +10234,14 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JennyGhos
 
 const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[] = {
     {
+        .iv = TYPE_NORMAL,
+        .level = 85,
+        .whichAbility = 0,
+        .species = SPECIES_NINJASK,
+        .heldItem = ITEM_LIECHI_BERRY,
+        .moves = MOVE_BATON_PASS, MOVE_PROTECT, MOVE_AERIAL_ACE, MOVE_SUBSTITUTE
+    },
+    {
         .iv = TYPE_GHOST,
         .level = 85,
         .whichAbility = 0,
@@ -10256,14 +10264,6 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_DavidBug[
         .species = SPECIES_SCIZOR,
         .heldItem = ITEM_SALAC_BERRY,
         .moves = MOVE_STEEL_WING, MOVE_SUBSTITUTE, MOVE_SWORDS_DANCE, MOVE_HIDDEN_POWER
-    },
-    {
-        .iv = TYPE_NORMAL,
-        .level = 85,
-        .whichAbility = 0,
-        .species = SPECIES_NINJASK,
-        .heldItem = ITEM_LIECHI_BERRY,
-        .moves = MOVE_BATON_PASS, MOVE_PROTECT, MOVE_AERIAL_ACE, MOVE_SUBSTITUTE
     },
     {
         .iv = TYPE_NORMAL,

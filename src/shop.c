@@ -1188,12 +1188,16 @@ static u32 Shop_GetPokemonPrice(u16 pokemonId)
             price = POKEMON_SHOP_PRICE + gExperienceTables[GROWTH_FLUCTUATING][gMartInfo.pokemonLevel];
             break;
         default:
-            price = POKEMON_SHOP_PRICE + gExperienceTables[gBaseStats[pokemonId].growthRate][gMartInfo.pokemonLevel];
+        {
+            uint growthRate = gBaseStats[pokemonId].growthRate;
+            if (growthRate == GROWTH_ERRATIC) {
+                growthRate = GROWTH_SLOW;
+            } else if (growthRate == GROWTH_FLUCTUATING) {
+                growthRate = GROWTH_FAST;
+            }
+            price = POKEMON_SHOP_PRICE + gExperienceTables[growthRate][gMartInfo.pokemonLevel];
             break;
-    }
-
-    if (gBaseStats[pokemonId].growthRate == GROWTH_ERRATIC) {
-        price += gMartInfo.pokemonLevel * (200000 / 100);
+        }
     }
 
     return price;
