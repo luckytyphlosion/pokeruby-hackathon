@@ -9866,12 +9866,12 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_MichaelFi
         .moves = MOVE_BELLY_DRUM, MOVE_DOUBLE_EDGE, MOVE_OVERHEAT, MOVE_EARTHQUAKE
     },
     {
-        .iv = TYPE_NORMAL,
+        .iv = TYPE_GRASS, // TODO ACTUALLY MAKE SUNNY DAY SOLARBEAM LOGIC
         .level = 92,
         .whichAbility = 0,
         .species = SPECIES_ENTEI,
         .heldItem = ITEM_LEFTOVERS,
-        .moves = MOVE_FIRE_BLAST, MOVE_SUNNY_DAY, MOVE_CALM_MIND, MOVE_SOLAR_BEAM
+        .moves = MOVE_FIRE_BLAST, MOVE_SUNNY_DAY, MOVE_CALM_MIND, MOVE_HIDDEN_POWER
     }
 };
 
@@ -10442,8 +10442,8 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_AllenPsyc
         .level = 85,
         .whichAbility = 0,
         .species = SPECIES_ALAKAZAM,
-        .heldItem = ITEM_MACHO_BRACE,
-        .moves = MOVE_TRICK, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_FIRE_PUNCH
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = MOVE_THUNDER_WAVE, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_FIRE_PUNCH
     },
     {
         .iv = TYPE_WATER,

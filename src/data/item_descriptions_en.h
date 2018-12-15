@@ -428,6 +428,11 @@ static const u8 gItemDescription_BigMushroom[] = _(
     "that would sell at a\n"
     "high price.");
 
+static const u8 gItemDescription_PrismScale[] = _(
+    "A mysterious scale\n"
+    "that evolves a\n"
+    "certain POKéMON.");
+
 static const u8 gItemDescription_Pearl[] = _(
     "A pretty pearl.\n"
     "Can be sold cheaply.");

@@ -1291,7 +1291,7 @@ gUnknown_0819FA81:: @ 819FA81
 	call Event_ResetBerryTrees
 	setflag FLAG_RECEIVED_RUNNING_SHOES
 	setflag FLAG_SYS_B_DASH
-	givemon SPECIES_MAGIKARP, 5, ITEM_PP_MAX, 0, 0, 0
+	givemon SPECIES_MAGIKARP, 5, ITEM_NONE, 0, 0, 0
 	end
 
 EverGrandeCity_HallOfFame_EventScript_19FC13:: @ 819FC13

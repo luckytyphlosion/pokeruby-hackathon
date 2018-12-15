@@ -55,7 +55,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
     const u8 *itemEffect;
     u8 sp24 = 6;
     u32 sp28;
-    s8 sp2C = 0;
+    s32 sp2C = 0;
     u8 holdEffect;
     u8 sp34 = 4;
     u16 heldItem;
@@ -496,7 +496,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 5:
                         if (GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL) < 100 && retVal == 0 && sp2C == 0)
                         {
-                            sp2C = itemEffect[sp24];
+                            sp2C = (s8)itemEffect[sp24];
+                            if (sp2C == MON_ITEM_FRIENDSHIP_MAX) {
+                                sp2C = 255;
+                            }
                             friendship = GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL);
                             if (sp2C > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
                                 friendship += 150 * sp2C / 100;
@@ -521,7 +524,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                         if (GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL) >= 100 && GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL) < 200
                          && retVal == 0 && sp2C == 0)
                         {
-                            sp2C = itemEffect[sp24];
+                            sp2C = (s8)itemEffect[sp24];
+                            if (sp2C == MON_ITEM_FRIENDSHIP_MAX) {
+                                sp2C = 255;
+                            }
                             friendship = GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL);
                             if (sp2C > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
                                 friendship += 150 * sp2C / 100;
@@ -545,7 +551,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 7:
                         if (GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL) >= 200 && retVal == 0 && sp2C == 0)
                         {
-                            sp2C = itemEffect[sp24];
+                            sp2C = (s8)itemEffect[sp24];
+                            if (sp2C == MON_ITEM_FRIENDSHIP_MAX) {
+                                sp2C = 255;
+                            }
                             friendship = GetMonData(pkmn, MON_DATA_FRIENDSHIP, NULL);
                             if (sp2C > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
                                 friendship += 150 * sp2C / 100;

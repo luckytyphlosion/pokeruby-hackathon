@@ -38,6 +38,11 @@ extern const u8 gBirchSpeech_WhatsYourName[];
 extern u8 gBirchSpeech_SoItsPlayer[];
 extern u8 gBirchSpeech_AhOkayYouArePlayer[];
 extern u8 gBirchSpeech_AreYouReady[];
+extern const struct SpriteTemplate gSpriteTemplate_8208288[];
+
+extern const u8 gBirchSpeech_XSpecialSprite[];
+extern const struct CompressedSpritePalette gBirchSpeech_XSpecialCompressedSpritePalette;
+extern const u8 gBirchSpeech_XSpecialPalette[];
 
 extern struct SpriteTemplate gUnknown_02024E8C;
 extern const struct MenuAction gUnknown_081E79B0[];
@@ -855,7 +860,7 @@ static void Task_NewGameSpeech7(u8 taskId)
         //Go on to next sentence after frame 95
         if (gTasks[taskId].tFrameCounter > 95)
         {
-            Menu_SetText(gSystemText_NewPara);
+            // Menu_SetText(gSystemText_NewPara);
             gTasks[taskId].func = Task_NewGameSpeech8;
         }
     }
@@ -863,9 +868,9 @@ static void Task_NewGameSpeech7(u8 taskId)
     if (gTasks[taskId].tFrameCounter < 16384)
     {
         gTasks[taskId].tFrameCounter++;
-        //Play Azurill cry at frame 32
-        if (gTasks[taskId].tFrameCounter == 32)
-            PlayCry1(SPECIES_AZURILL, 0);
+        // Play Azurill cry at frame 32
+        // if (gTasks[taskId].tFrameCounter == 32)
+        //     PlayCry1(SPECIES_AZURILL, 0);
     }
 }
 
@@ -1428,15 +1433,11 @@ void ShrinkPlayerSprite(struct Sprite *sprite)
 
 u8 CreateAzurillSprite(u8 x, u8 y)
 {
-    DecompressPicFromTable_2(
-        &gMonFrontPicTable[SPECIES_AZURILL],
-        gMonFrontPicCoords[SPECIES_AZURILL].coords,
-        gMonFrontPicCoords[SPECIES_AZURILL].y_offset,
-        gUnknown_081FAF4C[0],
-        gUnknown_081FAF4C[1],
-        SPECIES_AZURILL);
-    LoadCompressedObjectPalette(&gMonPaletteTable[SPECIES_AZURILL]);
-    GetMonSpriteTemplate_803C56C(SPECIES_AZURILL, 1);
+    LZ77UnCompWram(gBirchSpeech_XSpecialSprite, gUnknown_081FAF4C[1]);
+    LoadCompressedObjectPalette(&gBirchSpeech_XSpecialCompressedSpritePalette);
+    gUnknown_02024E8C = gSpriteTemplate_8208288[1];
+    gUnknown_02024E8C.paletteTag = 2;
+    gUnknown_02024E8C.anims = gSpriteAnimTable_81E7C64; // (const union AnimCmd *const *)
     return CreateSprite(&gUnknown_02024E8C, x, y, 0);
 }
 

@@ -687,6 +687,11 @@ const u8 OtherText_Balls[] = _("BALLS");
 const u8 OtherText_TMsHMs[] = _("TMs & HMs");
 const u8 OtherText_Berries[] = _("BERRIES");
 
+const u8 gOtherText_Elite17[] = _("ELITE 17");
+const u8 gOtherText_NPCs[] = _("NPCs");
+const u8 gOtherText_Evolution[] = _("EVOLUTION CHANGES");
+const u8 gOtherText_PPChanges[] = _("PP CHANGES");
+
 const u8 gPCText_SomeonesPC[] = _("SOMEONE’S PC");
 const u8 gPCText_LanettesPC[] = _("LANETTE’S PC");
 const u8 gPCText_PlayersPC[] = _("{PLAYER}’s PC");

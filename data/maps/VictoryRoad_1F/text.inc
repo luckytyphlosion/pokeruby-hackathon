@@ -14,7 +14,6 @@ VictoryRoad_1F_GuardianFireText::
 	.string "and I achieved to become one of the\l"
 	.string "ELITE 17!$"
 
-
 VictoryRoad_1F_GuardianSteelText::
 	.string "I am JUDE of STEEL.\n"
 	.string "Nothing is tougher than steel!\l"

@@ -731,6 +731,10 @@ const u8 gMonFrontPic_UnownQuestionMark[] = INCBIN_U8("graphics/pokemon/unown/fr
 const u8 gMonBackPic_UnownQuestionMark[] = INCBIN_U8("graphics/pokemon/unown/back_question_mark.4bpp.lz");
 const u8 gMonIcon_UnownQuestionMark[] = INCBIN_U8("graphics/pokemon/unown/icon_question_mark.4bpp");
 
+const u8 gBirchSpeech_XSpecialSprite[] = INCBIN_U8("graphics/misc/x_sp_atk.4bpp.lz");
+const u8 gBirchSpeech_XSpecialPalette[] = INCBIN_U8("graphics/misc/x_sp_atk.gbapal.lz");
+const struct CompressedSpritePalette gBirchSpeech_XSpecialCompressedSpritePalette = {gBirchSpeech_XSpecialPalette, 2};
+
 #include "trainer_gfx.h"
 
 const u8 gMonIcon_QuestionMark[] = INCBIN_U8("graphics/pokemon/question_mark/icon.4bpp");

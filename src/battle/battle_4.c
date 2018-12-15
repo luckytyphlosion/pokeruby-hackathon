@@ -10267,6 +10267,10 @@ static void atk5D_getmoneyreward(void)
             moneyToGive = 2 * gTrainerMoney[i].value * (r5 << 2) * gBattleStruct->moneyMultiplier;
         else
             moneyToGive = 1 * gTrainerMoney[i].value * (r5 << 2) * gBattleStruct->moneyMultiplier;
+
+        if (gTrainerBattleOpponent >= TRAINER_ELITE_17_BASE && gTrainerBattleOpponent < TRAINER_CHAMPION_BOBBY) {
+            moneyToGive = moneyToGive / VarGet(VAR_ELITE_17_REMATCH_COUNT_BASE + gTrainerBattleOpponent - TRAINER_ELITE_17_BASE);
+        }
     }
 
     AddMoney(&gSaveBlock1.money, moneyToGive);

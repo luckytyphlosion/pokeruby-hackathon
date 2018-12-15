@@ -497,6 +497,8 @@ enum {
 #define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
 
+#define MON_ITEM_FRIENDSHIP_MAX 127
+
 struct Evolution
 {
     u16 method;

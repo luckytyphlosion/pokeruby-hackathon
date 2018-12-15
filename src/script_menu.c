@@ -472,6 +472,15 @@ const struct MenuAction MultichoiceList_01[] =
     {gOtherText_CancelNoTerminator, NULL},
 };
 
+const struct MenuAction MultichoiceList_Elite17HubExplanations[] =
+{
+    {gOtherText_Elite17, NULL},
+    {gOtherText_NPCs, NULL},
+    {gOtherText_Evolution, NULL},
+    {gOtherText_PPChanges, NULL},
+    {gOtherText_CancelNoTerminator, NULL}
+};
+
 struct MultichoiceListStruct
 {
     const struct MenuAction *list;
@@ -553,6 +562,7 @@ const struct MultichoiceListStruct gMultichoiceLists[] =
     {MultichoiceList_70, ARRAY_COUNT(MultichoiceList_70)},
     {MultichoiceList_71, ARRAY_COUNT(MultichoiceList_71)},
     {MultichoiceList_72, ARRAY_COUNT(MultichoiceList_72)},
+    {MultichoiceList_Elite17HubExplanations, ARRAY_COUNT(MultichoiceList_Elite17HubExplanations)},
 };
 
 const u8 *const gUnknown_083CE048[] =

@@ -907,4 +907,9 @@ extern const u8 gSystemText_NoSaveFileNoTime[];
 extern const u8 gSystemText_ClockAdjustmentUsable[];
 extern const u8 gSystemText_Saving[];
 
+extern const u8 gOtherText_Elite17[];
+extern const u8 gOtherText_NPCs[];
+extern const u8 gOtherText_Evolution[];
+extern const u8 gOtherText_PPChanges[];
+    
 #endif

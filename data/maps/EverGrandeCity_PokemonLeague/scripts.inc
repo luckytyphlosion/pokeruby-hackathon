@@ -5,19 +5,21 @@ EverGrandeCity_PokemonLeague_MapScripts:: @ 815BA75
 EverGrandeCity_PokemonLeague_MapScript1_15BA7B:: @ 815BA7B
 	setrespawn HEAL_LOCATION_EVER_GRANDE_CITY_2
 	setflag FLAG_SYS_POKEMON_LEAGUE_FLY
-	call_if_unset FLAG_ENTERED_ELITE_FOUR, EverGrandeCity_PokemonLeague_EventScript_15BA8B
 	goto EverGrandeCity_HallOfFame_EventScript_19FD09 // reset events
-
-EverGrandeCity_PokemonLeague_EventScript_15BA8B:: @ 815BA8B
-	setobjectxyperm 3, 9, 2
-	setobjectxyperm 4, 10, 2
-	return
 
 EverGrandeCity_PokemonLeague_EventScript_15BA9A:: @ 815BA9A
 	setvar VAR_SPECIAL_B, 1
 	call EverGrandeCity_PokemonLeague_EventScript_19FD5B
 	waitmessage
 	waitbuttonpress
+	release
+	end
+
+EverGrandeCity_PokemonLeague_EventScript_Clock:: @ 81B6A9B
+	lock
+	fadescreen 1
+	special StartWallClock
+	waitstate
 	release
 	end
 
@@ -83,10 +85,6 @@ EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
 	.2byte ITEM_LANSAT_BERRY
 	.2byte ITEM_STARF_BERRY
 
-	.2byte ITEM_HEART_SCALE
-	.2byte ITEM_HEART_SCALE
-	.2byte ITEM_HEART_SCALE
-
 	.2byte ITEM_TRADE_STONE
 	.2byte ITEM_SUN_STONE
 	.2byte ITEM_MOON_STONE
@@ -132,6 +130,7 @@ EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
 	.2byte ITEM_DEEP_SEA_TOOTH
 	.2byte ITEM_DEEP_SEA_SCALE
 	.2byte ITEM_UP_GRADE
+	.2byte ITEM_PRISM_SCALE
 	.2byte ITEM_LIGHT_BALL
 	.2byte ITEM_LUCKY_PUNCH
 	.2byte ITEM_METAL_POWDER
@@ -140,6 +139,7 @@ EverGrandeCity_PokemonLeague_Items:: @ 815BAC0
 
 	.2byte ITEM_BLUE_FLUTE
 	.2byte ITEM_YELLOW_FLUTE
+
 	.2byte ITEM_HP_UP
 	.2byte ITEM_PROTEIN
 	.2byte ITEM_IRON
@@ -237,36 +237,54 @@ EverGrandeCity_PokemonLeague_TMs::
 	.2byte ITEM_HM08_DIVE
 	.2byte ITEM_NONE
 
-EverGrandeCity_PokemonLeague_MaxElixirItemBallScript::
-	giveitem_std ITEM_ETHER, 1, 1
-	giveitem_std ITEM_ELIXIR, 1, 1
+EverGrandeCity_PokemonLeague_GuideScript::
+	lock
+	faceplayer
+	goto_if_set FLAG_EVER_GRANDE_CITY_RECEIVED_PP_ITEMS, EverGrandeCity_PokemonLeague_EventScript_AlreadyHavePPItems
+	msgbox EverGrandeCity_PokemonLeague_Text_WelcomeToElite17, 4
+	giveitem_std ITEM_ETHER
+	giveitem_std ITEM_ELIXIR
+	giveitem_std ITEM_PP_MAX
+	setflag FLAG_EVER_GRANDE_CITY_RECEIVED_PP_ITEMS
+EverGrandeCity_PokemonLeague_EventScript_AlreadyHavePPItems::
+	message EverGrandeCity_PokemonLeague_Text_NowThenWhatToExplain
+	waitmessage
+	multichoice 0, 0, 73, FALSE
+EverGrandeCity_PokemonLeague_EventScript_ExplanationLoopCursorNotTop::
+	switch RESULT
+	case 0, EverGrandeCity_PokemonLeague_EventScript_ExplainElite17
+	case 1, EverGrandeCity_PokemonLeague_EventScript_ExplainNPCs
+	case 2, EverGrandeCity_PokemonLeague_EventScript_ExplainEvolutionChanges
+	case 3, EverGrandeCity_PokemonLeague_EventScript_ExplainPPChanges
+	release
 	end
 
-EverGrandeCity_PokemonLeague_EventScript_15BAD2:: @ 815BAD2
-	lockall
-	goto_if_set FLAG_ENTERED_ELITE_FOUR, EverGrandeCity_PokemonLeague_EventScript_15BB57
-	getplayerxy VAR_TEMP_0, VAR_TEMP_1
-	compare VAR_TEMP_0, 11
-	call_if_ge EverGrandeCity_PokemonLeague_EventScript_15BB34
-	compare VAR_TEMP_0, 8
-	call_if_le EverGrandeCity_PokemonLeague_EventScript_15BB3F
-	msgbox EverGrandeCity_PokemonLeague_Text_1916FD, MSGBOX_YESNO
-	compare RESULT, NO
-	goto_if_eq EverGrandeCity_PokemonLeague_EventScript_15BB4A
-	closemessage
-	applymovement 3, EverGrandeCity_PokemonLeague_Movement_15BB7E
-	applymovement 4, EverGrandeCity_PokemonLeague_Movement_15BB81
-	waitmovement 0
-	delay 10
-	playfanfare MUS_ME_BACHI
-	message EverGrandeCity_PokemonLeague_Text_191804
+EverGrandeCity_PokemonLeague_EventScript_ExplainElite17::
+	msgbox EverGrandeCity_PokemonLeague_Text_Elite17, 4
+	goto EverGrandeCity_PokemonLeague_EventScript_AlreadyHavePPItems
+
+EverGrandeCity_PokemonLeague_EventScript_ExplainNPCs::
+	msgbox EverGrandeCity_PokemonLeague_Text_NPCs, 4
+	message EverGrandeCity_PokemonLeague_Text_NowThenWhatToExplain
 	waitmessage
-	waitfanfare
-	closemessage
-	moveobjectoffscreen 3
-	moveobjectoffscreen 4
-	setflag FLAG_ENTERED_ELITE_FOUR
-	releaseall
+	multichoicedefault 0, 0, 73, 1, FALSE
+	goto EverGrandeCity_PokemonLeague_EventScript_ExplanationLoopCursorNotTop
+
+EverGrandeCity_PokemonLeague_EventScript_ExplainEvolutionChanges::
+	msgbox EverGrandeCity_PokemonLeague_Text_EvolutionChanges, 4
+	message EverGrandeCity_PokemonLeague_Text_NowThenWhatToExplain
+	waitmessage
+	multichoicedefault 0, 0, 73, 2, FALSE
+	goto EverGrandeCity_PokemonLeague_EventScript_ExplanationLoopCursorNotTop
+
+EverGrandeCity_PokemonLeague_EventScript_ExplainPPChanges::
+	msgbox EverGrandeCity_PokemonLeague_Text_PPChanges, 4
+	message EverGrandeCity_PokemonLeague_Text_NowThenWhatToExplain
+	waitmessage
+	multichoicedefault 0, 0, 73, 3, FALSE
+	goto EverGrandeCity_PokemonLeague_EventScript_ExplanationLoopCursorNotTop
+
+EverGrandeCity_PokemonLeague_EventScript_15BAD2:: @ 815BAD2
 	end
 
 EverGrandeCity_PokemonLeague_EventScript_15BB34:: @ 815BB34

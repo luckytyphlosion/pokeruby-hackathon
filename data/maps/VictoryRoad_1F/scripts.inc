@@ -1,5 +1,14 @@
 VictoryRoad_1F_MapScripts:: @ 815DE83
+	map_script 3, VictoryRoad_1F_CallbackSetDragonTrainerPositionIfDefeated
 	.byte 0
+
+VictoryRoad_1F_CallbackSetDragonTrainerPositionIfDefeated::
+	goto_if_set FLAG_DEFEATED_ELITE_17_WALTER_DRAGON, VictoryRoad_1F_Callback_SetDragonTrainerPosition
+	return
+
+VictoryRoad_1F_Callback_SetDragonTrainerPosition::
+	setobjectxyperm 17, 14, 23
+	return
 
 VictoryRoad_1F_EventScript_GuardianFire::
 	lock
@@ -212,7 +221,7 @@ VictoryRoad_1F_EventScript_GuardianWater::
 VictoryRoad_1F_EventScript_GuardianDragon::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_ELITE_17_WALTER_DRAGON, VictoryRoad_1F_YouHaveFoughtWell
+	goto_if_set FLAG_DEFEATED_ELITE_17_WALTER_DRAGON, VictoryRoad_1F_BeatGuardianDragon
 	msgbox VictoryRoad_1F_GuardianDragonText, 4
 	compare VAR_ELITE_4_STATE, 16
 	goto_if_ne VictoryRoad_1F_GuardianDragon_BeatOtherMembersFirst
@@ -224,15 +233,13 @@ VictoryRoad_1F_EventScript_GuardianDragon::
 	special ScrSpecial_HealPlayerParty
 	msgbox VictoryRoad_1F_AndNowFaceChallengeThatAwaitsYouText, 4
 	closemessage
-	applymovement 18, VictoryRoad_1F_GuardianDragonMovement
+	applymovement 17, VictoryRoad_1F_GuardianDragonMovement
 	applymovement 255, VictoryRoad_1F_PlayerWalkingBackMovement
-	waitmovement 18
+	waitmovement 17
+	setflag FLAG_DEFEATED_ELITE_17_WALTER_DRAGON
+VictoryRoad_1F_BeatGuardianDragon::
 	msgbox VictoryRoad_1F_TheChampionAwaitsText, 4
 	closemessage
-	applymovement 255, VictoryRoad_1F_PlayerEntersChampionRoomMovement
-	waitmovement 0
-	setflag FLAG_DEFEATED_ELITE_17_WALTER_DRAGON
-	warp MAP_VICTORY_ROAD_B1F, 255, 5, 27
 	release
 	end
 
@@ -246,14 +253,6 @@ VictoryRoad_1F_GuardianDragonMovement::
 VictoryRoad_1F_PlayerWalkingBackMovement::
 	walk_down
 	walk_down
-	end_movement
-
-VictoryRoad_1F_PlayerEntersChampionRoomMovement::
-	delay_16
-	walk_up
-	walk_up
-	walk_up
-	walk_up
 	end_movement
 
 VictoryRoad_1F_GuardianDragon_BeatOtherMembersFirst::
