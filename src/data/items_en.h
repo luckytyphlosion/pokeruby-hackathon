@@ -547,7 +547,7 @@ const struct Item gItems[] =
     {
         .name = _("ETHER"),
         .itemId = ITEM_ETHER,
-        .price = 3600,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 10,
         .description = gItemDescription_Ether,
@@ -579,7 +579,7 @@ const struct Item gItems[] =
     {
         .name = _("ELIXIR"),
         .itemId = ITEM_ELIXIR,
-        .price = 9000,
+        .price = 20000,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 10,
         .description = gItemDescription_Elixir,

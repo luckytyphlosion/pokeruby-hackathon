@@ -10219,7 +10219,7 @@ const struct TrainerMonItemCustomMovesAbilityHiddenPower gTrainerParty_JennyGhos
         .level = 90,
         .whichAbility = 0,
         .species = SPECIES_SHEDINJA,
-        .heldItem = ITEM_SPELL_TAG,
+        .heldItem = ITEM_LUM_BERRY,
         .moves = MOVE_PROTECT, MOVE_SWORDS_DANCE, MOVE_SHADOW_BALL, MOVE_HIDDEN_POWER
     },
     {

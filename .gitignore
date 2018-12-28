@@ -49,3 +49,4 @@ build/
 *.UPS
 *.zip
 *.bps
+releases/
